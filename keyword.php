@@ -15,58 +15,20 @@ if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
 
-$where_conditions = array();
+$sql = "SELECT DISTINCT shortcode FROM tbl_keyword";
+$result = $conn->query($sql);
 
-if (isset($_GET['field1']) && $_GET['field1'] != '') {
-    $short_code = $conn->real_escape_string($_GET['field1']);
-    $where_conditions[] = "recvKeyword = '$short_code'";
-}
+$shortcodes = array();
 
-if (isset($_GET['field2']) && $_GET['field2'] != '') {
-    $keywordID = $conn->real_escape_string($_GET['field2']);
-    $where_conditions[] = "recvKeyword = '$keywordID'";
-}
-
-if (isset($_GET['field3']) && $_GET['field3'] != '') {
-    $sms_text = $conn->real_escape_string($_GET['field3']);
-    $where_conditions[] = "recvMsg LIKE '%$sms_text%'";
-}
-
-if (isset($_GET['field4']) && $_GET['field4'] != '') {
-    $msisdn = $conn->real_escape_string($_GET['field4']);
-    $where_conditions[] = "recvPhone = '$msisdn'";
-}
-
-if (isset($_GET['from_date']) && $_GET['from_date'] != '' && isset($_GET['to_date']) && $_GET['to_date'] != '') {
-    $from_date = $conn->real_escape_string($_GET['from_date']);
-    $to_date = $conn->real_escape_string($_GET['to_date']);
-    $where_conditions[] = "recvDate BETWEEN '$from_date' AND '$to_date'";
-} elseif (isset($_GET['from_date']) && $_GET['from_date'] != '') {
-    $from_date = $conn->real_escape_string($_GET['from_date']);
-    $where_conditions[] = "recvDate >= '$from_date'";
-} elseif (isset($_GET['to_date']) && $_GET['to_date'] != '') {
-    $to_date = $conn->real_escape_string($_GET['to_date']);
-    $where_conditions[] = "recvDate <= '$to_date'";
-}
-
-$sql_keywords = "SELECT keywordID, keyword FROM tbl_keyword";
-$result_keywords = $conn->query($sql_keywords);
-
-$options = array();
-
-if ($result_keywords->num_rows > 0) {
-    while ($row = $result_keywords->fetch_assoc()) {
-        $options[$row['keywordID']] = $row['keyword'];
+if ($result->num_rows > 0) {
+    while ($row = $result->fetch_assoc()) {
+        $shortcodes[] = $row["shortcode"];
     }
 }
 
-$where_clause = '';
-if (!empty($where_conditions)) {
-    $where_clause = " WHERE " . implode(" AND ", $where_conditions);
-}
-
-$sql = "SELECT recvPhone, recvMsg, recvDate, recvKeyword, recvTelcoID FROM tbl_inbox" . $where_clause;
+$sql = "SELECT keywordID, keyword, keywordCharge, shortcode, urlResponse, keywordRemark FROM tbl_keyword";
 $result = $conn->query($sql);
+
 ?>
 
 <!DOCTYPE html>
@@ -75,9 +37,9 @@ $result = $conn->query($sql);
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Inbox</title>
+    <title>KeyWord</title>
     <link rel="stylesheet" href="../style/style.css">
-    
+
 </head>
 
 <style>
@@ -292,33 +254,53 @@ $result = $conn->query($sql);
 
 <body>
     <form class="form-style-9" method="GET" action="">
-        <h3 style="margin-top: 0;text-align: center;font-family: serif;">Inbound Traffic Log</h3>
+        <h5 style="margin-top: 0;text-align: center;font-family: fangsong;">Add Keyword</h5>
         <ul>
             <li>
                 <select name="field1" class="field-style">
-                    <option value="" selected disabled>Short Code</option>
+                    <option value="" selected disabled>Account</option>
                     <option value="SC001">SC001</option>
                     <option value="SC002">SC002</option>
                     <option value="SC003">SC003</option>
                 </select>
+
+                <input type="text" name="field3" class="field-style" placeholder="Rec ID" value="" />
+
+                <input type="text" name="field3" class="field-style" placeholder="Keyword Name" value="" />
+
                 <select name="field2" class="field-style">
-                    <option value="" selected disabled>Keyword</option>
+                    <option value="" selected disabled>Charge</option>
                     <?php
-                    // Loop through $options to generate <option> tags
-                    foreach ($options as $key => $opt) {
-                        echo '<option value="' . htmlspecialchars($key) . '">' . htmlspecialchars($opt) . '</option>';
+                    // Output options for keywordCharge
+                    foreach ($charges as $charge) {
+                        echo '<option value="' . htmlspecialchars($charge) . '">' . htmlspecialchars($charge) . 'tk</option>';
                     }
                     ?>
                 </select>
-                <input type="text" name="field3" class="field-style" placeholder="SMS Text" value="<?php echo isset($_GET['field3']) ? $_GET['field3'] : ''; ?>" />
+
             </li>
 
             <li>
-                <input type="tel" name="field4" class="field-style" placeholder="MSISDN" value="<?php echo isset($_GET['field4']) ? $_GET['field4'] : ''; ?>" />
-                <input type="date" name="from_date" class="field-style" placeholder="From Date" value="<?php echo isset($_GET['from_date']) ? $_GET['from_date'] : ''; ?>" />
-                <input type="date" name="to_date" class="field-style" placeholder="To Date" value="<?php echo isset($_GET['to_date']) ? $_GET['to_date'] : ''; ?>" />
+                <select name="field2" class="field-style">
+                    <option value="" selected disabled>SMS Type</option>
+                </select>
+
+                <select name="shortcode" class="field-style">
+                    <option value="" selected disabled>Shortcode</option>
+                    <?php
+                    // Output options for shortcode
+                    foreach ($shortcodes as $shortcode) {
+                        echo '<option value="' . htmlspecialchars($shortcode) . '">' . htmlspecialchars($shortcode) . '</option>';
+                    }
+                    ?>
+                </select>
+
+                <input type="url" name="field3" class="field-style" placeholder="App URL" value="" />
+
+                <textarea type="text" name="field3" class="field-style" placeholder="SMS Text" value="" style="height: 36px;"></textarea>
+
                 <input type="submit" name="search" value="Search" style="margin-right: 3px;">
-                <input type="button" class="clear-button" value="Clear" onclick="clearForm()">
+
             </li>
         </ul>
     </form>
@@ -328,11 +310,11 @@ $result = $conn->query($sql);
             <thead>
                 <tr>
                     <th>#</th>
-                    <th>MSISDN</th>
-                    <th>Message Originating</th>
                     <th>Keyword</th>
-                    <th>MO ID</th>
-                    <th>Date</th>
+                    <th>Charge</th>
+                    <th>Shortcode</th>
+                    <th>App URL</th>
+                    <th>Remark</th>
                 </tr>
             </thead>
             <tbody>
@@ -341,16 +323,14 @@ $result = $conn->query($sql);
                     // Output data of each row
                     $index = 1;
                     while ($row = $result->fetch_assoc()) {
-                        $keywordID = $row["recvKeyword"];
-                        $keyword = isset($options[$keywordID]) ? $options[$keywordID] : 'Unknown';
-                        echo "<tr>
-                            <td>" . $index . "</td>
-                            <td>" . $row["recvPhone"] . "</td>
-                            <td>" . $row["recvMsg"] . "</td>
-                            <td>" . htmlspecialchars($keyword) . "</td>
-                            <td>" . $row["recvTelcoID"] . "</td>
-                            <td>" . $row["recvDate"] . "</td>
-                        </tr>";
+                        echo "<tr>";
+                        echo "<td>" . $index . "</td>";
+                        echo "<td>" . $row["keyword"] . "</td>";
+                        echo "<td>" . $row["keywordCharge"] . "</td>";
+                        echo "<td>" . $row["shortcode"] . "</td>";
+                        echo "<td>" . $row["urlResponse"] . "</td>";
+                        echo "<td>" . $row["keywordRemark"] . "</td>";
+                        echo "</tr>";
                         $index++;
                     }
                 } else {
@@ -360,6 +340,7 @@ $result = $conn->query($sql);
             </tbody>
         </table>
     </div>
+
 </body>
 
 </html>

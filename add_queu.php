@@ -8,10 +8,10 @@ $msisdn = "not found";
 $text = "not found";
 $moid = "not found";
 $telcoid = "not found";
+$keyword = "not found";
 $shortcode = "not found";
 $ip = "";
 
-// Get client IP address
 if (!empty($_SERVER['HTTP_CLIENT_IP'])) {
     $ip = $_SERVER['HTTP_CLIENT_IP'];
 } elseif (!empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {
@@ -35,6 +35,9 @@ if (isset($_REQUEST['telcoid'])) {
 if (isset($_REQUEST['shortcode'])) {
     $shortcode = $_REQUEST['shortcode'];
 }
+if (isset($_REQUEST['keyword'])) {
+    $keyword = $_REQUEST['keyword'];
+}
 
 $logdata = "msisdn: " . $msisdn;
 $logdata .= " text: " . $text;
@@ -43,6 +46,7 @@ $logdata .= " telcoid: " . $telcoid;
 $logdata .= " shortcode: " . $shortcode;
 $logdata .= " reqip: " . $ip;
 $logdata .= " datetime: " . $datetime;
+$logdata .= " keyword: " . $keyword;
 $logdata .= "\n";
 
 $errorLogPath = "C:/xampp/htdocs/MSMQ_Queue/logs/error/error_log_" . $date . ".txt";
@@ -63,6 +67,7 @@ $xml->addChild('moid', $moid);
 $xml->addChild('telcoid', $telcoid);
 $xml->addChild('shortcode', $shortcode);
 $xml->addChild('datetime', $datetime);
+$xml->addChild('keyword', $keyword);
 
 $xmlString = $xml->asXML();
 
@@ -87,7 +92,6 @@ try {
     unset($msgQueue);
     unset($msgQueueInfo);
 
-    // Success response
     echo "<div style='color: green; font-weight: bold; font-size: 24px; text-align: center; margin-top: 20%;'>Message successfully sent!</div>";
 } catch (Exception $e) {
     $errorLogData = "Error occurred: " . $e->getMessage() . " Data: " . $xmlString;
@@ -98,16 +102,12 @@ try {
 
 exit;
 ?>
-<!-- HTML and JavaScript content below -->
-
-<!-- Main content -->
 <div class="app-main__inner">
 </div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 
 <script>
-    // Initialize toastr options
     toastr.options = {
         "positionClass": "toast-top-center",
         "closeButton": true,
