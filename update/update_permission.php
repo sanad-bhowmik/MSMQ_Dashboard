@@ -16,7 +16,7 @@ if(isset($_POST['role_id'])){
   $can_view=1;
 
 
-  $sql  = "delete from tbl_permission where role_id='$role_id' " ;
+  $sql  = "delete from permission where role_id='$role_id' " ;
 
   $result = mysqli_query($GLOBALS['con'],$sql);
 
@@ -27,7 +27,7 @@ if(isset($_POST['role_id'])){
       foreach ($_POST['menucheckbox'] as  $value) {
 
           $menu_id = $value;
-          $sql  = "insert into tbl_permission (role_id,menu_id,can_view,added_by,user_id,edate) " ;
+          $sql  = "insert into permission (role_id,menu_id,can_view,added_by,user_id,edate) " ;
           $sql  .= " Values ('$role_id','$menu_id','$can_view','$added_by','$user_id','$edate') " ;
 
           $result = mysqli_query($GLOBALS['con'],$sql);
@@ -45,18 +45,16 @@ if(isset($_POST['role_id'])){
           $menu_id = $myArray[0];
           $sub_menu_id = $myArray[1];
 
-          $sql  = "insert into tbl_permission (role_id,menu_id,sub_menu_id,can_view,added_by,user_id,edate) " ;
+          $sql  = "insert into permission (role_id,menu_id,sub_menu_id,can_view,added_by,user_id,edate) " ;
           $sql  .= " Values ('$role_id','$menu_id','$sub_menu_id','$can_view','$added_by','$user_id','$edate') " ;
 
           $result = mysqli_query($GLOBALS['con'],$sql);
           //echo $sql;
-
-          
        
 
         }
 
-        echo "success";
+
 
       }
 
@@ -71,7 +69,7 @@ if(isset($_POST['role_id'])){
   //echo "string";
 
 
-
+echo "success";
 
 }
 else{

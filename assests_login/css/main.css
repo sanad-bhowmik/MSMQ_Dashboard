@@ -176,10 +176,10 @@ iframe {
   top: 0;
   left: 0;
   background: rgba(93,84,240,0.5);
-  background: -webkit-linear-gradient(left, rgba(0, 255, 40, 0.24), rgba(56, 255, 0, 0.58));
-  background: -o-linear-gradient(left, rgba(0, 255, 40, 0.24), rgba(56, 255, 0, 0.58));
-  background: -moz-linear-gradient(left, rgba(0, 255, 40, 0.24), rgba(56, 255, 0, 0.58));
-  background: linear-gradient(left, rgba(0, 255, 40, 0.24), rgba(56, 255, 0, 0.58));
+  background: -webkit-linear-gradient(left, #974EC3, #38ff0094);
+  background: -o-linear-gradient(left, #00ff283d, #38ff0094);
+  background: -moz-linear-gradient(left, #00ff283d, #38ff0094);
+  background: linear-gradient(left, #00ff283d, #38ff0094);
   pointer-events: none;
 }
 

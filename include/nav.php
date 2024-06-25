@@ -6,99 +6,69 @@
 
     if($role_id==4){
 
-           $newapps= 0;
-
-         
+           $newapps= get_count_by_sql("select count(*) from applications where company_id='$company_id' and  approve_status='re-submission' ");
     }
     else{
 
-     $newapps= 0;
-    
+     $newapps= get_count_by_sql("select count(*) from applications where flag='new' ");
     }
-
-   
-
-
 ?>
 
 
 <ul class="vertical-nav-menu">
-                                <li class="app-sidebar__heading">Dashboards</li>
-                                <li>
-                                    <a href="dashboard.php" class="mm-active">
-                                        <i class="metismenu-icon pe-7s-rocket"></i>
-                                        HOME
-                                    </a>
-                                </li>
-                                <li class="app-sidebar__heading">Administrator</li>
-                                <?php
-                                        $output ='';
+    <li class="app-sidebar__heading">Dashboards</li>
+    <li>
+        <a href="dashboard.php" class="mm-active">
+            <i class="metismenu-icon pe-7s-home"></i>
+            HOME
+        </a>
+    </li>
+    <li class="app-sidebar__heading">Administrator</li>
+    <?php
+          $output ='';
+
+          foreach ($menus as $menu) {
+              $output .='<li>
+                <a href="#">
+          <i class="metismenu-icon '.$menu['icon_class'].'">
+          </i>'. $menu['menu_name'] ;
+          if($menu['notification']==1){
+
+      $output .=	$newapps>0 ? ' <span style="color:red"> ('.$newapps.')</span>' : ''  ;
+                  }
+
+         $output .=	' <i class="metismenu-state-icon pe-7s-angle-down caret-left"></i>
+      </a>
+       <ul>';
+       $menu_id= $menu['menu_id'];
+       $sub_menus = get_all_sub_menus_by_menu_id_role_id($menu_id,$role_id);
+       
+       foreach ($sub_menus as  $sub_menu) {
+
+           $output .=' <li>
+              <a href="'.$sub_menu['page_url'].'">
+                  <i class="metismenu-icon">
+                  </i>'. $sub_menu['sub_menu_name'] ;
+
+                   if($sub_menu['notification']==1 && $newapps>0 ){
+
+                  $output .=	'<img width=50 height=30 src="themefiles/assets/images/new.gif">'  ;
+                              }
+      
+            $output .='    </a>
+       </li>';
+    }
+  
+  $output .=' </ul>
 
 
-                                        foreach ($menus as $menu) {
-                                         
+       </li>';
+               }
+               echo $output;
+       ?>
+</ul>
 
-                                            $output .='<li>
-                                    <a href="#">
-                                        <i class="metismenu-icon '.$menu['icon_class'].'">
-                                        </i>'. $menu['menu_name'] ;
-
-
-                                        if($menu['notification']==1){
-
-                                    $output .=	$newapps>0 ? ' <span style="color:red"> ('.$newapps.')</span>' : ''  ;
-                                                }
-
-                                       $output .=	' <i class="metismenu-state-icon pe-7s-angle-down caret-left"></i>
-                                    </a>
-                                     <ul>';
-                                     $menu_id= $menu['menu_id'];
-                                     $sub_menus = get_all_sub_menus_by_menu_id_role_id($menu_id,$role_id);
-                                     
-
-                                     
-                                     foreach ($sub_menus as  $sub_menu) {
-                                         
-
-                                         $output .=' <li>
-                                            <a href="'.$sub_menu['page_url'].'">
-                                                <i class="metismenu-icon">
-                                                </i>'. $sub_menu['sub_menu_name'] ;
-
-                                                 if($sub_menu['notification']==1 && $newapps>0 ){
-
-                                    $output .=	'<img width=50 height=30 src="themefiles/assets/images/new.gif">'  ;
-                                                }
-
-                                                
-                                               
-                                          $output .='    </a>
-                                        </li>';
-                                     }
-                                     
-
-                                        
-                                     
-                                   
-                                   $output .=' </ul>
-
-
-                                </li>';
-
-
-
-                                        }
-
-                                        echo $output;
-
-                                ?>
-
-                                
-
-
-
-                                
-                              <!--   <li class="">
+<!--   <li class="">
                                     <a href="#">
                                         <i class="metismenu-icon pe-7s-car"></i>
                                         Viewing
@@ -120,7 +90,7 @@
 
                                     </ul>
                                 </li> -->
-                               <!--  <li  >
+<!--  <li  >
                                     <a href="tables-regular.html">
                                         <i class="metismenu-icon pe-7s-display2"></i>
                                         Tables
@@ -167,5 +137,3 @@
                                         Upgrade to PRO
                                     </a>
                                 </li> -->
- </ul>
- 

@@ -1,10 +1,10 @@
 <?php
 
 
-$dbhost="Localhost";
+$dbhost="localhost";
 $dbusername="root";
 $dbpassword="";
-$dbname="shasthobdapi";
+$dbname="queue_db";
 
 
 /* 

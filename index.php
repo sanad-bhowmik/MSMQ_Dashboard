@@ -6,6 +6,7 @@ if(isset($_POST['submit'])){
 	$pass = $_POST['pass'];
 	
 	$userdata = check_login($user,$pass);
+	
 	if(mysqli_num_rows($userdata)>0){
 		$res=mysqli_fetch_assoc($userdata);
 		
@@ -71,7 +72,7 @@ if (isset($_GET['logout']) && $_GET['logout']==true) {
 <body>
 	
 	
-	<div class="container-login100" style="background-image: url('assests_login/images/bg-01.jpg');">
+	<div class="container-login100" style="background-image: url('assests_login/images/bg-02.jpg');">
 		<div class="wrap-login100 p-l-55 p-r-55 p-t-80 p-b-30">
 			<form class="login100-form validate-form" method="post"  action="<?=$_SERVER['PHP_SELF'];?>">
 				<span class="login100-form-title p-b-37">
