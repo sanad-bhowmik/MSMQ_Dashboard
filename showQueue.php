@@ -1,52 +1,51 @@
 <?php
-include 'fetch_queue.php';
+include_once("fetch_queue.php");
 
-// Fetch the message from the queue
 $keywordFromQueue = fetchMessageFromQueue();
 
-// Get the keyword parameter from the URL
-$keywordParam = isset($_GET['keyword']) ? $_GET['keyword'] : '';
+//var_dump($keywordFromQueue);
+if (1==1) {
+    $urlToHit = "http://103.228.39.37:88/smsPanel/sms.php?keyword=".$keywordFromQueue;
 
-// If a keyword was retrieved from the queue, use it instead of the URL parameter
-if ($keywordFromQueue) {
-    $keywordParam = $keywordFromQueue;
-}
+    //$queryString = http_build_query(['keyword' => $keywordParam]);
 
-if ($keywordParam) {
-    $servername = "localhost";
-    $username = "root";
-    $password = "";
-    $dbname = "queue_db";
+    // $queryString = str_replace('%5B0%5D', '', $queryString);
 
-    $conn = new mysqli($servername, $username, $password, $dbname);
+   // $urlToHit .= '?' . $queryString;
+    echo $urlToHit . "</br>";
+    $response = file_get_contents($urlToHit);
+    var_dump($response);
 
-    if ($conn->connect_error) {
-        die("Connection failed: " . $conn->connect_error);
-    }
+    $urlForMt = "http://103.228.39.37:88/smsPanel/mt.php?sms=".urlencode($response);
+    echo $urlForMt . "</br>";
+    $response2 = file_get_contents($urlForMt);
 
-    $stmt = $conn->prepare("SELECT urlResponse FROM tbl_keyword WHERE keyword = ?");
-    $stmt->bind_param("s", $keywordParam);
-    $stmt->execute();
-    $stmt->bind_result($urlResponse);
-    $stmt->fetch();
-    $stmt->close();
-    $conn->close();
+    // $ch = curl_init();
 
-    if ($urlResponse) {
-        // Send an HTTP request to the URL without displaying the response
-        file_get_contents($urlResponse);
+    // curl_setopt($ch, CURLOPT_HEADER, 0);
+    // curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+    // curl_setopt($ch, CURLOPT_URL, $urlForMt);
 
-        // Display a success message
-        echo "<div id='response'>";
-        echo "<h2>URL hit successfully.</h2>";
-        echo "</div>";
-    } else {
-        echo "<div id='response'>";
-        echo "<h2>No matching keyword found in the database.</h2>";
-        echo "</div>";
-    }
+    // $response2 = curl_exec($ch);
+    // curl_close($ch);
+
+    var_dump($response2);
+
+
+
+  //  var_dump($response2);
+
+} else {
+    echo "<div class='container'>";
+    echo "<h1>Message Queue Display</h1>";
+    echo "<div id='response'>";
+    echo "<h2>No keyword provided.</h2>";
+    echo "</div>";
+    echo "</div>";
 }
 ?>
+
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -76,7 +75,6 @@ if ($keywordParam) {
             color: #333;
         }
 
-        #message,
         #response {
             margin-top: 20px;
             padding: 10px;
@@ -84,30 +82,11 @@ if ($keywordParam) {
             border-radius: 5px;
             background-color: #f9f9f9;
         }
-
-        ul {
-            list-style-type: none;
-            padding: 0;
-        }
-
-        ul li {
-            margin-bottom: 10px;
-        }
-
-        ul li strong {
-            font-weight: bold;
-            margin-right: 5px;
-        }
-
-        pre {
-            white-space: pre-wrap;
-            word-wrap: break-word;
-        }
     </style>
 </head>
 
 <body>
-    
+
 </body>
 
 </html>
