@@ -1,8 +1,18 @@
 <?php
 include_once("fetch_queue.php");
-include_once("include/dbcon.php"); 
 
 $keywordFromQueue = $keywordQ;
+
+$queueDbServername = "localhost";
+$queueDbUsername = "root";
+$queueDbPassword = "";
+$queueDbName = "queue_db";
+
+$queueConn = new mysqli($queueDbServername, $queueDbUsername, $queueDbPassword, $queueDbName);
+
+if ($queueConn->connect_error) {
+    die("Connection failed: " . $queueConn->connect_error);
+}
 
 $sql = $queueConn->prepare("SELECT urlResponse FROM tbl_keyword WHERE keyword = ?");
 $sql->bind_param("s", $keywordFromQueue);
