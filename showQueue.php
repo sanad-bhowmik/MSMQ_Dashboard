@@ -1,8 +1,18 @@
 <?php
 include_once("fetch_queue.php");
-include_once("include/dbcon.php"); 
 
 $keywordFromQueue = $keywordQ;
+
+$queueDbServername = "localhost";
+$queueDbUsername = "root";
+$queueDbPassword = "";
+$queueDbName = "queue_db";
+
+$queueConn = new mysqli($queueDbServername, $queueDbUsername, $queueDbPassword, $queueDbName);
+
+if ($queueConn->connect_error) {
+    die("Connection failed: " . $queueConn->connect_error);
+}
 
 $sql = $queueConn->prepare("SELECT urlResponse FROM tbl_keyword WHERE keyword = ?");
 $sql->bind_param("s", $keywordFromQueue);
@@ -20,24 +30,29 @@ if ($result->num_rows > 0) {
 }
 
 $queueConn->close();
+$urlparam =  "?msisdn=" . $msisdnQ."&msgid=" . $msgidQ . "&telcoid=" . $telcoidQ . "&keyword=" . $keywordQ . "&shortcode=" . $shortcodeQ . "&text=" . urlencode($textQ) ;
 
-if (1 == 1) {
-    $urlToHit = $urlFromDb . "?keyword=" . $keywordFromQueue;
+$urlToHit = $urlFromDb."?".$urlparam; 
+echo "URL to hit: " . $urlToHit . "<br>";
 
-    echo $urlToHit . "</br>";
-    $response = file_get_contents($urlToHit);
-    var_dump($response);
+$response = HttpRequest($urlFromDb,$urlparam);
+var_dump($response);
 
-    $urlForMt = "http://103.228.39.37:88/smsPanel/mt.php?sms=" . urlencode($response);
-    echo $urlForMt . "</br>";
-    $response2 = file_get_contents($urlForMt);
+$urlForMt = "http://103.228.39.37:88/smsPanel/mt.php?sms=" . urlencode($response);
+echo "URL for MT: " . $urlForMt . "<br>";
 
-    var_dump($response2);
-} else {
-    echo "<div class='container'>";
-    echo "<h1>Message Queue Display</h1>";
-    echo "<div id='response'>";
-    echo "<h2>No keyword provided.</h2>";
-    echo "</div>";
-    echo "</div>";
-}
+$response2 = file_get_contents($urlForMt);
+var_dump($response2);
+
+
+function HttpRequest($url,$param) { 
+    $URL_STR =$url.$param;
+    $ch=curl_init();
+    curl_setopt($ch,CURLOPT_URL,$URL_STR);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER,false);
+    curl_exec($ch);
+    $response = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+    curl_close($ch);
+    return $response;
+} 
+?>
