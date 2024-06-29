@@ -1,17 +1,39 @@
 <?php
 include_once("fetch_queue.php");
 
-$keywordFromQueue = fetchMessageFromQueue();
+$keywordFromQueue = $keywordQ;
 
-//var_dump($keywordFromQueue);
+$queueDbServername = "localhost";
+$queueDbUsername = "root";
+$queueDbPassword = "";
+$queueDbName = "queue_db";
+
+$queueConn = new mysqli($queueDbServername, $queueDbUsername, $queueDbPassword, $queueDbName);
+
+if ($queueConn->connect_error) {
+    die("Connection failed: " . $queueConn->connect_error);
+}
+
+$sql = $queueConn->prepare("SELECT urlResponse FROM tbl_keyword WHERE keyword = ?");
+$sql->bind_param("s", $keywordFromQueue);
+$sql->execute();
+$result = $sql->get_result();
+
+if ($result->num_rows > 0) {
+    while ($row = $result->fetch_assoc()) {
+        $urlFromDb = $row['urlResponse'];
+    }
+} else {
+    echo "No URL found for the keyword: " . htmlspecialchars($keywordFromQueue);
+    $queueConn->close();
+    exit;
+}
+
+$queueConn->close();
+
 if (1 == 1) {
-    $urlToHit = "http://103.228.39.37:88/smsPanel/sms.php?keyword=" . $keywordFromQueue;
+    $urlToHit = $urlFromDb . "?keyword=" . $keywordFromQueue;
 
-    //$queryString = http_build_query(['keyword' => $keywordParam]);
-
-    // $queryString = str_replace('%5B0%5D', '', $queryString);
-
-    // $urlToHit .= '?' . $queryString;
     echo $urlToHit . "</br>";
     $response = file_get_contents($urlToHit);
     var_dump($response);
@@ -20,21 +42,7 @@ if (1 == 1) {
     echo $urlForMt . "</br>";
     $response2 = file_get_contents($urlForMt);
 
-    // $ch = curl_init();
-
-    // curl_setopt($ch, CURLOPT_HEADER, 0);
-    // curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-    // curl_setopt($ch, CURLOPT_URL, $urlForMt);
-
-    // $response2 = curl_exec($ch);
-    // curl_close($ch);
-
     var_dump($response2);
-
-
-
-    //  var_dump($response2);
-
 } else {
     echo "<div class='container'>";
     echo "<h1>Message Queue Display</h1>";
@@ -43,4 +51,3 @@ if (1 == 1) {
     echo "</div>";
     echo "</div>";
 }
-?>

@@ -6,7 +6,15 @@ if (!defined('MQ_DENY_NONE')) {
     define("MQ_DENY_NONE", 0);
 }
 
-function fetchMessageFromQueue() {
+$msisdnQ = "";
+$textQ = "";
+$msgidQ = "";
+$telcoidQ = "";
+$keywordQ = "";
+$shortcodeQ = "";
+$datetimeQ = "";
+
+
     try {
         $msgQueueInfo = new COM("MSMQ.MSMQQueueInfo");
         $msgQueueInfo->PathName = ".\\private$\\messages";
@@ -21,35 +29,35 @@ function fetchMessageFromQueue() {
             $xmlString = $msg->Body;
             $xml = new SimpleXMLElement($xmlString);
 
-            $msisdn = $xml->msisdn;
-            $text = $xml->text;
-            $msgid = $xml->msgid;
-            $telcoid = $xml->telcoid;
-            $keyword = $xml->keyword;
-            $shortcode = $xml->shortcode;
-            $datetime = $xml->datetime;
+            $msisdnQ = $xml->msisdn;
+            $textQ = $xml->text;
+            $msgidQ = $xml->msgid;
+            $telcoidQ = $xml->telcoid;
+            $keywordQ = $xml->keyword;
+            $shortcodeQ = $xml->shortcode;
+            $datetimeQ = $xml->datetime;
 
             echo "<ul>";
-            echo "<li><strong>MSISDN:</strong> $msisdn</li>";
-            echo "<li><strong>Text:</strong> $text</li>";
-            echo "<li><strong>Message ID:</strong> $msgid</li>";
-            echo "<li><strong>Telco ID:</strong> $telcoid</li>";
-            echo "<li><strong>Keyword:</strong> $keyword</li>";
-            echo "<li><strong>Shortcode:</strong> $shortcode</li>";
-            echo "<li><strong>Datetime:</strong> $datetime</li>";
+            echo "<li><strong>MSISDN:</strong> $msisdnQ</li>";
+            echo "<li><strong>Text:</strong> $textQ</li>";
+            echo "<li><strong>Message ID:</strong> $msgidQ</li>";
+            echo "<li><strong>Telco ID:</strong> $telcoidQ</li>";
+            echo "<li><strong>Keyword:</strong> $keywordQ</li>";
+            echo "<li><strong>Shortcode:</strong> $shortcodeQ</li>";
+            echo "<li><strong>Datetime:</strong> $datetimeQ</li>";
             echo "</ul>";
 
-            return $keyword;
+           // return $keyword;
         } else {
             echo "<p>No messages in queue.</p>";
-            return null;
+           // return null;
         }
 
         $msgQueue->Close();
         unset($msgQueueInfo);
     } catch (Exception $e) {
         echo "<div style='color: red; font-weight: bold; font-size: 16px;'>An error occurred: " . $e->getMessage() . "</div>";
-        return null;
+       // return null;
     }
-}
+
 ?>
