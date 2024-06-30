@@ -68,6 +68,7 @@ try {
         // return $keyword;
     } else {
         echo "<p>No messages in queue.</p>";
+        echo 204;
         // return null;
     }
 
@@ -76,5 +77,6 @@ try {
 } catch (Exception $e) {
     echo "<div style='color: red; font-weight: bold; font-size: 16px;'>An error occurred: " . $e->getMessage() . "</div>";
     // return null;
+    echo 400;
 }
 ?>

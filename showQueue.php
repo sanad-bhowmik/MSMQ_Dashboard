@@ -72,7 +72,8 @@ try {
                     $urlFromDb = $row['urlResponse'];
                 }
             } else {
-                echo "No URL found for the keyword: " . htmlspecialchars($keywordFromQueue);
+                //  echo "No URL found for the keyword: " . htmlspecialchars($keywordFromQueue);
+                echo 400;
                 $queueConn->close();
                 exit;
             }
@@ -81,22 +82,28 @@ try {
             $urlparam =  "?msisdn=" . $msisdnQ . "&msgid=" . $msgidQ . "&telcoid=" . $telcoidQ . "&keyword=" . $keywordQ . "&shortcode=" . $shortcodeQ . "&text=" . urlencode($textQ);
 
             $urlToHit = $urlFromDb . "?" . $urlparam;
-            echo "URL to hit: " . $urlToHit . "<br>";
+            //  echo "URL to hit: " . $urlToHit . "<br>";
 
             try {
                 $response = HttpRequest($urlFromDb, $urlparam);
-                var_dump($response);
-
+                // var_dump($response);
+               // echo 200;
                 $msg = $msgQueue->Receive();
             } catch (Exception $e) {
+
+                echo 500;
             }
 
             // queue forward block end
 
 
+        }else{
+
+            echo 404;
         }
     } catch (Exception $e) {
-        echo $e;
+        // echo $e;
+        echo 500;
     }
 
 
@@ -104,8 +111,9 @@ try {
     $msgQueue->Close();
     unset($msgQueueInfo);
 } catch (Exception $e) {
-    echo "" . $e->getMessage() . "";
+    //echo "" . $e->getMessage() . "";
     // return null;
+    echo 500;
 }
 
 
@@ -121,3 +129,4 @@ function HttpRequest($url, $param)
     curl_close($ch);
     return $response;
 }
+?>

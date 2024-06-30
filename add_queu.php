@@ -92,7 +92,7 @@ try {
     unset($msgQueue);
     unset($msgQueueInfo);
 
-    echo "<div style='color: green; font-weight: bold; font-size: 24px; text-align: center; margin-top: 20%;'>Message successfully sent!</div>";
+    echo "<div style='text-align: center; margin-top: 10px;'>Response Status Code: 200</div>";
 } catch (Exception $e) {
     $errorLogData = "Error occurred: " . $e->getMessage() . " Data: " . $xmlString;
     file_put_contents($errorLogPath, $errorLogData, FILE_APPEND | LOCK_EX);
