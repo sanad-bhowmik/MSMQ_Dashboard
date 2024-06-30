@@ -1,0 +1,2 @@
+Error occurred: <b>Source:</b> MSMQQueueInfo<br/><b>Description:</b> The queue does not exist or you do not have sufficient permissions to perform the operation.  Data: <?xml version="1.0"?>
+<Message><msisdn>not found</msisdn><text>not found</text><moid>not found</moid><telcoid>not found</telcoid><shortcode>not found</shortcode><datetime>2024-06-26 13:28:12</datetime><keyword>not found</keyword></Message>

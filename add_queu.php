@@ -49,9 +49,9 @@ $logdata .= " datetime: " . $datetime;
 $logdata .= " keyword: " . $keyword;
 $logdata .= "\n";
 
-$errorLogPath = "C:/xampp/htdocs/MSMQ_Queue/logs/error/error_log_" . $date . ".txt";
+$errorLogPath = "C:/mts/htdocs/msmq/log/error/error_log_" . $date . ".txt";
 
-$filewrite = fopen("C:/xampp/htdocs/MSMQ_Queue/logs/mo/mo_log_" . $date . ".txt", "a+");
+$filewrite = fopen("C:/mts/htdocs/msmq/log/mo/mo_log_" . $date . ".txt", "a+");
 if ($filewrite) {
     fwrite($filewrite, $logdata);
     fclose($filewrite);

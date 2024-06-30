@@ -1,0 +1,1 @@
+msisdn: 8801976905786 text: Hey its my Secondmsg moid: 20240624002256573-3 telcoid: 3 shortcode: 9933 reqip: 45.120.96.96 datetime: 2024-06-30 08:50:36 keyword: FNP

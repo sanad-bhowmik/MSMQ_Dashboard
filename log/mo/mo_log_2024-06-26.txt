@@ -1,0 +1,4 @@
+msisdn: not found text: not found moid: not found telcoid: not found shortcode: not found reqip: 45.120.96.96 datetime: 2024-06-26 13:28:12 keyword: not found
+msisdn: not found text: not found moid: not found telcoid: not found shortcode: not found reqip: 45.120.96.96 datetime: 2024-06-26 13:28:48 keyword: not found
+msisdn: not found text: not found moid: not found telcoid: not found shortcode: not found reqip: 45.120.96.96 datetime: 2024-06-26 13:34:45 keyword: not found
+msisdn: not found text: not found moid: not found telcoid: not found shortcode: not found reqip: 45.120.96.96 datetime: 2024-06-26 13:34:54 keyword: not found

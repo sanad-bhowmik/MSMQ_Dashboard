@@ -8,6 +8,8 @@ if(isset($_REQUEST['sms'])){
   if ($filewrite) {
       fwrite($filewrite, $sms);
       fclose($filewrite);
+	  
+	echo 200;
   } else {
      // $errorLogData = "Failed to open mo log file. Data: " . $logdata;
      // file_put_contents($errorLogPath, $errorLogData, FILE_APPEND | LOCK_EX);
