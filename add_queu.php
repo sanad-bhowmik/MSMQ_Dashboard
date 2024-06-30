@@ -49,16 +49,16 @@ $logdata .= " datetime: " . $datetime;
 $logdata .= " keyword: " . $keyword;
 $logdata .= "\n";
 
-$errorLogPath = "C:/mts/htdocs/msmq/log/error/error_log_" . $date . ".txt";
+// $errorLogPath = "C:/htdocs/msmq/log/error/error_log_" . $date . ".txt";
 
-$filewrite = fopen("C:/mts/htdocs/msmq/log/mo/mo_log_" . $date . ".txt", "a+");
-if ($filewrite) {
-    fwrite($filewrite, $logdata);
-    fclose($filewrite);
-} else {
-    $errorLogData = "Failed to open mo log file. Data: " . $logdata;
-    file_put_contents($errorLogPath, $errorLogData, FILE_APPEND | LOCK_EX);
-}
+// $filewrite = fopen("C:/htdocs/msmq/log/mo/mo_log_" . $date . ".txt", "a+");
+// if ($filewrite) {
+//     fwrite($filewrite, $logdata);
+//     fclose($filewrite);
+// } else {
+//     $errorLogData = "Failed to open mo log file. Data: " . $logdata;
+//     file_put_contents($errorLogPath, $errorLogData, FILE_APPEND | LOCK_EX);
+// }
 
 $xml = new SimpleXMLElement('<Message/>');
 $xml->addChild('msisdn', $msisdn);
