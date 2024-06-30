@@ -33,7 +33,7 @@ try {
     try {
         $msg = $msgQueue->PeekFirstByLookupId();
         if ($msg != NULL) {
-            $msg = $msgQueue->Receive();
+            //$msg = $msgQueue->Receive();
         }
     } catch (Exception $e) {
         echo $e;

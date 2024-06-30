@@ -1,8 +1,5 @@
 <?php
-include_once("fetch_queue.php");
-
-$keywordFromQueue = $keywordQ;
-
+// db block
 $queueDbServername = "localhost";
 $queueDbUsername = "root";
 $queueDbPassword = "";
@@ -13,46 +10,114 @@ $queueConn = new mysqli($queueDbServername, $queueDbUsername, $queueDbPassword, 
 if ($queueConn->connect_error) {
     die("Connection failed: " . $queueConn->connect_error);
 }
+// db block
 
-$sql = $queueConn->prepare("SELECT urlResponse FROM tbl_keyword WHERE keyword = ?");
-$sql->bind_param("s", $keywordFromQueue);
-$sql->execute();
-$result = $sql->get_result();
-
-if ($result->num_rows > 0) {
-    while ($row = $result->fetch_assoc()) {
-        $urlFromDb = $row['urlResponse'];
-    }
-} else {
-    echo "No URL found for the keyword: " . htmlspecialchars($keywordFromQueue);
-    $queueConn->close();
-    exit;
+if (!defined('MQ_RECEIVE_ACCESS')) {
+    define("MQ_RECEIVE_ACCESS", 1);
+}
+if (!defined('MQ_DENY_NONE')) {
+    define("MQ_DENY_NONE", 0);
 }
 
-$queueConn->close();
-$urlparam =  "?msisdn=" . $msisdnQ."&msgid=" . $msgidQ . "&telcoid=" . $telcoidQ . "&keyword=" . $keywordQ . "&shortcode=" . $shortcodeQ . "&text=" . urlencode($textQ) ;
+$msisdnQ = "";
+$textQ = "";
+$msgidQ = "";
+$telcoidQ = "";
+$keywordQ = "";
+$shortcodeQ = "";
+$datetimeQ = "";
+$urlFromDb = "";
 
-$urlToHit = $urlFromDb."?".$urlparam; 
-echo "URL to hit: " . $urlToHit . "<br>";
+try {
+    $msgQueueInfo = new COM("MSMQ.MSMQQueueInfo");
+    $msgQueueInfo->PathName = ".\\private$\\messages";
 
-$response = HttpRequest($urlFromDb,$urlparam);
-var_dump($response);
+    $msgQueue = $msgQueueInfo->Open(MQ_RECEIVE_ACCESS, MQ_DENY_NONE);
 
-$urlForMt = "http://103.228.39.37:88/smsPanel/mt.php?sms=" . urlencode($response);
-echo "URL for MT: " . $urlForMt . "<br>";
+    if (!$msgQueue) {
+        throw new Exception("Failed to open the queue.");
+    }
 
-$response2 = file_get_contents($urlForMt);
-var_dump($response2);
+    //$msgQueue->Reset();
+    //  print_r($msgQueue->PeekNext());
+    // Check message count
+    //$msgCount = $msgQueue->MessagesToReceive();
+
+    try {
+        $msg = $msgQueue->PeekFirstByLookupId();
+        if ($msg != NULL) {
+            //$msg = $msgQueue->Receive();
+            if ($msg) {
+                $xmlString = $msg->Body;
+                $xml = new SimpleXMLElement($xmlString);
+
+                $msisdnQ = $xml->msisdn;
+                $textQ = $xml->text;
+                $msgidQ = $xml->msgid;
+                $telcoidQ = $xml->telcoid;
+                $keywordQ = $xml->keyword;
+                $shortcodeQ = $xml->shortcode;
+                $datetimeQ = $xml->datetime;
+            }
+            // quqeue forward block
+            $keywordFromQueue = $keywordQ;
+
+            $sql = $queueConn->prepare("SELECT urlResponse FROM tbl_keyword WHERE keyword = ?");
+            $sql->bind_param("s", $keywordFromQueue);
+            $sql->execute();
+            $result = $sql->get_result();
+
+            if ($result->num_rows > 0) {
+                while ($row = $result->fetch_assoc()) {
+                    $urlFromDb = $row['urlResponse'];
+                }
+            } else {
+                echo "No URL found for the keyword: " . htmlspecialchars($keywordFromQueue);
+                $queueConn->close();
+                exit;
+            }
+
+            $queueConn->close();
+            $urlparam =  "?msisdn=" . $msisdnQ . "&msgid=" . $msgidQ . "&telcoid=" . $telcoidQ . "&keyword=" . $keywordQ . "&shortcode=" . $shortcodeQ . "&text=" . urlencode($textQ);
+
+            $urlToHit = $urlFromDb . "?" . $urlparam;
+            echo "URL to hit: " . $urlToHit . "<br>";
+
+            try {
+                $response = HttpRequest($urlFromDb, $urlparam);
+                var_dump($response);
+
+                $msg = $msgQueue->Receive();
+            } catch (Exception $e) {
+            }
+
+            // queue forward block end
 
 
-function HttpRequest($url,$param) { 
-    $URL_STR =$url.$param;
-    $ch=curl_init();
-    curl_setopt($ch,CURLOPT_URL,$URL_STR);
-    curl_setopt($ch, CURLOPT_RETURNTRANSFER,false);
+        }
+    } catch (Exception $e) {
+        echo $e;
+    }
+
+
+
+    $msgQueue->Close();
+    unset($msgQueueInfo);
+} catch (Exception $e) {
+    echo "" . $e->getMessage() . "";
+    // return null;
+}
+
+
+
+function HttpRequest($url, $param)
+{
+    $URL_STR = $url . $param;
+    $ch = curl_init();
+    curl_setopt($ch, CURLOPT_URL, $URL_STR);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, false);
     curl_exec($ch);
     $response = curl_getinfo($ch, CURLINFO_HTTP_CODE);
     curl_close($ch);
     return $response;
-} 
-?>
+}
