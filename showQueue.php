@@ -87,26 +87,24 @@ try {
             try {
                 $response = HttpRequest($urlFromDb, $urlparam);
                 // var_dump($response);
-               // echo 200;
-                $msg = $msgQueue->Receive();
+                if ($response == 408) {
+                    echo 408;
+                } else {
+                    $msg = $msgQueue->Receive();
+                }
+                // echo 200;
             } catch (Exception $e) {
-
                 echo 500;
             }
 
             // queue forward block end
-
-
-        }else{
-
+        } else {
             echo 404;
         }
     } catch (Exception $e) {
         // echo $e;
         echo 500;
     }
-
-
 
     $msgQueue->Close();
     unset($msgQueueInfo);
@@ -116,16 +114,15 @@ try {
     echo 500;
 }
 
-
-
 function HttpRequest($url, $param)
 {
     $URL_STR = $url . $param;
     $ch = curl_init();
     curl_setopt($ch, CURLOPT_URL, $URL_STR);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, false);
+    curl_setopt($ch, CURLOPT_TIMEOUT, 5); // Set timeout to 5 seconds
     curl_exec($ch);
-    $response = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+    $response = curl_errno($ch) == CURLE_OPERATION_TIMEDOUT ? 408 : curl_getinfo($ch, CURLINFO_HTTP_CODE);
     curl_close($ch);
     return $response;
 }
