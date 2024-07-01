@@ -3,7 +3,6 @@ $datetime = date('Y-m-d H:i:s');
 $date = date('Y-m-d');
 include_once("include/initialize.php");
 date_default_timezone_set("Asia/Dhaka");
-include_once("include/header.php");
 $msisdn = "not found";
 $text = "not found";
 $moid = "not found";
@@ -106,7 +105,7 @@ exit;
 </div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
-
+        
 <script>
     toastr.options = {
         "positionClass": "toast-top-center",
@@ -115,5 +114,4 @@ exit;
     };
 </script>
 <?php
-include_once("include/footer.php");
 ?>
