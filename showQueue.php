@@ -38,15 +38,9 @@ try {
         throw new Exception("Failed to open the queue.");
     }
 
-    //$msgQueue->Reset();
-    //  print_r($msgQueue->PeekNext());
-    // Check message count
-    //$msgCount = $msgQueue->MessagesToReceive();
-
     try {
         $msg = $msgQueue->PeekFirstByLookupId();
         if ($msg != NULL) {
-            //$msg = $msgQueue->Receive();
             if ($msg) {
                 $xmlString = $msg->Body;
                 $xml = new SimpleXMLElement($xmlString);
@@ -59,7 +53,7 @@ try {
                 $shortcodeQ = $xml->shortcode;
                 $datetimeQ = $xml->datetime;
             }
-            // quqeue forward block
+            // queue forward block
             $keywordFromQueue = $keywordQ;
 
             $sql = $queueConn->prepare("SELECT urlResponse FROM tbl_keyword WHERE keyword = ?");
@@ -72,47 +66,58 @@ try {
                     $urlFromDb = $row['urlResponse'];
                 }
             } else {
-                //  echo "No URL found for the keyword: " . htmlspecialchars($keywordFromQueue);
                 echo 400;
                 $queueConn->close();
                 exit;
             }
 
-            $queueConn->close();
             $urlparam =  "?msisdn=" . $msisdnQ . "&msgid=" . $msgidQ . "&telcoid=" . $telcoidQ . "&keyword=" . $keywordQ . "&shortcode=" . $shortcodeQ . "&text=" . urlencode($textQ);
 
             $urlToHit = $urlFromDb . "?" . $urlparam;
-            //  echo "URL to hit: " . $urlToHit . "<br>";
 
             try {
                 $response = HttpRequest($urlFromDb, $urlparam);
-                // var_dump($response);
                 if ($response == 408) {
                     echo 408;
                 } else {
                     $msg = $msgQueue->Receive();
+
+                    // Add database insert here
+                    $xml = $msg->Body;
+                    $xmlObj = simplexml_load_string($xml);
+
+                    $msisdn = (string) $xmlObj->msisdn;
+                    $text = (string) $xmlObj->text;
+                    $moid = (string) $xmlObj->moid;
+                    $telcoid = (string) $xmlObj->telcoid;
+                    $datetime = (string) $xmlObj->datetime;
+
+                    $stmt = $queueConn->prepare("INSERT INTO tbl_inbox (recvPhone, recvMsg, recvOriginatingID, recvSubsID, recvTelcoID, recvDate) VALUES (?, ?, ?, ?, ?, ?)");
+                    $stmt->bind_param("ssssss", $msisdn, $text, $moid, $msisdn, $telcoid, $datetime);
+
+                    if ($stmt->execute()) {
+                        echo "Record inserted successfully";
+                    } else {
+                        echo "Error: " . $stmt->error;
+                    }
                 }
-                // echo 200;
             } catch (Exception $e) {
                 echo 500;
             }
-
-            // queue forward block end
         } else {
             echo 404;
         }
     } catch (Exception $e) {
-        // echo $e;
         echo 500;
     }
 
     $msgQueue->Close();
     unset($msgQueueInfo);
 } catch (Exception $e) {
-    //echo "" . $e->getMessage() . "";
-    // return null;
     echo 500;
 }
+
+$queueConn->close();
 
 function HttpRequest($url, $param)
 {
@@ -126,4 +131,3 @@ function HttpRequest($url, $param)
     curl_close($ch);
     return $response;
 }
-?>
