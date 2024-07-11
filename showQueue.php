@@ -66,6 +66,7 @@ try {
                     $urlFromDb = $row['urlResponse'];
                 }
             } else {
+				$msg = $msgQueue->Receive();
                 echo 400;
                 $queueConn->close();
                 exit;

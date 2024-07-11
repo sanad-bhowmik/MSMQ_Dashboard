@@ -65,10 +65,32 @@ if (!empty($where_conditions)) {
     $where_clause = " WHERE " . implode(" AND ", $where_conditions);
 }
 
-$sql = "SELECT recvPhone, recvMsg, recvDate, recvKeyword, recvTelcoID FROM tbl_inbox" . $where_clause;
-$result = $conn->query($sql);
-?>
+// Pagination logic
+$records_per_page = 13;
+$page = isset($_GET['page']) ? $_GET['page'] : 1;
+$start_from = ($page - 1) * $records_per_page;
 
+$sql_count = "SELECT COUNT(*) AS total_records FROM tbl_inbox" . $where_clause;
+$result_count = $conn->query($sql_count);
+$row_count = $result_count->fetch_assoc();
+$total_records = $row_count['total_records'];
+$total_pages = ceil($total_records / $records_per_page);
+
+$sql = "SELECT recvPhone, recvMsg, recvDate, recvKeyword, recvTelcoID 
+        FROM tbl_inbox" . $where_clause . " 
+        ORDER BY recvID DESC LIMIT $start_from, $records_per_page";
+$result = $conn->query($sql);
+
+// Fetch keyword remarks
+$sql_keyword_remarks = "SELECT keyword, keywordRemark FROM tbl_keyword";
+$result_keyword_remarks = $conn->query($sql_keyword_remarks);
+$keyword_remarks = array();
+if ($result_keyword_remarks->num_rows > 0) {
+    while ($row = $result_keyword_remarks->fetch_assoc()) {
+        $keyword_remarks[$row['keyword']] = $row['keywordRemark'];
+    }
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -77,7 +99,7 @@ $result = $conn->query($sql);
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Inbox</title>
     <link rel="stylesheet" href="../style/style.css">
-    
+
 </head>
 
 <style>
@@ -89,7 +111,6 @@ $result = $conn->query($sql);
         border: 1px solid #dbd4d4;
         border-radius: 10px;
         height: 33%;
-        /* Adjust height to auto to fit content */
         margin-top: 20px;
         margin-left: 1%;
     }
@@ -288,6 +309,42 @@ $result = $conn->query($sql);
             text-align: center;
         }
     }
+
+    .pagination {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-top: -50px;
+        margin-bottom: 33px;
+    }
+
+    .pagination a {
+        color: #1c6aae;
+        padding: 8px 12px;
+        margin: 0 5px;
+        text-decoration: none;
+        background-color: #f1f1f1;
+        border: 1px solid #1c6aae;
+        border-radius: 23%;
+        transition: background-color 0.3s, color 0.3s;
+    }
+
+    .pagination a.active {
+        background-color: #1c6aae;
+        color: white;
+        border: 1px solid #1c6aae;
+    }
+
+    .pagination a:hover:not(.active) {
+        background-color: #ddd;
+    }
+
+    .pagination a.disabled {
+        pointer-events: none;
+        cursor: default;
+        color: #bbb;
+        border-color: #bbb;
+    }
 </style>
 
 <body>
@@ -339,15 +396,15 @@ $result = $conn->query($sql);
                 <?php
                 if ($result->num_rows > 0) {
                     // Output data of each row
-                    $index = 1;
+                    $index = $start_from + 1;
                     while ($row = $result->fetch_assoc()) {
-                        $keywordID = $row["recvKeyword"];
-                        $keyword = isset($options[$keywordID]) ? $options[$keywordID] : 'Unknown';
+                        $recvMsg = $row["recvMsg"];
+                        $keywordRemark = isset($keyword_remarks[$recvMsg]) ? $keyword_remarks[$recvMsg] : '';
                         echo "<tr>
                             <td>" . $index . "</td>
                             <td>" . $row["recvPhone"] . "</td>
-                            <td>" . $row["recvMsg"] . "</td>
-                            <td>" . htmlspecialchars($keyword) . "</td>
+                            <td>" . $keywordRemark . "</td>
+                            <td>" . $recvMsg . "</td>
                             <td>" . $row["recvTelcoID"] . "</td>
                             <td>" . $row["recvDate"] . "</td>
                         </tr>";
@@ -360,28 +417,94 @@ $result = $conn->query($sql);
             </tbody>
         </table>
     </div>
+
+    <!-- Pagination Links -->
+    <div class="pagination">
+        <?php
+        if ($total_pages > 1) {
+            // First page link
+            echo "<a href='?page=1";
+            if (!empty($where_clause)) {
+                foreach ($_GET as $key => $value) {
+                    if ($key != 'page') {
+                        echo "&$key=$value";
+                    }
+                }
+            }
+            echo "'>&lt;&lt;</a>"; // << for first page
+
+            $range = 2; // Number of page links to show on either side of the current page
+            $showItems = 5; // Total number of pagination items to show
+
+            // Calculate start and end range for pagination numbers
+            $start = max(1, $page - $range);
+            $end = min($total_pages, $page + $range);
+
+            if ($start > 1) {
+                echo "<a href='?page=1";
+                if (!empty($where_clause)) {
+                    foreach ($_GET as $key => $value) {
+                        if ($key != 'page') {
+                            echo "&$key=$value";
+                        }
+                    }
+                }
+                echo "'>1</a>";
+                if ($start > 2) echo "...";
+            }
+
+            // Page numbers
+            for ($i = $start; $i <= $end; $i++) {
+                echo "<a href='?page=$i";
+                if (!empty($where_clause)) {
+                    foreach ($_GET as $key => $value) {
+                        if ($key != 'page') {
+                            echo "&$key=$value";
+                        }
+                    }
+                }
+                echo "'";
+                if ($i == $page) echo " class='active'";
+                echo ">$i</a>";
+            }
+
+            if ($end < $total_pages) {
+                if ($end < $total_pages - 1) echo "...";
+                echo "<a href='?page=$total_pages";
+                if (!empty($where_clause)) {
+                    foreach ($_GET as $key => $value) {
+                        if ($key != 'page') {
+                            echo "&$key=$value";
+                        }
+                    }
+                }
+                echo "'>$total_pages</a>";
+            }
+
+            // Last page link
+            echo "<a href='?page=$total_pages";
+            if (!empty($where_clause)) {
+                foreach ($_GET as $key => $value) {
+                    if ($key != 'page') {
+                        echo "&$key=$value";
+                    }
+                }
+            }
+            echo "'>&gt;&gt;</a>"; // >> for last page
+        }
+        ?>
+    </div>
+
+    <script>
+        function clearForm() {
+            document.querySelectorAll('input').forEach(input => input.value = '');
+            document.querySelectorAll('select').forEach(select => select.selectedIndex = 0);
+        }
+    </script>
 </body>
 
 </html>
 
-<script>
-    function clearForm() {
-        // Select all form inputs
-        var formInputs = document.querySelectorAll('.form-style-9 input, .form-style-9 select');
-
-        formInputs.forEach(function(input) {
-            switch (input.type) {
-                case 'text':
-                case 'tel':
-                case 'date':
-                    input.value = '';
-                    break;
-                case 'select-one':
-                    input.selectedIndex = 0;
-                    break;
-                default:
-                    break;
-            }
-        });
-    }
-</script>
+<?php
+$conn->close();
+?>
