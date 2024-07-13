@@ -66,7 +66,7 @@ if (!empty($where_conditions)) {
 }
 
 // Pagination logic
-$records_per_page = 13;
+$records_per_page = 50;
 $page = isset($_GET['page']) ? $_GET['page'] : 1;
 $start_from = ($page - 1) * $records_per_page;
 
@@ -480,8 +480,6 @@ if ($result_keyword_remarks->num_rows > 0) {
                 }
                 echo "'>$total_pages</a>";
             }
-
-            // Last page link
             echo "<a href='?page=$total_pages";
             if (!empty($where_clause)) {
                 foreach ($_GET as $key => $value) {
@@ -490,7 +488,7 @@ if ($result_keyword_remarks->num_rows > 0) {
                     }
                 }
             }
-            echo "'>&gt;&gt;</a>"; // >> for last page
+            echo "'>&gt;&gt;</a>"; 
         }
         ?>
     </div>
