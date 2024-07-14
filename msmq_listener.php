@@ -1,4 +1,6 @@
 <?php
+set_time_limit(0);
+
 define('MQ_RECEIVE_ACCESS', 1);
 define('MQ_DENY_NONE', 0);
 
@@ -16,30 +18,50 @@ function peekMessage($queuePath)
 }
 
 $queuePath = ".\\private$\\messages";
-$msg = peekMessage($queuePath);
-
-$xml = simplexml_load_string($msg->Body);
-$keyword = strtoupper((string)$xml->keyword);
-$msisdn = (string)$xml->msisdn;
 
 $valid_keywords = ["START CNS", "START FNS", "START BNS", "START LSU", "START MWP"];
 
-if (in_array($keyword, $valid_keywords)) {
-    $data = [
-        'msisdn' => $msisdn,
-        'keyword' => $keyword
-    ];
+while (true) {
+    $msg = peekMessage($queuePath);
 
-    $ch = curl_init();
-    curl_setopt($ch, CURLOPT_URL, "http://103.228.39.37:88/smsPanel/insert_subscriber.php");
-    curl_setopt($ch, CURLOPT_POST, 1);
-    curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($data));
-    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    if ($msg) {
+        $xml = simplexml_load_string($msg->Body);
 
-    $response = curl_exec($ch);
-    curl_close($ch);
+        if ($xml !== false) {
+            $keyword = strtoupper((string)$xml->keyword);
+            $msisdn = (string)$xml->msisdn;
 
-    echo $response;
-} else {
-    echo "Keyword not valid.";
+            if (in_array($keyword, $valid_keywords)) {
+                $data = [
+                    'msisdn' => $msisdn,
+                    'keyword' => $keyword
+                ];
+                $datenn = date('Y-m-d H:i:s');
+                $today = date("Y-m-d");
+                $url = "http://103.228.39.37:88/smsPanel/insert_subscriber.php";
+                $ftp222 = fopen("C:\mts\htdocs\msmq\log\Subscriber_HIT_" . $today . ".txt", 'a+');
+                fwrite($ftp222, $url . "?msisdn=" . $msisdn . "keyword=" . $keyword . "\n");
+                fclose($ftp222);
+
+                $ch = curl_init();
+                curl_setopt($ch, CURLOPT_URL, $url);
+                curl_setopt($ch, CURLOPT_POST, 1);
+                curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($data));
+                curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+
+                $response = curl_exec($ch);
+                curl_close($ch);
+
+                echo $response . "\n";
+            } else {
+                echo "Keyword not valid.\n";
+            }
+        } else {
+            echo "Error parsing XML.\n";
+        }
+    } else {
+        echo "No messages in the queue.\n";
+    }
+
+    sleep(1);
 }
