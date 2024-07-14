@@ -31,16 +31,23 @@ while (true) {
             $keyword = strtoupper((string)$xml->keyword);
             $msisdn = (string)$xml->msisdn;
 
-            if (in_array($keyword, $valid_keywords)) {
+            // Sanitize keyword to remove unwanted characters
+            $keyword = preg_replace('/[^A-Z ]/', '', $keyword);
+            $keyword_parts = preg_split('/\s+/', $keyword);
+            $sanitized_keyword = implode(' ', array_filter($keyword_parts, function($part) {
+                return preg_match('/^[A-Z]+$/', $part);
+            }));
+
+            if (in_array($sanitized_keyword, $valid_keywords)) {
                 $data = [
                     'msisdn' => $msisdn,
-                    'keyword' => $keyword
+                    'keyword' => $sanitized_keyword
                 ];
                 $datenn = date('Y-m-d H:i:s');
                 $today = date("Y-m-d");
                 $url = "http://103.228.39.37:88/smsPanel/insert_subscriber.php";
-                $ftp222 = fopen("C:\mts\htdocs\msmq\log\Subscriber_HIT_" . $today . ".txt", 'a+');
-                fwrite($ftp222, $url . "?msisdn=" . $msisdn . "keyword=" . $keyword . "\n");
+                $ftp222 = fopen("C:\\mts\\htdocs\\msmq\\log\\Subscriber_HIT_" . $today . ".txt", 'a+');
+                fwrite($ftp222, $url . "?msisdn=" . $msisdn . "&keyword=" . $sanitized_keyword . "\n");
                 fclose($ftp222);
 
                 $ch = curl_init();
