@@ -19,7 +19,7 @@ function peekMessage($queuePath)
 
 $queuePath = ".\\private$\\messages";
 
-$valid_keywords = ["START CNS", "START FNS", "START BNS", "START LSU", "START MWP"];
+$valid_keywords = ["START CNS", "START FNS", "START BNS", "START LSU", "START MWP", "STOP CNS", "STOP FNS", "STOP BNS", "STOP LSU", "STOP MWP"];
 
 while (true) {
     $msg = peekMessage($queuePath);
@@ -41,7 +41,7 @@ while (true) {
             if (in_array($sanitized_keyword, $valid_keywords)) {
                 $data = [
                     'msisdn' => $msisdn,
-                    'keyword' => $sanitized_keyword
+                    'keyword' => urlencode($sanitized_keyword);
                 ];
                 $datenn = date('Y-m-d H:i:s');
                 $today = date("Y-m-d");
@@ -59,9 +59,10 @@ while (true) {
                 $response = curl_exec($ch);
                 curl_close($ch);
 
-                echo $response . "\n";
+                echo "Sent data: " . http_build_query($data) . "\n";
+                echo "Response: " . $response . "\n";
             } else {
-                echo "Keyword not valid.\n";
+                echo "Keyword not valid: " . $sanitized_keyword . "\n";
             }
         } else {
             echo "Error parsing XML.\n";
@@ -72,3 +73,4 @@ while (true) {
 
     sleep(1);
 }
+
