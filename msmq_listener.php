@@ -41,7 +41,7 @@ while (true) {
             if (in_array($sanitized_keyword, $valid_keywords)) {
                 $data = [
                     'msisdn' => $msisdn,
-                    'keyword' => urlencode($sanitized_keyword);
+                    'keyword' => urlencode($sanitized_keyword)
                 ];
                 $datenn = date('Y-m-d H:i:s');
                 $today = date("Y-m-d");
