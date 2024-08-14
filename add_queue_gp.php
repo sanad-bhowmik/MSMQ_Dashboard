@@ -75,7 +75,7 @@ define("MQ_DENY_NONE", 0);
 
 try {
     $msgQueueInfo = new COM("MSMQ.MSMQQueueInfo");
-    $msgQueueInfo->PathName = ".\\private$\\messages";
+    $msgQueueInfo->PathName = ".\\private$\\gp_messages";
 
     $msgQueue = $msgQueueInfo->Open(MQ_SEND_ACCESS, MQ_DENY_NONE);
     if (!$msgQueue) {
@@ -84,7 +84,7 @@ try {
 
     $msgOut = new COM("MSMQ.MSMQMessage");
     $msgOut->Body = $xmlString;
-    $msgOut->Label = "BLmessage";
+    $msgOut->Label = "GPmessage";
     $msgOut->Send($msgQueue);
 
     $msgQueue->Close();

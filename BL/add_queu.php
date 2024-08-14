@@ -3,6 +3,7 @@ $datetime = date('Y-m-d H:i:s');
 $date = date('Y-m-d');
 include_once("include/initialize.php");
 date_default_timezone_set("Asia/Dhaka");
+//include_once("include/header.php");
 $msisdn = "not found";
 $text = "not found";
 $moid = "not found";
@@ -48,16 +49,16 @@ $logdata .= " datetime: " . $datetime;
 $logdata .= " keyword: " . $keyword;
 $logdata .= "\n";
 
-// $errorLogPath = "C:/htdocs/msmq/log/error/error_log_" . $date . ".txt";
+$errorLogPath = "C:/mts/htdocs/msmq/log/error/error_log_" . $date . ".txt";
 
-// $filewrite = fopen("C:/htdocs/msmq/log/mo/mo_log_" . $date . ".txt", "a+");
-// if ($filewrite) {
-//     fwrite($filewrite, $logdata);
-//     fclose($filewrite);
-// } else {
-//     $errorLogData = "Failed to open mo log file. Data: " . $logdata;
-//     file_put_contents($errorLogPath, $errorLogData, FILE_APPEND | LOCK_EX);
-// }
+$filewrite = fopen("C:/mts/htdocs/msmq/log/mo/mo_log_" . $date . ".txt", "a+");
+if ($filewrite) {
+    fwrite($filewrite, $logdata);
+    fclose($filewrite);
+} else {
+    $errorLogData = "Failed to open mo log file. Data: " . $logdata;
+    file_put_contents($errorLogPath, $errorLogData, FILE_APPEND | LOCK_EX);
+}
 
 $xml = new SimpleXMLElement('<Message/>');
 $xml->addChild('msisdn', $msisdn);
@@ -84,7 +85,7 @@ try {
 
     $msgOut = new COM("MSMQ.MSMQMessage");
     $msgOut->Body = $xmlString;
-    $msgOut->Label = "BLmessage";
+	$msgOut->Label = "BLmessage";
     $msgOut->Send($msgQueue);
 
     $msgQueue->Close();
@@ -92,7 +93,7 @@ try {
     unset($msgQueue);
     unset($msgQueueInfo);
 
-    echo "<div style='text-align: center; margin-top: 10px;'>Response Status Code: 200</div>";
+     echo "<div style='text-align: center; margin-top: 10px;'>Response Status Code: 200</div>";
 } catch (Exception $e) {
     $errorLogData = "Error occurred: " . $e->getMessage() . " Data: " . $xmlString;
     file_put_contents($errorLogPath, $errorLogData, FILE_APPEND | LOCK_EX);
@@ -115,4 +116,5 @@ exit;
     };
 </script>
 <?php
+include_once("include/footer.php");
 ?>

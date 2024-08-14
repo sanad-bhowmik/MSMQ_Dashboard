@@ -1,0 +1,44 @@
+msisdn: 88016905786, text: Hey its my Secondmsg, keyword: TTS, moid: 20240624002256573-3, shortcode: 9933, telcoid: 3 - 2024-08-14 09:43 AM
+msisdn: 88016906, text: Hey its my Secondmsg, keyword: TTS, moid: 20240624002256573-3, shortcode: 9933, telcoid: 3 - 2024-08-14 09:44 AM
+msisdn: 88016906, text: Hey its my Secondmsg, keyword: TTS, moid: 20240624002256573-3, shortcode: 9933, telcoid: 3 - 2024-08-14 09:45 AM
+msisdn: 88016906, text: Hey its my Secondmsg, keyword: TTS, moid: 20240624002256573-3, shortcode: 9933, telcoid: 3 - 2024-08-14 09:45 AM
+msisdn: 88016906, text: Hey its my Secondmsg, keyword: TTS, moid: 20240624002256573-3, shortcode: 9933, telcoid: 3 - 2024-08-14 09:46 AM
+msisdn: 88016906, text: Hey its my Secondmsg, keyword: TTS, moid: 20240624002256573-3, shortcode: 9933, telcoid: 3 - 2024-08-14 09:48 AM
+msisdn: 88016906, text: Hey its my Secondmsg, keyword: TTS, moid: 20240624002256573-3, shortcode: 9933, telcoid: 3 - 2024-08-14 09:48 AM
+msisdn: 88016906, text: Hey its my Secondmsg, keyword: TTS, moid: 20240624002256573-3, shortcode: 9933, telcoid: 3 - 2024-08-14 09:48 AM
+msisdn: 88016906, text: Hey its my Secondmsg, keyword: TTS, moid: 20240624002256573-3, shortcode: 9933, telcoid: 3 - 2024-08-14 09:54 AM
+msisdn: 88016906, text: Hey its my Secondmsg, keyword: TTS, moid: 20240624002256573-3, shortcode: 9933, telcoid: 3 - 2024-08-14 09:55 AM
+msisdn: 88016906, text: Hey its my Secondmsg, keyword: TTS, moid: 20240624002256573-3, shortcode: 9933, telcoid: 3 - 2024-08-14 09:55 AM
+msisdn: 88016906, text: Hey its my Secondmsg, keyword: TTS, moid: 20240624002256573-3, shortcode: 9933, telcoid: 3 - 2024-08-14 09:56 AM
+msisdn: 88016906, text: Hey its my Secondmsg, keyword: TTS, moid: 20240624002256573-3, shortcode: 9933, telcoid: 3 - 2024-08-14 10:01 AM
+msisdn: 88016906, text: Hey its my Secondmsg, keyword: TTS, moid: 20240624002256573-3, shortcode: 9933, telcoid: 3 - 2024-08-14 10:02 AM
+msisdn: 88016906, text: Hey its my Secondmsg, keyword: TTS, moid: 20240624002256573-3, shortcode: 9933, telcoid: 3 - 2024-08-14 10:04 AM
+msisdn: 88016906, text: Hey its my Secondmsg, keyword: TTS, moid: 20240624002256573-3, shortcode: 9933, telcoid: 3 - 2024-08-14 10:06 AM
+msisdn: 88016906, text: Hey its my Secondmsg, keyword: TTS, moid: 20240624002256573-3, shortcode: 9933, telcoid: 3 - 2024-08-14 10:07 AM
+msisdn: 88016906, text: Hey its my Secondmsg, keyword: TTS, moid: 20240624002256573-3, shortcode: 9933, telcoid: 3 - 2024-08-14 10:10 AM
+msisdn: 88016906, text: Hey its my Secondmsg, keyword: TTS, moid: 20240624002256573-3, shortcode: 9933, telcoid: 3 - 2024-08-14 10:11 AM
+msisdn: 88016906, text: Hey its my Secondmsg, keyword: TTS, moid: 20240624002256573-3, shortcode: 9933, telcoid: 3 - 2024-08-14 10:12 AM
+msisdn: 88016906, text: Hey its my Secondmsg, keyword: TTS, moid: 20240624002256573-3, shortcode: 9933, telcoid: 3 - 2024-08-14 10:13 AM
+msisdn: 88016906, text: Hey its my Secondmsg, keyword: TTS, moid: 20240624002256573-3, shortcode: 9933, telcoid: 3 - 2024-08-14 10:52 AM
+msisdn: 88016906, text: Hey its my Secondmsg, keyword: TTS, moid: 20240624002256573-3, shortcode: 9933, telcoid: 3 - 2024-08-14 10:53 AM
+msisdn: 88976905786, text: Hey its my Secondmsg, keyword: TPDrama, moid: 20240624002256573-3, shortcode: 9933, telcoid: 3 - 2024-08-14 11:54 AM
+msisdn: 88976905786, text: Hey its my Secondmsg, keyword: TPDrama, moid: 20240624002256573-3, shortcode: 9933, telcoid: 3 - 2024-08-14 11:56 AM
+msisdn: 88976905786, text: Hey its my Secondmsg, keyword: TPDrama, moid: 20240624002256573-3, shortcode: 9933, telcoid: 3 - 2024-08-14 11:57 AM
+msisdn: 88976905786, text: Hey its my Secondmsg, keyword: TPDrama, moid: 20240624002256573-3, shortcode: 9933, telcoid: 3 - 2024-08-14 11:57 AM
+msisdn: 88976905786, text: Hey its my Secondmsg, keyword: TPDrama, moid: 20240624002256573-3, shortcode: 9933, telcoid: 3 - 2024-08-14 11:59 AM
+msisdn: 88976905786, message: , keyword: TPDrama, datetime: 
+msisdn: 88976905786, message: , keyword: TPDrama, datetime: 
+msisdn: 88976905786, text: Hey its my Secondmsg, keyword: TPDrama, moid: 20240624002256573-3, shortcode: 9933, telcoid: 3 - 2024-08-14 12:03 PM
+msisdn: 88976905786, text: Hey its my Secondmsg, keyword: TPDrama, moid: 20240624002256573-3, shortcode: 9933, telcoid: 3 - 2024-08-14 12:03 PM
+msisdn: 88976905786, text: Hey its my Secondmsg, keyword: TPDrama, moid: 20240624002256573-3, shortcode: 9933, telcoid: 3 - 2024-08-14 12:04 PM
+msisdn: 88976905786, text: Hey its my Secondmsg, keyword: TPDrama, moid: 20240624002256573-3, shortcode: 9933, telcoid: 3 - 2024-08-14 12:04 PM
+msisdn: 88976905786, text: Hey its my Secondmsg, keyword: TPDrama, moid: 20240624002256573-3, shortcode: 9933, telcoid: 3 - 2024-08-14 12:05 PM
+msisdn: 88976905786, message: , keyword: TPDrama, datetime: 
+msisdn: 88976905786, message: , keyword: TPDrama, datetime: 
+msisdn: 88976905786, message: , keyword: TPDrama, datetime: 
+msisdn: 88976905786, message: , keyword: TPDrama, datetime: 
+msisdn: 88976905786, keyword: TPDrama, datetime: 
+msisdn: 88976905786, moid: , keyword: 9933, shortcode: 
+msisdn: 88976905786, moid: 20240624002256573-3, keyword: TPDrama, shortcode: 9933
+msisdn: 88976905786, moid: 20240624002256573-3, keyword: TPDrama, shortcode: 9933
+msisdn: 88976905786, text: Hey its my Secondmsg, keyword: TPDrama, moid: 20240624002256573-3, shortcode: 9933, telcoid: 3 - 2024-08-14 12:35 PM

@@ -1,0 +1,6 @@
+URL: http://103.228.39.37:88/smsPanel/sms.php, XML: <?xml version="1.0"?>
+<root><msisdn>88016906</msisdn><text>Hey its my Secondmsg</text><moid>20240624002256573-3</moid><telcoid>3</telcoid><shortcode>9933</shortcode><datetime>2024-08-14 10:01:23</datetime><keyword>TTS</keyword></root>
+ - 2024-08-14 10:01 AM
+URL: http://103.228.39.37:88/smsPanel/sms.php, XML: <?xml version="1.0"?>
+<root><msisdn>88016906</msisdn><text>Hey its my Secondmsg</text><moid>20240624002256573-3</moid><telcoid>3</telcoid><shortcode>9933</shortcode><datetime>2024-08-14 10:02:08</datetime><keyword>TTS</keyword></root>
+ - 2024-08-14 10:02 AM
