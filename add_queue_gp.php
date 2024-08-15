@@ -9,6 +9,7 @@ $moid = "not found";
 $telcoid = "not found";
 $keyword = "not found";
 $shortcode = "not found";
+$sKey= "not found";
 $ip = "";
 
 if (!empty($_SERVER['HTTP_CLIENT_IP'])) {
@@ -37,7 +38,9 @@ if (isset($_REQUEST['shortcode'])) {
 if (isset($_REQUEST['keyword'])) {
     $keyword = $_REQUEST['keyword'];
 }
-
+if (isset($_REQUEST['skey'])) {
+    $sKey = $_REQUEST['skey'];
+}
 $logdata = "msisdn: " . $msisdn;
 $logdata .= " text: " . $text;
 $logdata .= " moid: " . $moid;
@@ -46,6 +49,7 @@ $logdata .= " shortcode: " . $shortcode;
 $logdata .= " reqip: " . $ip;
 $logdata .= " datetime: " . $datetime;
 $logdata .= " keyword: " . $keyword;
+$logdata .= " Skeyword: " . $sKey;
 $logdata .= "\n";
 
 // $errorLogPath = "C:/htdocs/msmq/log/error/error_log_" . $date . ".txt";
@@ -67,7 +71,7 @@ $xml->addChild('telcoid', $telcoid);
 $xml->addChild('shortcode', $shortcode);
 $xml->addChild('datetime', $datetime);
 $xml->addChild('keyword', $keyword);
-
+$xml->addChild('skey', $sKey);
 $xmlString = $xml->asXML();
 
 define("MQ_SEND_ACCESS", 2);

@@ -26,6 +26,7 @@ $msgidQ = "";
 $telcoidQ = "";
 $keywordQ = "";
 $shortcodeQ = "";
+$skeyQ = "";
 $datetimeQ = "";
 $urlFromDb = "";
 
@@ -54,6 +55,7 @@ try {
                 $telcoidQ = $xml->telcoid;
                 $keywordQ = $xml->keyword;
                 $shortcodeQ = $xml->shortcode;
+				$skeyQ = $xml->skey;
                 $datetimeQ = $xml->datetime;
             }
 			
@@ -63,7 +65,7 @@ try {
 				
 				
 			$ftp2 = fopen("C:/mts/htdocs/msmq/log/gp_mo_pull_queue_" .date('Y-m-d').".txt", 'a+');
-            fwrite($ftp2, $msisdnQ . "-" . $textQ . "-".$msgidQ ."-".$keywordQ."-".$shortcodeQ."-".date('Y-m-d H:i:s')."\n");
+            fwrite($ftp2, $msisdnQ . "-" . $textQ . "-".$msgidQ ."-".$keywordQ."-".$shortcodeQ."-".$skeyQ."-".date('Y-m-d H:i:s')."\n");
            
             fclose($ftp2);
 		
@@ -89,12 +91,19 @@ try {
                 exit;
             }
 
-            $urlparam =  "?msisdn=" . $msisdnQ . "&msgid=" . $msgidQ . "&telcoid=" . $telcoidQ . "&keyword=" . $keywordQ . "&shortcode=" . $shortcodeQ . "&text=" . urlencode($textQ);
+            $urlparam =  "?msisdn=" . $msisdnQ . "&msgid=" . $msgidQ . "&telcoid=" . $telcoidQ ."&skey=".$skeyQ. "&keyword=" . $keywordQ . "&shortcode=" . $shortcodeQ . "&text=" . urlencode($textQ);
 
             $urlToHit = $urlFromDb . "?" . $urlparam;
 
             try {
+				$ftp2 = fopen("C:/mts/htdocs/msmq/log/gp_Push_log_" .date('Y-m-d').".txt", 'a+');
+            fwrite($ftp2, $urlFromDb ."?".$urlparam."---".date('Y-m-d H:i:s')."\n");
+           
+            fclose($ftp2);
                 $response = HttpRequest($urlFromDb, $urlparam);
+				
+				
+				
                 if ($response == 408) {
                     echo 408;
                 } else {

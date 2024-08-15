@@ -17,26 +17,31 @@ if ($conn->connect_error) {
 
 $where_conditions = array();
 
-if (isset($_GET['field1']) && $_GET['field1'] != '') {
-    $short_code = $conn->real_escape_string($_GET['field1']);
-    $where_conditions[] = "recvKeyword = '$short_code'";
+// Handle telco_id filter
+if (isset($_GET['telco_id']) && $_GET['telco_id'] != '') {
+    $telco_id = $conn->real_escape_string($_GET['telco_id']);
+    $where_conditions[] = "recvTelcoID = '$telco_id'";
 }
 
+// Handle keyword filter
 if (isset($_GET['field2']) && $_GET['field2'] != '') {
     $keywordID = $conn->real_escape_string($_GET['field2']);
     $where_conditions[] = "recvKeyword = '$keywordID'";
 }
 
+// Handle SMS text filter
 if (isset($_GET['field3']) && $_GET['field3'] != '') {
     $sms_text = $conn->real_escape_string($_GET['field3']);
     $where_conditions[] = "recvMsg LIKE '%$sms_text%'";
 }
 
+// Handle MSISDN filter
 if (isset($_GET['field4']) && $_GET['field4'] != '') {
     $msisdn = $conn->real_escape_string($_GET['field4']);
     $where_conditions[] = "recvPhone = '$msisdn'";
 }
 
+// Handle date filters
 if (isset($_GET['from_date']) && $_GET['from_date'] != '' && isset($_GET['to_date']) && $_GET['to_date'] != '') {
     $from_date = $conn->real_escape_string($_GET['from_date']);
     $to_date = $conn->real_escape_string($_GET['to_date']);
@@ -67,7 +72,7 @@ if (!empty($where_conditions)) {
 
 // Pagination logic
 $records_per_page = 50;
-$page = isset($_GET['page']) ? $_GET['page'] : 1;
+$page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
 $start_from = ($page - 1) * $records_per_page;
 
 $sql_count = "SELECT COUNT(*) AS total_records FROM tbl_inbox" . $where_clause;
@@ -352,12 +357,7 @@ if ($result_keyword_remarks->num_rows > 0) {
         <h3 style="margin-top: 0;text-align: center;font-family: serif;">Inbound Traffic Log</h3>
         <ul>
             <li>
-                <select name="field1" class="field-style">
-                    <option value="" selected disabled>Short Code</option>
-                    <option value="SC001">SC001</option>
-                    <option value="SC002">SC002</option>
-                    <option value="SC003">SC003</option>
-                </select>
+            <input type="text" name="telco_id" id="telco_id" class="field-style" placeholder="TELCO ID"value="<?php echo isset($_GET['telco_id']) ? htmlspecialchars($_GET['telco_id']) : ''; ?>">
                 <select name="field2" class="field-style">
                     <option value="" selected disabled>Keyword</option>
                     <?php
@@ -367,11 +367,11 @@ if ($result_keyword_remarks->num_rows > 0) {
                     }
                     ?>
                 </select>
-                <input type="text" name="field3" class="field-style" placeholder="SMS Text" value="<?php echo isset($_GET['field3']) ? $_GET['field3'] : ''; ?>" />
+                <input type="text" name="field3" class="field-style" placeholder="Message Origine" value="<?php echo isset($_GET['field3']) ? $_GET['field3'] : ''; ?>" />
             </li>
 
             <li>
-                <input type="tel" name="field4" class="field-style" placeholder="MSISDN" value="<?php echo isset($_GET['field4']) ? $_GET['field4'] : ''; ?>" />
+                <!-- <input type="tel" name="field4" class="field-style" placeholder="MSISDN" value="<?php echo isset($_GET['field4']) ? $_GET['field4'] : ''; ?>" /> -->
                 <input type="date" name="from_date" class="field-style" placeholder="From Date" value="<?php echo isset($_GET['from_date']) ? $_GET['from_date'] : ''; ?>" />
                 <input type="date" name="to_date" class="field-style" placeholder="To Date" value="<?php echo isset($_GET['to_date']) ? $_GET['to_date'] : ''; ?>" />
                 <input type="submit" name="search" value="Search" style="margin-right: 3px;">
@@ -380,44 +380,37 @@ if ($result_keyword_remarks->num_rows > 0) {
         </ul>
     </form>
 
+    
     <div class="table-wrapper">
         <table class="fl-table">
             <thead>
                 <tr>
-                    <th>#</th>
-                    <th>MSISDN</th>
-                    <th>Message Originating</th>
+                    <th>Phone</th>
+                    <th>Message Origine</th>
                     <th>Keyword</th>
-                    <th>MO ID</th>
+                    <th>Telco ID</th>
                     <th>Date</th>
                 </tr>
             </thead>
             <tbody>
-                <?php
-                if ($result->num_rows > 0) {
-                    // Output data of each row
-                    $index = $start_from + 1;
-                    while ($row = $result->fetch_assoc()) {
-                        $recvMsg = $row["recvMsg"];
-                        $keywordRemark = isset($keyword_remarks[$recvMsg]) ? $keyword_remarks[$recvMsg] : '';
-                        echo "<tr>
-                            <td>" . $index . "</td>
-                            <td>" . $row["recvPhone"] . "</td>
-                            <td>" . $keywordRemark . "</td>
-                            <td>" . $recvMsg . "</td>
-                            <td>" . $row["recvTelcoID"] . "</td>
-                            <td>" . $row["recvDate"] . "</td>
-                        </tr>";
-                        $index++;
-                    }
-                } else {
-                    echo "<tr><td colspan='6'>No data available</td></tr>";
-                }
-                ?>
+                <?php if ($result->num_rows > 0): ?>
+                    <?php while ($row = $result->fetch_assoc()): ?>
+                        <tr>
+                            <td><?php echo htmlspecialchars($row['recvPhone']); ?></td>
+                            <td><?php echo htmlspecialchars($row['recvMsg']); ?></td>
+                            <td><?php echo htmlspecialchars($row['recvMsg']); ?></td>
+                            <td><?php echo htmlspecialchars($row['recvTelcoID']); ?></td>
+                            <td><?php echo htmlspecialchars($row['recvDate']); ?></td>
+                        </tr>
+                    <?php endwhile; ?>
+                <?php else: ?>
+                    <tr>
+                        <td colspan="5">No records found</td>
+                    </tr>
+                <?php endif; ?>
             </tbody>
         </table>
     </div>
-
     <!-- Pagination Links -->
     <div class="pagination">
         <?php
@@ -488,7 +481,7 @@ if ($result_keyword_remarks->num_rows > 0) {
                     }
                 }
             }
-            echo "'>&gt;&gt;</a>"; 
+            echo "'>&gt;&gt;</a>";
         }
         ?>
     </div>
