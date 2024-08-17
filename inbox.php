@@ -23,16 +23,16 @@ if (isset($_GET['telco_id']) && $_GET['telco_id'] != '') {
     $where_conditions[] = "recvTelcoID = '$telco_id'";
 }
 
-// Handle keyword filter
-if (isset($_GET['field2']) && $_GET['field2'] != '') {
-    $keywordID = $conn->real_escape_string($_GET['field2']);
-    $where_conditions[] = "recvKeyword = '$keywordID'";
+// Handle SMS filter (this replaces the previous keyword filter)
+if (isset($_GET['sms_filter']) && $_GET['sms_filter'] != '') {
+    $sms_filter = $conn->real_escape_string($_GET['sms_filter']);
+    $where_conditions[] = "recvMsg = '$sms_filter'";
 }
 
-// Handle SMS text filter
-if (isset($_GET['field3']) && $_GET['field3'] != '') {
-    $sms_text = $conn->real_escape_string($_GET['field3']);
-    $where_conditions[] = "recvMsg LIKE '%$sms_text%'";
+// Handle Keyword Remark filter
+if (isset($_GET['keyword_remark']) && $_GET['keyword_remark'] != '') {
+    $keyword_remark = $conn->real_escape_string($_GET['keyword_remark']);
+    $where_conditions[] = "k.keywordRemark LIKE '%$keyword_remark%'";
 }
 
 // Handle MSISDN filter
@@ -54,17 +54,6 @@ if (isset($_GET['from_date']) && $_GET['from_date'] != '' && isset($_GET['to_dat
     $where_conditions[] = "recvDate <= '$to_date'";
 }
 
-$sql_keywords = "SELECT keywordID, keyword FROM tbl_keyword";
-$result_keywords = $conn->query($sql_keywords);
-
-$options = array();
-
-if ($result_keywords->num_rows > 0) {
-    while ($row = $result_keywords->fetch_assoc()) {
-        $options[$row['keywordID']] = $row['keyword'];
-    }
-}
-
 $where_clause = '';
 if (!empty($where_conditions)) {
     $where_clause = " WHERE " . implode(" AND ", $where_conditions);
@@ -75,27 +64,27 @@ $records_per_page = 50;
 $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
 $start_from = ($page - 1) * $records_per_page;
 
-$sql_count = "SELECT COUNT(*) AS total_records FROM tbl_inbox" . $where_clause;
+$sql_count = "SELECT COUNT(*) AS total_records FROM tbl_inbox i
+              LEFT JOIN tbl_keyword k ON i.recvMsg = k.keyword" . $where_clause;
 $result_count = $conn->query($sql_count);
 $row_count = $result_count->fetch_assoc();
 $total_records = $row_count['total_records'];
 $total_pages = ceil($total_records / $records_per_page);
 
-$sql = "SELECT recvPhone, recvMsg, recvDate, recvKeyword, recvTelcoID 
-        FROM tbl_inbox" . $where_clause . " 
-        ORDER BY recvID DESC LIMIT $start_from, $records_per_page";
+// Modify the SQL query to include the keywordRemark using a LEFT JOIN
+$sql = "SELECT i.recvPhone, i.recvMsg, i.recvDate, i.recvKeyword, i.recvTelcoID, k.keywordRemark 
+        FROM tbl_inbox i
+        LEFT JOIN tbl_keyword k ON i.recvMsg = k.keyword
+        $where_clause 
+        ORDER BY i.recvID DESC LIMIT $start_from, $records_per_page";
+
 $result = $conn->query($sql);
 
-// Fetch keyword remarks
-$sql_keyword_remarks = "SELECT keyword, keywordRemark FROM tbl_keyword";
-$result_keyword_remarks = $conn->query($sql_keyword_remarks);
-$keyword_remarks = array();
-if ($result_keyword_remarks->num_rows > 0) {
-    while ($row = $result_keyword_remarks->fetch_assoc()) {
-        $keyword_remarks[$row['keyword']] = $row['keywordRemark'];
-    }
-}
+// Fetch distinct SMS values for the dropdown
+$sql_sms = "SELECT DISTINCT recvMsg FROM tbl_inbox";
+$result_sms = $conn->query($sql_sms);
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -104,12 +93,165 @@ if ($result_keyword_remarks->num_rows > 0) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Inbox</title>
     <link rel="stylesheet" href="../style/style.css">
-
 </head>
+
+<body>
+    <form class="form-style-9" method="GET" action="">
+        <h3 style="margin-top: 0;text-align: center;font-family: serif;">Inbound Traffic Log</h3>
+        <ul>
+            <li>
+                <input type="text" name="telco_id" id="telco_id" class="field-style" placeholder="TELCO ID" value="<?php echo isset($_GET['telco_id']) ? htmlspecialchars($_GET['telco_id']) : ''; ?>">
+                <input type="text" name="keyword_remark" class="field-style" placeholder="MO" value="<?php echo isset($_GET['keyword_remark']) ? $_GET['keyword_remark'] : ''; ?>" />
+                <select name="sms_filter" class="field-style">
+                    <option value="" selected disabled>Select Keyword</option>
+                    <?php
+                    if ($result_sms->num_rows > 0) {
+                        while ($row = $result_sms->fetch_assoc()) {
+                            echo '<option value="' . htmlspecialchars($row['recvMsg']) . '">' . htmlspecialchars($row['recvMsg']) . '</option>';
+                        }
+                    }
+                    ?>
+                </select>
+            </li>
+
+            <li>
+                <input type="date" name="from_date" class="field-style" placeholder="From Date" value="<?php echo isset($_GET['from_date']) ? $_GET['from_date'] : ''; ?>" />
+                <input type="date" name="to_date" class="field-style" placeholder="To Date" value="<?php echo isset($_GET['to_date']) ? $_GET['to_date'] : ''; ?>" />
+                <input type="submit" name="search" value="Search" style="margin-right: 3px;">
+                <input type="button" class="clear-button" value="Clear" onclick="clearForm()">
+            </li>
+        </ul>
+    </form>
+
+    <div class="table-wrapper">
+        <table class="fl-table">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Phone</th>
+                    <th>Keyword</th>
+                    <th>MO</th>
+                    <th>Telco ID</th>
+                    <th>Date</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php
+                $index = $start_from + 1; // Initialize index, starting from the first record of the current page
+                if ($result->num_rows > 0):
+                    while ($row = $result->fetch_assoc()): ?>
+                        <tr>
+                            <td><?php echo $index++; ?></td>
+                            <td><?php echo htmlspecialchars($row['recvPhone']); ?></td>
+                            <td><?php echo htmlspecialchars($row['recvMsg']); ?></td>
+                            <td><?php echo htmlspecialchars($row['keywordRemark']); ?></td>
+                            <td><?php echo htmlspecialchars($row['recvTelcoID']); ?></td>
+                            <td><?php echo htmlspecialchars($row['recvDate']); ?></td>
+                        </tr>
+                    <?php endwhile;
+                else: ?>
+                    <tr>
+                        <td colspan="7">No records found</td>
+                    </tr>
+                <?php endif; ?>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Pagination Links -->
+    <div class="pagination">
+        <?php
+        if ($total_pages > 1) {
+            // First page link
+            echo "<a href='?page=1";
+            if (!empty($where_clause)) {
+                foreach ($_GET as $key => $value) {
+                    if ($key != 'page') {
+                        echo "&$key=$value";
+                    }
+                }
+            }
+            echo "'>&lt;&lt;</a>"; // << for first page
+
+            $range = 2; // Number of page links to show on either side of the current page
+            $showItems = 5; // Total number of pagination items to show
+
+            // Calculate start and end range for pagination numbers
+            $start = max(1, $page - $range);
+            $end = min($total_pages, $page + $range);
+
+            if ($start > 1) {
+                echo "<a href='?page=1";
+                if (!empty($where_clause)) {
+                    foreach ($_GET as $key => $value) {
+                        if ($key != 'page') {
+                            echo "&$key=$value";
+                        }
+                    }
+                }
+                echo "'>1</a>";
+                if ($start > 2) echo "...";
+            }
+
+            // Page numbers
+            for ($i = $start; $i <= $end; $i++) {
+                echo "<a href='?page=$i";
+                if (!empty($where_clause)) {
+                    foreach ($_GET as $key => $value) {
+                        if ($key != 'page') {
+                            echo "&$key=$value";
+                        }
+                    }
+                }
+                echo "'";
+                if ($i == $page) echo " class='active'";
+                echo ">$i</a>";
+            }
+
+            if ($end < $total_pages) {
+                if ($end < $total_pages - 1) echo "...";
+                echo "<a href='?page=$total_pages";
+                if (!empty($where_clause)) {
+                    foreach ($_GET as $key => $value) {
+                        if ($key != 'page') {
+                            echo "&$key=$value";
+                        }
+                    }
+                }
+                echo "'>$total_pages</a>";
+            }
+            echo "<a href='?page=$total_pages";
+            if (!empty($where_clause)) {
+                foreach ($_GET as $key => $value) {
+                    if ($key != 'page') {
+                        echo "&$key=$value";
+                    }
+                }
+            }
+            echo "'>&gt;&gt;</a>";
+        }
+        ?>
+    </div>
+
+    <script>
+        function clearForm() {
+            window.location.href = 'http://localhost/msmq/inbox.php';
+            // window.location.href = 'http://103.228.39.36/msmq/inbox.php';
+        }
+    </script>
+</body>
+
+</html>
+
+<?php
+$conn->close();
+?>
+
+
 
 <style>
     .form-style-9 {
-        max-width: 98%;
+        max-width: 94%;
         padding: 20px;
         background-color: white;
         box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
@@ -201,7 +343,7 @@ if ($result_keyword_remarks->num_rows > 0) {
         font-weight: normal;
         border: none;
         border-collapse: collapse;
-        width: 107%;
+        width: 102%;
         max-width: 109%;
         white-space: nowrap;
         background-color: white;
@@ -351,151 +493,3 @@ if ($result_keyword_remarks->num_rows > 0) {
         border-color: #bbb;
     }
 </style>
-
-<body>
-    <form class="form-style-9" method="GET" action="">
-        <h3 style="margin-top: 0;text-align: center;font-family: serif;">Inbound Traffic Log</h3>
-        <ul>
-            <li>
-            <input type="text" name="telco_id" id="telco_id" class="field-style" placeholder="TELCO ID"value="<?php echo isset($_GET['telco_id']) ? htmlspecialchars($_GET['telco_id']) : ''; ?>">
-                <select name="field2" class="field-style">
-                    <option value="" selected disabled>Keyword</option>
-                    <?php
-                    // Loop through $options to generate <option> tags
-                    foreach ($options as $key => $opt) {
-                        echo '<option value="' . htmlspecialchars($key) . '">' . htmlspecialchars($opt) . '</option>';
-                    }
-                    ?>
-                </select>
-                <input type="text" name="field3" class="field-style" placeholder="Message Origine" value="<?php echo isset($_GET['field3']) ? $_GET['field3'] : ''; ?>" />
-            </li>
-
-            <li>
-                <!-- <input type="tel" name="field4" class="field-style" placeholder="MSISDN" value="<?php echo isset($_GET['field4']) ? $_GET['field4'] : ''; ?>" /> -->
-                <input type="date" name="from_date" class="field-style" placeholder="From Date" value="<?php echo isset($_GET['from_date']) ? $_GET['from_date'] : ''; ?>" />
-                <input type="date" name="to_date" class="field-style" placeholder="To Date" value="<?php echo isset($_GET['to_date']) ? $_GET['to_date'] : ''; ?>" />
-                <input type="submit" name="search" value="Search" style="margin-right: 3px;">
-                <input type="button" class="clear-button" value="Clear" onclick="clearForm()">
-            </li>
-        </ul>
-    </form>
-
-    
-    <div class="table-wrapper">
-        <table class="fl-table">
-            <thead>
-                <tr>
-                    <th>Phone</th>
-                    <th>Message Origine</th>
-                    <th>Keyword</th>
-                    <th>Telco ID</th>
-                    <th>Date</th>
-                </tr>
-            </thead>
-            <tbody>
-                <?php if ($result->num_rows > 0): ?>
-                    <?php while ($row = $result->fetch_assoc()): ?>
-                        <tr>
-                            <td><?php echo htmlspecialchars($row['recvPhone']); ?></td>
-                            <td><?php echo htmlspecialchars($row['recvMsg']); ?></td>
-                            <td><?php echo htmlspecialchars($row['recvMsg']); ?></td>
-                            <td><?php echo htmlspecialchars($row['recvTelcoID']); ?></td>
-                            <td><?php echo htmlspecialchars($row['recvDate']); ?></td>
-                        </tr>
-                    <?php endwhile; ?>
-                <?php else: ?>
-                    <tr>
-                        <td colspan="5">No records found</td>
-                    </tr>
-                <?php endif; ?>
-            </tbody>
-        </table>
-    </div>
-    <!-- Pagination Links -->
-    <div class="pagination">
-        <?php
-        if ($total_pages > 1) {
-            // First page link
-            echo "<a href='?page=1";
-            if (!empty($where_clause)) {
-                foreach ($_GET as $key => $value) {
-                    if ($key != 'page') {
-                        echo "&$key=$value";
-                    }
-                }
-            }
-            echo "'>&lt;&lt;</a>"; // << for first page
-
-            $range = 2; // Number of page links to show on either side of the current page
-            $showItems = 5; // Total number of pagination items to show
-
-            // Calculate start and end range for pagination numbers
-            $start = max(1, $page - $range);
-            $end = min($total_pages, $page + $range);
-
-            if ($start > 1) {
-                echo "<a href='?page=1";
-                if (!empty($where_clause)) {
-                    foreach ($_GET as $key => $value) {
-                        if ($key != 'page') {
-                            echo "&$key=$value";
-                        }
-                    }
-                }
-                echo "'>1</a>";
-                if ($start > 2) echo "...";
-            }
-
-            // Page numbers
-            for ($i = $start; $i <= $end; $i++) {
-                echo "<a href='?page=$i";
-                if (!empty($where_clause)) {
-                    foreach ($_GET as $key => $value) {
-                        if ($key != 'page') {
-                            echo "&$key=$value";
-                        }
-                    }
-                }
-                echo "'";
-                if ($i == $page) echo " class='active'";
-                echo ">$i</a>";
-            }
-
-            if ($end < $total_pages) {
-                if ($end < $total_pages - 1) echo "...";
-                echo "<a href='?page=$total_pages";
-                if (!empty($where_clause)) {
-                    foreach ($_GET as $key => $value) {
-                        if ($key != 'page') {
-                            echo "&$key=$value";
-                        }
-                    }
-                }
-                echo "'>$total_pages</a>";
-            }
-            echo "<a href='?page=$total_pages";
-            if (!empty($where_clause)) {
-                foreach ($_GET as $key => $value) {
-                    if ($key != 'page') {
-                        echo "&$key=$value";
-                    }
-                }
-            }
-            echo "'>&gt;&gt;</a>";
-        }
-        ?>
-    </div>
-
-    <script>
-        function clearForm() {
-            document.querySelectorAll('input').forEach(input => input.value = '');
-            document.querySelectorAll('select').forEach(select => select.selectedIndex = 0);
-        }
-    </script>
-</body>
-
-</html>
-
-<?php
-$conn->close();
-?>

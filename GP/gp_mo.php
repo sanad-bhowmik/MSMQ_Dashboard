@@ -43,8 +43,8 @@ try {
     try {
         $msg = $msgQueue->PeekFirstByLookupId();
         if ($msg != NULL) {
-			
-		
+
+
             if ($msg) {
                 $xmlString = $msg->Body;
                 $xml = new SimpleXMLElement($xmlString);
@@ -55,23 +55,23 @@ try {
                 $telcoidQ = $xml->telcoid;
                 $keywordQ = $xml->keyword;
                 $shortcodeQ = $xml->shortcode;
-				$skeyQ = $xml->skey;
+                $skeyQ = $xml->skey;
                 $datetimeQ = $xml->datetime;
             }
-			
-				//log
-				//$logDir = 'C:\\mts\\htdocs\\msmq\\log\\mo_pull_queue\\';
-				//$logFileName = $logDir . 'mo_pull_queue' . date('Ymd') . '.txt';
-				
-				
-			$ftp2 = fopen("C:/mts/htdocs/msmq/log/gp_mo_pull_queue_" .date('Y-m-d').".txt", 'a+');
-            fwrite($ftp2, $msisdnQ . "-" . $textQ . "-".$msgidQ ."-".$keywordQ."-".$shortcodeQ."-".$skeyQ."-".date('Y-m-d H:i:s')."\n");
-           
+
+            //log
+            //$logDir = 'C:\\mts\\htdocs\\msmq\\log\\mo_pull_queue\\';
+            //$logFileName = $logDir . 'mo_pull_queue' . date('Ymd') . '.txt';
+
+
+            $ftp2 = fopen("C:/mts/htdocs/msmq/log/gp_mo_pull_queue_" . date('Y-m-d') . ".txt", 'a+');
+            fwrite($ftp2, $msisdnQ . "-" . $textQ . "-" . $msgidQ . "-" . $keywordQ . "-" . $shortcodeQ . "-" . $skeyQ . "-" . date('Y-m-d H:i:s') . "\n");
+
             fclose($ftp2);
-		
-				//
-			
-			
+
+            //
+
+
             // queue forward block
             $keywordFromQueue = $keywordQ;
 
@@ -85,25 +85,25 @@ try {
                     $urlFromDb = $row['urlResponse'];
                 }
             } else {
-				$msg = $msgQueue->Receive();
+                $msg = $msgQueue->Receive();
                 echo 400;
-               // $queueConn->close();
+                // $queueConn->close();
                 exit;
             }
 
-            $urlparam =  "?msisdn=" . $msisdnQ . "&msgid=" . $msgidQ . "&telcoid=" . $telcoidQ ."&skey=".$skeyQ. "&keyword=" . $keywordQ . "&shortcode=" . $shortcodeQ . "&text=" . urlencode($textQ);
+            $urlparam =  "?msisdn=" . $msisdnQ . "&msgid=" . $msgidQ . "&telcoid=" . $telcoidQ . "&skey=" . $skeyQ . "&keyword=" . $keywordQ . "&shortcode=" . $shortcodeQ . "&text=" . urlencode($textQ);
 
             $urlToHit = $urlFromDb . "?" . $urlparam;
 
             try {
-				$ftp2 = fopen("C:/mts/htdocs/msmq/log/gp_Push_log_" .date('Y-m-d').".txt", 'a+');
-            fwrite($ftp2, $urlFromDb ."?".$urlparam."---".date('Y-m-d H:i:s')."\n");
-           
-            fclose($ftp2);
+                $ftp2 = fopen("C:/mts/htdocs/msmq/log/gp_Push_log_" . date('Y-m-d') . ".txt", 'a+');
+                fwrite($ftp2, $urlFromDb . "?" . $urlparam . "---" . date('Y-m-d H:i:s') . "\n");
+
+                fclose($ftp2);
                 $response = HttpRequest($urlFromDb, $urlparam);
-				
-				
-				
+
+
+
                 if ($response == 408) {
                     echo 408;
                 } else {
@@ -126,6 +126,16 @@ try {
                         echo "Record inserted successfully";
                     } else {
                         echo "Error: " . $stmt->error;
+                    }
+
+                    // Insert into tbl_outbox
+                    $stmt_outbox = $queueConn->prepare("INSERT INTO tbl_outbox (msgTo, msgText, msgMOid, msgMTid , msgTelcoID,msgDate) VALUES (?, ?, ?, ?, ?, ?)");
+                    $stmt_outbox->bind_param("ssssss", $msisdn, $text, $moid, $msisdn, $telcoid, $datetime);
+
+                    if ($stmt_outbox->execute()) {
+                        echo "Outbox record inserted successfully";
+                    } else {
+                        echo "Error: " . $stmt_outbox->error;
                     }
                 }
             } catch (Exception $e) {
