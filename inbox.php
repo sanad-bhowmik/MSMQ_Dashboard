@@ -72,9 +72,9 @@ $total_records = $row_count['total_records'];
 $total_pages = ceil($total_records / $records_per_page);
 
 // Modify the SQL query to include the keywordRemark using a LEFT JOIN
-$sql = "SELECT i.recvPhone, i.recvMsg, i.recvDate, i.recvKeyword, i.recvTelcoID, k.keywordRemark 
+$sql = "SELECT i.recvPhone, i.recvMsg, i.recvDate, i.recvKeyword, i.recvTelcoID
         FROM tbl_inbox i
-        LEFT JOIN tbl_keyword k ON i.recvMsg = k.keyword
+        
         $where_clause 
         ORDER BY i.recvID DESC LIMIT $start_from, $records_per_page";
 
@@ -101,9 +101,8 @@ $result_sms = $conn->query($sql_sms);
         <ul>
             <li>
                 <input type="text" name="telco_id" id="telco_id" class="field-style" placeholder="TELCO ID" value="<?php echo isset($_GET['telco_id']) ? htmlspecialchars($_GET['telco_id']) : ''; ?>">
-                <input type="text" name="keyword_remark" class="field-style" placeholder="MO" value="<?php echo isset($_GET['keyword_remark']) ? $_GET['keyword_remark'] : ''; ?>" />
                 <select name="sms_filter" class="field-style">
-                    <option value="" selected disabled>Select Keyword</option>
+                    <option value="" selected disabled>Select MO</option>
                     <?php
                     if ($result_sms->num_rows > 0) {
                         while ($row = $result_sms->fetch_assoc()) {
@@ -129,7 +128,6 @@ $result_sms = $conn->query($sql_sms);
                 <tr>
                     <th>#</th>
                     <th>Phone</th>
-                    <th>Keyword</th>
                     <th>MO</th>
                     <th>Telco ID</th>
                     <th>Date</th>
@@ -144,7 +142,6 @@ $result_sms = $conn->query($sql_sms);
                             <td><?php echo $index++; ?></td>
                             <td><?php echo htmlspecialchars($row['recvPhone']); ?></td>
                             <td><?php echo htmlspecialchars($row['recvMsg']); ?></td>
-                            <td><?php echo htmlspecialchars($row['keywordRemark']); ?></td>
                             <td><?php echo htmlspecialchars($row['recvTelcoID']); ?></td>
                             <td><?php echo htmlspecialchars($row['recvDate']); ?></td>
                         </tr>
