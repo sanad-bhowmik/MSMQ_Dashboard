@@ -75,7 +75,7 @@ $total_pages = ceil($total_records / $records_per_page);
 $sql = "SELECT msgTo, msgText, msgTelcoID, msgDate 
         FROM tbl_outbox" .
     $where_clause . " 
-        ORDER BY msgID DESC 
+        ORDER BY msgID ASC 
         LIMIT $start_from, $records_per_page";
 $result = $conn->query($sql);
 ?>

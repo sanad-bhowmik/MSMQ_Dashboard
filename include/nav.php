@@ -1,16 +1,16 @@
-<?php 
-    $role_id = $_SESSION['role_id'];
-    $menus = get_all_menus_by_role_id($role_id);
-    $company_id = $_SESSION['company_id'];
+<?php
+$role_id = $_SESSION['role_id'];
+$menus = get_all_menus_by_role_id($role_id);
+$company_id = $_SESSION['company_id'];
 
-    if ($role_id == 4) {
-        $newapps = get_count_by_sql("SELECT COUNT(*) FROM applications WHERE company_id='$company_id' AND approve_status='re-submission'");
-    } else {
-        $newapps = get_count_by_sql("SELECT COUNT(*) FROM applications WHERE flag='new'");
-    }
+if ($role_id == 4) {
+    $newapps = get_count_by_sql("SELECT COUNT(*) FROM applications WHERE company_id='$company_id' AND approve_status='re-submission'");
+} else {
+    $newapps = get_count_by_sql("SELECT COUNT(*) FROM applications WHERE flag='new'");
+}
 
-    // Get the current page URL
-    $current_page = basename($_SERVER['PHP_SELF']);
+// Get the current page URL
+$current_page = basename($_SERVER['PHP_SELF']);
 ?>
 
 <ul class="vertical-nav-menu">
@@ -23,51 +23,51 @@
     </li>
     <li class="app-sidebar__heading">Administrator</li>
     <?php
-        $output = '';
+    $output = '';
 
-        foreach ($menus as $menu) {
-            // Check if the current page is under this menu to keep it active
-            $is_active = '';
-            $menu_id = $menu['menu_id'];
-            $sub_menus = get_all_sub_menus_by_menu_id_role_id($menu_id, $role_id);
-            
-            foreach ($sub_menus as $sub_menu) {
-                if ($current_page == basename($sub_menu['page_url'])) {
-                    $is_active = 'mm-active';
-                    break;
-                }
+    foreach ($menus as $menu) {
+        // Check if the current page is under this menu to keep it active
+        $is_active = '';
+        $menu_id = $menu['menu_id'];
+        $sub_menus = get_all_sub_menus_by_menu_id_role_id($menu_id, $role_id);
+
+        foreach ($sub_menus as $sub_menu) {
+            if ($current_page == basename($sub_menu['page_url'])) {
+                $is_active = 'mm-active';
+                break;
             }
+        }
 
-            $output .= '<li class="' . $is_active . '">
+        $output .= '<li class="' . $is_active . '">
                 <a href="#">
                     <i class="metismenu-icon ' . $menu['icon_class'] . '"></i>' . $menu['menu_name'];
 
-            if ($menu['notification'] == 1) {
-                $output .= $newapps > 0 ? ' <span style="color:red"> (' . $newapps . ')</span>' : '';
-            }
+        if ($menu['notification'] == 1) {
+            $output .= $newapps > 0 ? ' <span style="color:red"> (' . $newapps . ')</span>' : '';
+        }
 
-            $output .= ' <i class="metismenu-state-icon pe-7s-angle-down caret-left"></i>
+        $output .= ' <i class="metismenu-state-icon pe-7s-angle-down caret-left"></i>
                 </a>
                 <ul>';
 
-            foreach ($sub_menus as $sub_menu) {
-                $output .= '<li>
+        foreach ($sub_menus as $sub_menu) {
+            $output .= '<li>
                     <a href="' . $sub_menu['page_url'] . '" class="' . ($current_page == basename($sub_menu['page_url']) ? 'mm-active' : '') . '">
                         <i class="metismenu-icon"></i>' . $sub_menu['sub_menu_name'];
 
-                if ($sub_menu['notification'] == 1 && $newapps > 0) {
-                    $output .= '<img width=50 height=30 src="themefiles/assets/images/new.gif">';
-                }
-
-                $output .= '</a>
-                </li>';
+            if ($sub_menu['notification'] == 1 && $newapps > 0) {
+                $output .= '<img width=50 height=30 src="themefiles/assets/images/new.gif">';
             }
 
-            $output .= '</ul>
-            </li>';
+            $output .= '</a>
+                </li>';
         }
 
-        echo $output;
+        $output .= '</ul>
+            </li>';
+    }
+
+    echo $output;
     ?>
 </ul>
 
