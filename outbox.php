@@ -32,7 +32,7 @@ if (isset($_GET['field2']) && $_GET['field2'] != '') {
 // Handle MO (Message Origin) filter
 if (isset($_GET['field3']) && $_GET['field3'] != '') {
     $messageOrigin = $conn->real_escape_string($_GET['field3']);
-    $where_conditions[] = "k.keywordRemark LIKE '%$messageOrigin%'";
+    $where_conditions[] = "msgText LIKE '%$messageOrigin%'";
 }
 
 // Handle MSISDN filter
@@ -65,34 +65,19 @@ $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
 $start_from = ($page - 1) * $records_per_page;
 
 // Get count of total records
-$sql_count = "SELECT COUNT(*) AS total_records FROM tbl_outbox o 
-              LEFT JOIN tbl_keyword k ON o.msgText LIKE CONCAT('%', k.keyword, '%')" . 
-              $where_clause;
+$sql_count = "SELECT COUNT(*) AS total_records FROM tbl_outbox" . $where_clause;
 $result_count = $conn->query($sql_count);
 $row_count = $result_count->fetch_assoc();
 $total_records = $row_count['total_records'];
 $total_pages = ceil($total_records / $records_per_page);
 
-// Get the filtered records with keywordRemarks
-$sql = "SELECT o.msgTo, o.msgText, k.keywordRemark AS MessageOrigin, o.msgTelcoID, o.msgDate 
-        FROM tbl_outbox o 
-        LEFT JOIN tbl_keyword k ON o.msgText LIKE CONCAT('%', k.keyword, '%')" .
+// Get the filtered records
+$sql = "SELECT msgTo, msgText, msgTelcoID, msgDate 
+        FROM tbl_outbox" .
     $where_clause . " 
-        ORDER BY o.msgID DESC 
+        ORDER BY msgID DESC 
         LIMIT $start_from, $records_per_page";
 $result = $conn->query($sql);
-
-// Fetch only existing keywords in tbl_outbox
-$sql_keywords = "SELECT DISTINCT keyword FROM tbl_keyword WHERE keyword IN (SELECT DISTINCT msgText FROM tbl_outbox)";
-$result_keywords = $conn->query($sql_keywords);
-
-$options = array();
-
-if ($result_keywords->num_rows > 0) {
-    while ($row = $result_keywords->fetch_assoc()) {
-        $options[$row['keyword']] = $row['keyword'];
-    }
-}
 ?>
 
 <!DOCTYPE html>
@@ -115,16 +100,7 @@ if ($result_keywords->num_rows > 0) {
                     <option value="1" <?php echo (isset($_GET['telco_id']) && $_GET['telco_id'] == '1') ? 'selected' : ''; ?>>1</option>
                     <option value="3" <?php echo (isset($_GET['telco_id']) && $_GET['telco_id'] == '3') ? 'selected' : ''; ?>>3</option>
                 </select>
-                <select name="field2" class="field-style">
-                    <option value="" selected disabled>Keyword</option>
-                    <?php
-                    // Loop through $options to generate <option> tags
-                    foreach ($options as $key => $opt) {
-                        $selected = (isset($_GET['field2']) && $_GET['field2'] == $key) ? 'selected' : '';
-                        echo '<option value="' . htmlspecialchars($key) . '" ' . $selected . '>' . htmlspecialchars($opt) . '</option>';
-                    }
-                    ?>
-                </select>
+                <!-- <input type="text" name="field2" class="field-style" placeholder="Keyword" value="<?php echo isset($_GET['field2']) ? $_GET['field2'] : ''; ?>" /> -->
                 <input type="text" name="field3" class="field-style" placeholder="MT" value="<?php echo isset($_GET['field3']) ? $_GET['field3'] : ''; ?>" />
             </li>
 
@@ -144,7 +120,6 @@ if ($result_keywords->num_rows > 0) {
                     <th>#</th>
                     <th>Phone</th>
                     <th>MT</th>
-                    <th>Keyword</th>
                     <th>Telco ID</th>
                     <th>Date</th>
                 </tr>
@@ -156,7 +131,6 @@ if ($result_keywords->num_rows > 0) {
                         <tr>
                             <td><?php echo $index++; ?></td>
                             <td><?php echo htmlspecialchars($row['msgTo']); ?></td>
-                            <td><?php echo htmlspecialchars($row['MessageOrigin']); ?></td>
                             <td><?php echo htmlspecialchars($row['msgText']); ?></td>
                             <td><?php echo htmlspecialchars($row['msgTelcoID']); ?></td>
                             <td><?php echo htmlspecialchars($row['msgDate']); ?></td>
@@ -164,14 +138,12 @@ if ($result_keywords->num_rows > 0) {
                     <?php endwhile; ?>
                 <?php else: ?>
                     <tr>
-                        <td colspan="6">No records found</td>
+                        <td colspan="5">No records found</td>
                     </tr>
                 <?php endif; ?>
             </tbody>
         </table>
-
     </div>
-
     <!-- Pagination Links -->
     <div class="pagination">
         <?php
