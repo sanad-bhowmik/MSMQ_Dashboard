@@ -3,6 +3,8 @@ $rd = "test" . rand();
 $content = $_REQUEST['content'];
 $msisdn = $_REQUEST['msisdn'];
 //$promsisdn = substr($msisdn,0,5);
+
+
 // db block
 date_default_timezone_set('Asia/Dhaka');
 $queueDbServername = "localhost";
@@ -86,11 +88,33 @@ if ($skey == "41447092a5674814826cedb2f404230d") {
 
 // Outbox Message
 $telcoid = '1';
-$datetime = date('Y-m-d H:i:s');
 
-$outbox = $queueConn->prepare("INSERT INTO tbl_outbox (msgTo, msgText, msgMOid, msgMTid, msgTelcoID, msgDate) VALUES (?, ?, ?, ?, ?, ?)");
-$outbox->bind_param("ssssss", $msisdn, $content, $contentsession, $rd, $telcoid, $datetime);
+$outbox = $queueConn->prepare("INSERT INTO tbl_outbox (msgTo, msgText, msgMOid, msgMTid, msgTelcoID) VALUES (?, ?, ?, ?, ?)");
+if ($outbox === false) {
+    die('Prepare failed: ' . htmlspecialchars($queueConn->error));
+}
+
+$outbox->bind_param("sssss", $msisdn, $content, $contentsession, $shortcode, $telcoid);
+
+if (!$outbox->execute()) {
+    $error_message = "Execute failed: " . htmlspecialchars($outbox->error);
+    error_log($error_message);
+    echo $error_message;
+} else {
+    $success_message = "response code 200 : MSISDN: $msisdn, Content: $content, MOID: $contentsession, ShortCode: $shortcode, TelcoID: $telcoid";
+    error_log($success_message); 
+    echo $success_message;
+	// Log success message to file
+    $logFileName = "C:/mts/htdocs/msmq/log/gp/gp_outbox_log_" . date('Y-m-d') . ".txt";
+    $ftp2 = fopen($logFileName, 'a+');
+    fwrite($ftp2, $success_message . " --- " . date('Y-m-d H:i:s') . "\n");
+    fclose($ftp2);
+}
+
+$outbox->close();
+$queueConn->close();
 // Outbox Message
+
 
 
 
@@ -104,7 +128,7 @@ $headers = array(
     "Content-Type: application/json"
 );
 
-///closed By Sagar//////
+///closed By Sagar///
 $datenew = date("Y-m-d");
 $ch = curl_init();
 curl_setopt($ch, CURLOPT_URL, $request_url);
@@ -130,3 +154,4 @@ fclose($ftp2);
 $newtextjson = json_decode($response_body);
 //$notify = $newtextjson->statusInfo;
 //$rr = $notify->statusCode;
+?>
