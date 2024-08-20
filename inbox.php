@@ -71,10 +71,8 @@ $row_count = $result_count->fetch_assoc();
 $total_records = $row_count['total_records'];
 $total_pages = ceil($total_records / $records_per_page);
 
-// Modify the SQL query to include the keywordRemark using a LEFT JOIN
 $sql = "SELECT i.recvPhone, i.recvMsg, i.recvDate, i.recvKeyword, i.recvTelcoID
         FROM tbl_inbox i
-        
         $where_clause 
         ORDER BY i.recvID DESC LIMIT $start_from, $records_per_page";
 
@@ -100,7 +98,12 @@ $result_sms = $conn->query($sql_sms);
         <h3 style="margin-top: 0;text-align: center;font-family: serif;">Inbound Traffic Log</h3>
         <ul>
             <li>
-                <input type="text" name="telco_id" id="telco_id" class="field-style" placeholder="TELCO ID" value="<?php echo isset($_GET['telco_id']) ? htmlspecialchars($_GET['telco_id']) : ''; ?>">
+                <select name="telco_id" id="telco_id" class="field-style" style="max-width: 397px;">
+                    <option value="" selected disabled>Select TELCO</option>
+                    <option value="1" <?php echo (isset($_GET['telco_id']) && $_GET['telco_id'] == '1') ? 'selected' : ''; ?>>Grameen Phone</option>
+                    <option value="3" <?php echo (isset($_GET['telco_id']) && $_GET['telco_id'] == '3') ? 'selected' : ''; ?>>Banglalink</option>
+                    <option value="4" <?php echo (isset($_GET['telco_id']) && $_GET['telco_id'] == '4') ? 'selected' : ''; ?>>Robi</option>
+                </select>
                 <select name="sms_filter" class="field-style">
                     <option value="" selected disabled>Select MO</option>
                     <?php
@@ -112,6 +115,7 @@ $result_sms = $conn->query($sql_sms);
                     ?>
                 </select>
             </li>
+
 
             <li>
                 <input type="date" name="from_date" class="field-style" placeholder="From Date" value="<?php echo isset($_GET['from_date']) ? $_GET['from_date'] : ''; ?>" />
@@ -135,23 +139,38 @@ $result_sms = $conn->query($sql_sms);
             </thead>
             <tbody>
                 <?php
-                $index = $start_from + 1; // Initialize index, starting from the first record of the current page
+                $index = $start_from + 1;
                 if ($result->num_rows > 0):
-                    while ($row = $result->fetch_assoc()): ?>
+                    while ($row = $result->fetch_assoc()):
+                        $telco_name = '';
+                        switch ($row['recvTelcoID']) {
+                            case '1':
+                                $telco_name = 'Grameen Phone';
+                                break;
+                            case '3':
+                                $telco_name = 'Banglalink';
+                                break;
+                            case '4':
+                                $telco_name = 'Robi';
+                                break;
+                            default:
+                                $telco_name = 'Unknown';
+                        } ?>
                         <tr>
                             <td><?php echo $index++; ?></td>
                             <td><?php echo htmlspecialchars($row['recvPhone']); ?></td>
                             <td><?php echo htmlspecialchars($row['recvMsg']); ?></td>
-                            <td><?php echo htmlspecialchars($row['recvTelcoID']); ?></td>
+                            <td><?php echo htmlspecialchars($telco_name); ?></td>
                             <td><?php echo htmlspecialchars($row['recvDate']); ?></td>
                         </tr>
                     <?php endwhile;
                 else: ?>
                     <tr>
-                        <td colspan="7">No records found</td>
+                        <td colspan="5" style="font-size: large;color: red;font-weight: 700;font-family: monospace;">No records found</td>
                     </tr>
                 <?php endif; ?>
             </tbody>
+
         </table>
     </div>
 
@@ -232,8 +251,7 @@ $result_sms = $conn->query($sql_sms);
 
     <script>
         function clearForm() {
-            window.location.href = 'http://localhost/msmq/inbox.php';
-            // window.location.href = 'http://103.228.39.36/msmq/inbox.php';
+            window.location.href = '<?php echo basename($_SERVER['PHP_SELF']); ?>';
         }
     </script>
 </body>

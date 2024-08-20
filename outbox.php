@@ -75,7 +75,7 @@ $total_pages = ceil($total_records / $records_per_page);
 $sql = "SELECT msgTo, msgText, msgTelcoID, msgDate 
         FROM tbl_outbox" .
     $where_clause . " 
-        ORDER BY msgID ASC 
+        ORDER BY msgDate DESC 
         LIMIT $start_from, $records_per_page";
 $result = $conn->query($sql);
 ?>
@@ -95,10 +95,11 @@ $result = $conn->query($sql);
         <h3 style="margin-top: 0;text-align: center;font-family: serif;">Outbound Traffic Log</h3>
         <ul>
             <li>
-                <select name="telco_id" class="field-style">
-                    <option value="" disabled selected>Select Telco ID</option>
-                    <option value="1" <?php echo (isset($_GET['telco_id']) && $_GET['telco_id'] == '1') ? 'selected' : ''; ?>>1</option>
-                    <option value="3" <?php echo (isset($_GET['telco_id']) && $_GET['telco_id'] == '3') ? 'selected' : ''; ?>>3</option>
+                <select name="telco_id" id="telco_id" class="field-style" style="max-width: 427px;">
+                    <option value="" selected disabled>Select TELCO</option>
+                    <option value="1" <?php echo (isset($_GET['telco_id']) && $_GET['telco_id'] == '1') ? 'selected' : ''; ?>>Grameen Phone</option>
+                    <option value="3" <?php echo (isset($_GET['telco_id']) && $_GET['telco_id'] == '3') ? 'selected' : ''; ?>>Banglalink</option>
+                    <option value="4" <?php echo (isset($_GET['telco_id']) && $_GET['telco_id'] == '4') ? 'selected' : ''; ?>>Robi</option>
                 </select>
                 <!-- <input type="text" name="field2" class="field-style" placeholder="Keyword" value="<?php echo isset($_GET['field2']) ? $_GET['field2'] : ''; ?>" /> -->
                 <input type="text" name="field3" class="field-style" placeholder="MT" value="<?php echo isset($_GET['field3']) ? $_GET['field3'] : ''; ?>" />
@@ -128,17 +129,34 @@ $result = $conn->query($sql);
                 <?php if ($result->num_rows > 0): ?>
                     <?php $index = 1; ?>
                     <?php while ($row = $result->fetch_assoc()): ?>
+                        <?php
+
+                        $telco_name = '';
+                        switch ($row['msgTelcoID']) {
+                            case '1':
+                                $telco_name = 'Grameen Phone';
+                                break;
+                            case '3':
+                                $telco_name = 'Banglalink';
+                                break;
+                            case '4':
+                                $telco_name = 'Robi';
+                                break;
+                            default:
+                                $telco_name = 'Unknown';
+                        }
+                        ?>
                         <tr>
                             <td><?php echo $index++; ?></td>
                             <td><?php echo htmlspecialchars($row['msgTo']); ?></td>
                             <td><?php echo htmlspecialchars($row['msgText']); ?></td>
-                            <td><?php echo htmlspecialchars($row['msgTelcoID']); ?></td>
+                            <td><?php echo htmlspecialchars($telco_name); ?></td>
                             <td><?php echo htmlspecialchars($row['msgDate']); ?></td>
                         </tr>
                     <?php endwhile; ?>
                 <?php else: ?>
                     <tr>
-                        <td colspan="5">No records found</td>
+                        <td colspan="5" style="font-size: large;color: red;font-weight: 700;font-family: monospace;">No records found</td>
                     </tr>
                 <?php endif; ?>
             </tbody>
@@ -159,9 +177,7 @@ $result = $conn->query($sql);
             }
             echo "'>&lt;&lt;</a>"; // << for first page
 
-            $range = 2; // Number of page links to show on either side of the current page
-
-            // Calculate start and end range for pagination numbers
+            $range = 2;
             $start = max(1, $page - $range);
             $end = min($total_pages, $page + $range);
 
