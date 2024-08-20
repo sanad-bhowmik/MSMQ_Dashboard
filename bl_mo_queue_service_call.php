@@ -44,13 +44,12 @@ $urlFromDb = "";
                 $telcoidQ = $xml->telcoid;
                 $keywordQ = $xml->keyword;
                 $shortcodeQ = $xml->shortcode;
-                $skeyQ = $xml->skey;
                 $datetimeQ = $xml->datetime;
            
 
           
 
-            $ftp2 = fopen("C:/mts/htdocs/msmq/log/gp/gp_mo_pull_queue_" . date('Y-m-d') . ".txt", 'a+');
+            $ftp2 = fopen("C:/mts/htdocs/msmq/log/bl/bl_mo_pull_queue_" . date('Y-m-d') . ".txt", 'a+');
             fwrite($ftp2, $msisdnQ . "-" . $textQ . "-" . $msgidQ . "-" . $keywordQ . "-" . $shortcodeQ . "-" . $skeyQ . "-" . date('Y-m-d H:i:s') . "\n");
             fclose($ftp2);
 			//die();
@@ -67,12 +66,12 @@ $urlFromDb = "";
 			    $row = $result->fetch_assoc();
 				$urlFromDb = $row['urlResponse'];
 				
-		    $urlparam =  "?msisdn=" . $msisdnQ . "&msgid=" . $msgidQ . "&telcoid=" . $telcoidQ . "&skey=" . $skeyQ . "&keyword=" . $keywordQ . "&shortcode=" . $shortcodeQ . "&text=" . urlencode($textQ);
+		    $urlparam =  "?msisdn=" . $msisdnQ . "&msgid=" . $msgidQ . "&telcoid=" . $telcoidQ . "&keyword=" . $keywordQ . "&shortcode=" . $shortcodeQ . "&text=" . urlencode($textQ);
 
             $urlToHit = $urlFromDb . "?" . $urlparam;
 
             try {
-                $ftp2 = fopen("C:/mts/htdocs/msmq/log/gp/gp_Push_log_" . date('Y-m-d') . ".txt", 'a+');
+                $ftp2 = fopen("C:/mts/htdocs/msmq/log/bl/bl_Push_log_" . date('Y-m-d') . ".txt", 'a+');
                 fwrite($ftp2, $urlFromDb . "?" . $urlparam . "---" . date('Y-m-d H:i:s') . "\n");
 
                 fclose($ftp2);
@@ -81,7 +80,7 @@ $urlFromDb = "";
                 if ($response == 408) {
                    
 				 echo 408;
-                $ftp2 = fopen("C:/mts/htdocs/msmq/log/gp/gp_Push_failed_log_" . date('Y-m-d') . ".txt", 'a+');
+                $ftp2 = fopen("C:/mts/htdocs/msmq/log/bl/bl_Push_failed_log_" . date('Y-m-d') . ".txt", 'a+');
                 fwrite($ftp2, $urlFromDb . "?" . $urlparam . "---" . date('Y-m-d H:i:s') . "\n");
 
                 fclose($ftp2);
@@ -110,7 +109,7 @@ $urlFromDb = "";
             }// if num rows
 			else {
               
-				$ftp2 = fopen("C:/mts/htdocs/msmq/log/gp/gp_mo_pull_worng_key_queue_" . date('Y-m-d') . ".txt", 'a+');
+				$ftp2 = fopen("C:/mts/htdocs/msmq/log/bl/bl_mo_pull_worng_key_queue_" . date('Y-m-d') . ".txt", 'a+');
                 fwrite($ftp2, $msisdnQ . "-" . $textQ . "-" . $msgidQ . "-" . $keywordQ . "-" . $shortcodeQ . "-" . $skeyQ . "-" . date('Y-m-d H:i:s') . "\n");
                 fclose($ftp2);
                 echo 400;

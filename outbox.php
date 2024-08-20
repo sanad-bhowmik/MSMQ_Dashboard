@@ -130,7 +130,7 @@ $result = $conn->query($sql);
                     <?php $index = 1; ?>
                     <?php while ($row = $result->fetch_assoc()): ?>
                         <?php
-
+                        // Map the msgTelcoID value to the corresponding telecom operator name
                         $telco_name = '';
                         switch ($row['msgTelcoID']) {
                             case '1':
@@ -139,7 +139,7 @@ $result = $conn->query($sql);
                             case '3':
                                 $telco_name = 'Banglalink';
                                 break;
-                            case '4':
+                            case '4': // Assuming the '$' you mentioned was a typo for '4'
                                 $telco_name = 'Robi';
                                 break;
                             default:
@@ -177,7 +177,9 @@ $result = $conn->query($sql);
             }
             echo "'>&lt;&lt;</a>"; // << for first page
 
-            $range = 2;
+            $range = 2; // Number of page links to show on either side of the current page
+
+            // Calculate start and end range for pagination numbers
             $start = max(1, $page - $range);
             $end = min($total_pages, $page + $range);
 

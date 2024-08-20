@@ -1,8 +1,8 @@
 <?php
+date_default_timezone_set("Asia/Dhaka");
 $datetime = date('Y-m-d H:i:s');
 $date = date('Y-m-d');
 include_once("include/initialize.php");
-date_default_timezone_set("Asia/Dhaka");
 //include_once("include/header.php");
 $msisdn = "not found";
 $text = "not found";
@@ -76,7 +76,7 @@ define("MQ_DENY_NONE", 0);
 
 try {
     $msgQueueInfo = new COM("MSMQ.MSMQQueueInfo");
-    $msgQueueInfo->PathName = ".\\private$\\messages";
+    $msgQueueInfo->PathName = ".\\private$\\bl_queues";
 
     $msgQueue = $msgQueueInfo->Open(MQ_SEND_ACCESS, MQ_DENY_NONE);
     if (!$msgQueue) {

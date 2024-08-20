@@ -1,87 +1,15 @@
 XML: <?xml version="1.0"?>
-<root><msisdn>88016906</msisdn><text>Hey its my Secondmsg</text><moid>20240624002256573-3</moid><telcoid>3</telcoid><shortcode>9933</shortcode><datetime>2024-08-14 10:04:37</datetime><keyword>TTS</keyword></root>
- - 2024-08-14 10:04 AM
+<Message><msisdn/><keyword>TPDrama</keyword><message/></Message>
+ - 2024-08-14
 XML: <?xml version="1.0"?>
-<root><msisdn>88016906</msisdn><text>Hey its my Secondmsg</text><moid>20240624002256573-3</moid><telcoid>3</telcoid><shortcode>9933</shortcode><datetime>2024-08-14 10:06:44</datetime><keyword>TTS</keyword></root>
- - 2024-08-14 10:06 AM
+<Message><msisdn/><keyword>TPDrama</keyword><message/></Message>
+ - 2024-08-14
 XML: <?xml version="1.0"?>
-<root><msisdn>88016906</msisdn><text>Hey its my Secondmsg</text><moid>20240624002256573-3</moid><telcoid>3</telcoid><shortcode>9933</shortcode><datetime>2024-08-14 10:07:03</datetime><keyword>TTS</keyword></root>
- - 2024-08-14 10:07 AM
+<Message><msisdn>88976905786</msisdn><keyword>TPDrama</keyword><message/></Message>
+ - 2024-08-14
 XML: <?xml version="1.0"?>
-<root><msisdn>88016906</msisdn><text>Hey its my Secondmsg</text><moid>20240624002256573-3</moid><telcoid>3</telcoid><shortcode>9933</shortcode><datetime>2024-08-14 10:10:43</datetime><keyword>TTS</keyword></root>
- - 2024-08-14 10:10 AM
+<Message><msisdn>88976905786</msisdn><keyword>TPDrama</keyword><message/></Message>
+ - 2024-08-14
 XML: <?xml version="1.0"?>
-<root><msisdn>88016906</msisdn><text>Hey its my Secondmsg</text><moid>20240624002256573-3</moid><telcoid>3</telcoid><shortcode>9933</shortcode><datetime>2024-08-14 10:11:46</datetime><keyword>TTS</keyword></root>
- - 2024-08-14 10:11 AM
-XML: <?xml version="1.0"?>
-<root><msisdn>88016906</msisdn><text>Hey its my Secondmsg</text><moid>20240624002256573-3</moid><telcoid>3</telcoid><shortcode>9933</shortcode><datetime>2024-08-14 10:12:35</datetime><keyword>TTS</keyword></root>
- - 2024-08-14 10:12 AM
-XML: <?xml version="1.0"?>
-<root><msisdn>88016906</msisdn><text>Hey its my Secondmsg</text><moid>20240624002256573-3</moid><telcoid>3</telcoid><shortcode>9933</shortcode><datetime>2024-08-14 10:13:23</datetime><keyword>TTS</keyword></root>
- - 2024-08-14 10:13 AM
-XML: <?xml version="1.0"?>
-<Message><msisdn>88016906</msisdn><text>Hey its my Secondmsg</text><moid>20240624002256573-3</moid><telcoid>3</telcoid><shortcode>9933</shortcode><datetime>2024-08-14 10:52:26</datetime><keyword>TTS</keyword></Message>
- - 2024-08-14 10:52 AM
-XML: <?xml version="1.0"?>
-<Message><msisdn>88016906</msisdn><text>Hey its my Secondmsg</text><moid>20240624002256573-3</moid><telcoid>3</telcoid><shortcode>9933</shortcode><datetime>2024-08-14 10:53:40</datetime><keyword>TTS</keyword></Message>
- - 2024-08-14 10:53 AM
-XML: <?xml version="1.0"?>
-<Message><msisdn>88976905786</msisdn><text>Hey its my Secondmsg</text><moid>20240624002256573-3</moid><telcoid>3</telcoid><shortcode>9933</shortcode><datetime>2024-08-14 11:54:52</datetime><keyword>TPDrama</keyword></Message>
- - 2024-08-14 11:54 AM
-XML: <?xml version="1.0"?>
-<Message><msisdn>88976905786</msisdn><text>Hey its my Secondmsg</text><moid>20240624002256573-3</moid><telcoid>3</telcoid><shortcode>9933</shortcode><datetime>2024-08-14 11:56:22</datetime><keyword>TPDrama</keyword></Message>
- - 2024-08-14 11:56 AM
-XML: <?xml version="1.0"?>
-<Message><msisdn>88976905786</msisdn><text>Hey its my Secondmsg</text><moid>20240624002256573-3</moid><telcoid>3</telcoid><shortcode>9933</shortcode><datetime>2024-08-14 11:57:26</datetime><keyword>TPDrama</keyword></Message>
- - 2024-08-14 11:57 AM
-XML: <?xml version="1.0"?>
-<Message><msisdn>88976905786</msisdn><text>Hey its my Secondmsg</text><moid>20240624002256573-3</moid><telcoid>3</telcoid><shortcode>9933</shortcode><datetime>2024-08-14 11:57:55</datetime><keyword>TPDrama</keyword><text/></Message>
- - 2024-08-14 11:57 AM
-XML: <?xml version="1.0"?>
-<Message><msisdn>88976905786</msisdn><text>Hey its my Secondmsg</text><moid>20240624002256573-3</moid><telcoid>3</telcoid><shortcode>9933</shortcode><datetime>2024-08-14 11:59:17</datetime><keyword>TPDrama</keyword><text/></Message>
- - 2024-08-14 11:59 AM
-XML: <?xml version="1.0"?>
-<Message><msisdn>88976905786</msisdn><message/><datetime/><keyword>TPDrama</keyword></Message>
- - 2024-08-14 12:02 PM
-XML: <?xml version="1.0"?>
-<Message><msisdn>88976905786</msisdn><message/><datetime/><keyword>TPDrama</keyword></Message>
- - 2024-08-14 12:03 PM
-XML: <?xml version="1.0"?>
-<Message><msisdn>88976905786</msisdn><text>Hey its my Secondmsg</text><moid>20240624002256573-3</moid><telcoid>3</telcoid><shortcode>9933</shortcode><datetime>2024-08-14 12:03:31</datetime><keyword>TPDrama</keyword></Message>
- - 2024-08-14 12:03 PM
-XML: <?xml version="1.0"?>
-<Message><msisdn>88976905786</msisdn><text>Hey its my Secondmsg</text><moid>20240624002256573-3</moid><telcoid>3</telcoid><shortcode>9933</shortcode><datetime>2024-08-14 12:03:39</datetime><keyword>TPDrama</keyword></Message>
- - 2024-08-14 12:03 PM
-XML: <?xml version="1.0"?>
-<Message><msisdn>88976905786</msisdn><text>Hey its my Secondmsg</text><moid>20240624002256573-3</moid><telcoid>3</telcoid><shortcode>9933</shortcode><datetime>2024-08-14 12:04:10</datetime><keyword>TPDrama</keyword></Message>
- - 2024-08-14 12:04 PM
-XML: <?xml version="1.0"?>
-<Message><msisdn>88976905786</msisdn><text>Hey its my Secondmsg</text><moid>20240624002256573-3</moid><telcoid>3</telcoid><shortcode>9933</shortcode><datetime>2024-08-14 12:04:29</datetime><keyword>TPDrama</keyword></Message>
- - 2024-08-14 12:04 PM
-XML: <?xml version="1.0"?>
-<Message><msisdn>88976905786</msisdn><text>Hey its my Secondmsg</text><moid>20240624002256573-3</moid><telcoid>3</telcoid><shortcode>9933</shortcode><datetime>2024-08-14 12:05:29</datetime><keyword>TPDrama</keyword></Message>
- - 2024-08-14 12:05 PM
-XML: <?xml version="1.0"?>
-<Message><msisdn>88976905786</msisdn><message/><datetime/><keyword>TPDrama</keyword></Message>
- - 2024-08-14 12:05 PM
-XML: <?xml version="1.0"?>
-<Message><msisdn>88976905786</msisdn><message/><datetime/><keyword>TPDrama</keyword></Message>
- - 2024-08-14 12:06 PM
-XML: <?xml version="1.0"?>
-<Message><msisdn>88976905786</msisdn><message/><datetime/><keyword>TPDrama</keyword></Message>
- - 2024-08-14 12:10 PM
-XML: <?xml version="1.0"?>
-<Message><msisdn>88976905786</msisdn><message/><datetime/><keyword>TPDrama</keyword></Message>
- - 2024-08-14 12:11 PM
-XML: <?xml version="1.0"?>
-<Message><msisdn>88976905786</msisdn><keyword>9933</keyword><moid/><shortcode/></Message>
- - 2024-08-14 12:23 PM
-XML: <?xml version="1.0"?>
-<Message><msisdn>88976905786</msisdn><keyword>TPDrama</keyword><moid>20240624002256573-3</moid><shortcode>9933</shortcode></Message>
- - 2024-08-14 12:23 PM
-XML: <?xml version="1.0"?>
-<Message><msisdn>88976905786</msisdn><keyword>TPDrama</keyword><moid>20240624002256573-3</moid><shortcode>9933</shortcode></Message>
- - 2024-08-14 12:35 PM
-XML: <?xml version="1.0"?>
-<Message><msisdn>88976905786</msisdn><text>Hey its my Secondmsg</text><moid>20240624002256573-3</moid><telcoid>3</telcoid><shortcode>9933</shortcode><datetime>2024-08-14 12:35:30</datetime><keyword>TPDrama</keyword></Message>
- - 2024-08-14 12:35 PM
+<Message><msisdn>88976905786</msisdn><keyword>TPDrama</keyword><message/></Message>
+ - 2024-08-14

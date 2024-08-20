@@ -1,0 +1,8 @@
+http://103.228.39.37:88/smsPanel/gp_sms.php??msisdn=576834542256843538&msgid=3030110057240777337257200&telcoid=1&skey=a9ab7ced24454f1ebea875d15703ac62&keyword=TTTP&shortcode=16658&text=Ttp---2024-08-19 20:28:56
+http://103.228.39.37:88/smsPanel/sms.php??msisdn=8801930072898&msgid=20240819040451515959-3&telcoid=3-2024-08-19&skey=&keyword=BGGMS1&shortcode=16658&text=BGGMS1---2024-08-19 21:04:33
+http://103.228.39.37:88/smsPanel/sms.php??msisdn=8801930072898&msgid=20240819090912120000-3&telcoid=3&skey=&keyword=BGGMS1&shortcode=16658&text=BGGMS1---2024-08-19 21:12:03
+http://103.228.39.37:88/smsPanel/sms.php??msisdn=8801930072898&msgid=20240819090912120000-3&telcoid=3&skey=&keyword=TTS&shortcode=16658&text=TTS---2024-08-19 21:12:13
+http://103.228.39.37:88/smsPanel/sms.php??msisdn=8801930072898&msgid=20240819090912120000-3&telcoid=3&skey=&keyword=PGAMES&shortcode=16658&text=PGAMES---2024-08-19 21:12:23
+http://103.228.39.37:88/smsPanel/gp_sms.php??msisdn=576832604625562386&msgid=3040110077240811834130370&telcoid=1&skey=38f261e7519243968b297077eaa77d13&keyword=TLSP&shortcode=16658&text=Lsp---2024-08-19 21:26:29
+http://103.228.39.37:88/smsPanel/gp_sms.php??msisdn=576834542256843538&msgid=3040110077240860046872882&telcoid=1&skey=9faac6d49aa04f6cb53efc729d27d181&keyword=TFNP&shortcode=16658&text=Fnp---2024-08-19 22:46:45
+http://103.228.39.37:88/smsPanel/sms.php??msisdn=8801930072898&msgid=20240819101051510202-3&telcoid=3&skey=&keyword=TTS&shortcode=16658&text=TTS---2024-08-19 22:51:08

@@ -1,0 +1,11 @@
+msisdn: 8801930072898 text: START FNS moid: a7782549318218095 telcoid: 3 shortcode: 16658 reqip: 103.228.39.36 datetime: 2024-07-29 06:44:28 keyword: START FNS
+msisdn: 8800191234567 text: START FNS moid: a7783047677668335 telcoid: 3 shortcode: 16658 reqip: 103.228.39.36 datetime: 2024-07-29 06:44:28 keyword: START FNS
+msisdn: 8801930072898 text: START FNS moid: a2807616516415112 telcoid: 3 shortcode: 16658 reqip: 103.228.39.36 datetime: 2024-07-29 06:49:37 keyword: START FNS
+msisdn: 8800191234567 text: START FNS moid: a3760785528227676 telcoid: 3 shortcode: 16658 reqip: 103.228.39.36 datetime: 2024-07-29 06:49:37 keyword: START FNS
+msisdn: 8800191234567 text: START FNS moid: a7802532426605855 telcoid: 3 shortcode: 16658 reqip: 103.228.39.36 datetime: 2024-07-29 12:17:31 keyword: START FNS
+msisdn: 8801930072898 text: SNSGAM moid: a2832200157945451-3 telcoid: 3 shortcode: 16658 reqip: 103.228.39.36 datetime: 2024-07-29 13:39:20 keyword: SNSGAM
+msisdn: 8801930072898 text: DES moid: a7809086153034658-3 telcoid: 3 shortcode: 16658 reqip: 103.228.39.36 datetime: 2024-07-29 14:06:45 keyword: DES
+msisdn: 8801930072898 text: SNSGAM moid: a7810482193438584-3 telcoid: 3 shortcode: 16658 reqip: 103.228.39.36 datetime: 2024-07-29 14:16:35 keyword: SNSGAM
+msisdn: 8801930072898 text: DES moid: a2834667438253464-3 telcoid: 3 shortcode: 16658 reqip: 103.228.39.36 datetime: 2024-07-29 14:20:28 keyword: DES
+msisdn: 8801930072898 text: DES moid: a7810678764130839-3 telcoid: 3 shortcode: 16658 reqip: 103.228.39.36 datetime: 2024-07-29 14:24:59 keyword: DES
+msisdn: 8801930072898 text: TTS moid: 20240729020228280101-3 telcoid: 3 shortcode: 16658 reqip: 103.228.39.36 datetime: 2024-07-29 14:28:01 keyword: TTS

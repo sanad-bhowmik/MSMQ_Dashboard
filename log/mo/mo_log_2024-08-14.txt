@@ -1,0 +1,1 @@
+msisdn: 8801930072898 text: SGAMES moid: 20240814111140401515-3 telcoid: 3 shortcode: 16658 reqip: 103.228.39.36 datetime: 2024-08-14 11:40:15 keyword: SGAMES

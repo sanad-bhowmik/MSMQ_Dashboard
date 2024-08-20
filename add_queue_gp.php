@@ -1,8 +1,8 @@
 <?php
+date_default_timezone_set("Asia/Dhaka");
 $datetime = date('Y-m-d H:i:s');
 $date = date('Y-m-d');
 include_once("include/initialize.php");
-date_default_timezone_set("Asia/Dhaka");
 $msisdn = "not found";
 $text = "not found";
 $moid = "not found";
@@ -79,7 +79,7 @@ define("MQ_DENY_NONE", 0);
 
 try {
     $msgQueueInfo = new COM("MSMQ.MSMQQueueInfo");
-    $msgQueueInfo->PathName = ".\\private$\\gp_messages";
+    $msgQueueInfo->PathName = ".\\private$\\gp_queues";
 
     $msgQueue = $msgQueueInfo->Open(MQ_SEND_ACCESS, MQ_DENY_NONE);
     if (!$msgQueue) {
@@ -105,18 +105,4 @@ try {
 }
 
 exit;
-?>
-<div class="app-main__inner">
-</div>
-
-<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
-
-<script>
-    toastr.options = {
-        "positionClass": "toast-top-center",
-        "closeButton": true,
-        "progressBar": true,
-    };
-</script>
-<?php
 ?>

@@ -1,0 +1,5 @@
+msisdn: 8801930072898 text: START FNS moid: a3705209830670168 telcoid: 3 shortcode: 16658 reqip: 103.228.39.36 datetime: 2024-07-28 15:23:22 keyword: START FNS
+msisdn: 8801930072898 text: START FNS moid: a7727890015861121 telcoid: 3 shortcode: 16658 reqip: 103.228.39.36 datetime: 2024-07-28 15:25:11 keyword: START FNS
+msisdn: 8800191234567 text: START FNS moid: a2752150918679294 telcoid: 3 shortcode: 16658 reqip: 103.228.39.36 datetime: 2024-07-28 15:25:11 keyword: START FNS
+msisdn: 8801930072898 text: START FNS moid: a3705681462051467 telcoid: 3 shortcode: 16658 reqip: 103.228.39.36 datetime: 2024-07-28 15:31:13 keyword: START FNS
+msisdn: 8800191234567 text: START FNS moid: a7728560520849545 telcoid: 3 shortcode: 16658 reqip: 103.228.39.36 datetime: 2024-07-28 15:31:13 keyword: START FNS

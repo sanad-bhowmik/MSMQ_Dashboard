@@ -1,0 +1,57 @@
+msisdn: 88019769057 text: Hey its my Secondmsg moid: 20240624002256573-3 telcoid: 3 shortcode: 9933 reqip: 45.120.96.96 datetime: 2024-07-13 13:23:09 keyword: FNP
+msisdn: 880197690 text: Hey its my Secondmsg moid: 20240624002256573-3 telcoid: 3 shortcode: 9933 reqip: 45.120.96.96 datetime: 2024-07-13 13:31:00 keyword: FNP
+msisdn: 880197690 text: Hey its my Secondmsg moid: 20240624002256573-3 telcoid: 3 shortcode: 9933 reqip: 45.120.96.96 datetime: 2024-07-13 13:32:01 keyword: FNP
+msisdn: 880197690 text: Hey its my Secondmsg moid: 20240624002256573-3 telcoid: 3 shortcode: 9933 reqip: 45.120.96.96 datetime: 2024-07-13 13:44:55 keyword: FNP
+msisdn: 880197690 text: Hey its my Secondmsg moid: 20240624002256573-3 telcoid: 3 shortcode: 9933 reqip: 45.120.96.96 datetime: 2024-07-13 13:45:13 keyword: START CNS
+msisdn: 880197690 text: Hey its my Secondmsg moid: 20240624002256573-3 telcoid: 3 shortcode: 9933 reqip: 45.120.96.96 datetime: 2024-07-13 13:45:21 keyword: START CNS
+msisdn: 880197690 text: Hey its my Secondmsg moid: 20240624002256573-3 telcoid: 3 shortcode: 9933 reqip: 45.120.96.96 datetime: 2024-07-13 13:53:22 keyword: START CNS
+msisdn: 880197690 text: Hey its my Secondmsg moid: 20240624002256573-3 telcoid: 3 shortcode: 9933 reqip: 45.120.96.96 datetime: 2024-07-13 13:53:27 keyword: START CNS
+msisdn: 880197690 text: Hey its my Secondmsg moid: 20240624002256573-3 telcoid: 3 shortcode: 9933 reqip: 45.120.96.96 datetime: 2024-07-13 13:53:48 keyword: START CNS
+msisdn: 880197690 text: Hey its my Secondmsg moid: 20240624002256573-3 telcoid: 3 shortcode: 9933 reqip: 45.120.96.96 datetime: 2024-07-13 13:53:52 keyword: START CNS
+msisdn: 880197690 text: Hey its my Secondmsg moid: 20240624002256573-3 telcoid: 3 shortcode: 9933 reqip: 45.120.96.96 datetime: 2024-07-13 13:54:22 keyword: START CNS
+msisdn: 880197690 text: Hey its my Secondmsg moid: 20240624002256573-3 telcoid: 3 shortcode: 9933 reqip: 45.120.96.96 datetime: 2024-07-13 13:54:46 keyword: START FNS
+msisdn: 880197690 text: Hey its my Secondmsg moid: 20240624002256573-3 telcoid: 3 shortcode: 9933 reqip: 45.120.96.96 datetime: 2024-07-13 13:54:51 keyword: START FNS
+msisdn: 880197690 text: Hey its my Secondmsg moid: 20240624002256573-3 telcoid: 3 shortcode: 9933 reqip: 45.120.96.96 datetime: 2024-07-13 13:55:01 keyword: START FNS
+msisdn: 880197690 text: Hey its my Secondmsg moid: 20240624002256573-3 telcoid: 3 shortcode: 9933 reqip: 45.120.96.96 datetime: 2024-07-13 13:55:16 keyword: START CNS
+msisdn: 880197690 text: Hey its my Secondmsg moid: 20240624002256573-3 telcoid: 3 shortcode: 9933 reqip: 45.120.96.96 datetime: 2024-07-13 13:55:33 keyword: START FNS
+msisdn: 880197690 text: Hey its my Secondmsg moid: 20240624002256573-3 telcoid: 3 shortcode: 9933 reqip: 45.120.96.96 datetime: 2024-07-13 13:57:25 keyword: START FNS
+msisdn: 880197690 text: Hey its my Secondmsg moid: 20240624002256573-3 telcoid: 3 shortcode: 9933 reqip: 45.120.96.96 datetime: 2024-07-13 13:59:37 keyword: START FNS
+msisdn: 880197690 text: Hey its my Secondmsg moid: 20240624002256573-3 telcoid: 3 shortcode: 9933 reqip: 45.120.96.96 datetime: 2024-07-13 14:08:54 keyword: START FNS
+msisdn: 880197690 text: Hey its my Secondmsg moid: 20240624002256573-3 telcoid: 3 shortcode: 9933 reqip: 45.120.96.96 datetime: 2024-07-13 14:09:07 keyword: START CNS
+msisdn: 880197690 text: Hey its my Secondmsg moid: 20240624002256573-3 telcoid: 3 shortcode: 9933 reqip: 45.120.96.96 datetime: 2024-07-13 14:09:32 keyword: START MWP
+msisdn: 8801930072898 text: START CNS moid: deAct427006153084271 telcoid: 3 shortcode: 16658 reqip: 103.228.39.36 datetime: 2024-07-13 14:12:06 keyword: CNS
+msisdn: 880197690 text: Hey its my Secondmsg moid: 20240624002256573-3 telcoid: 3 shortcode: 9933 reqip: 45.120.96.96 datetime: 2024-07-13 14:13:18 keyword: START MWP
+msisdn: 880197690 text: Hey its my Secondmsg moid: 20240624002256573-3 telcoid: 3 shortcode: 9933 reqip: 45.120.96.96 datetime: 2024-07-13 14:15:09 keyword: START MWP
+msisdn: 880197690 text: Hey its my Secondmsg moid: 20240624002256573-3 telcoid: 3 shortcode: 9933 reqip: 45.120.96.96 datetime: 2024-07-13 14:15:45 keyword: START MWP
+msisdn: 8801976905 text: Hey its my Secondmsg moid: 20240624002256573-3 telcoid: 3 shortcode: 9933 reqip: 45.120.96.96 datetime: 2024-07-13 14:31:23 keyword: STAR CNS
+msisdn: 8801976905 text: Hey its my Secondmsg moid: 20240624002256573-3 telcoid: 3 shortcode: 9933 reqip: 45.120.96.96 datetime: 2024-07-13 14:33:17 keyword: STAR CNS
+msisdn: 8801976905 text: Hey its my Secondmsg moid: 20240624002256573-3 telcoid: 3 shortcode: 9933 reqip: 45.120.96.96 datetime: 2024-07-13 14:33:58 keyword: START CNS
+msisdn: 8801976905 text: Hey its my Secondmsg moid: 20240624002256573-3 telcoid: 3 shortcode: 9933 reqip: 45.120.96.96 datetime: 2024-07-13 14:36:29 keyword: START CNS
+msisdn: 8801976905 text: Hey its my Secondmsg moid: 20240624002256573-3 telcoid: 3 shortcode: 9933 reqip: 45.120.96.96 datetime: 2024-07-13 14:39:26 keyword: START CNS
+msisdn: 8801976905 text: Hey its my Secondmsg moid: 20240624002256573-3 telcoid: 3 shortcode: 9933 reqip: 45.120.96.96 datetime: 2024-07-13 14:39:51 keyword: START CNS
+msisdn: 880199876546905 text: Hey its my Secondmsg moid: 20240624002256573-3 telcoid: 3 shortcode: 9933 reqip: 45.120.96.96 datetime: 2024-07-13 14:44:02 keyword: START CNS
+msisdn: 880199876546905 text: Hey its my Secondmsg moid: 20240624002256573-3 telcoid: 3 shortcode: 9933 reqip: 45.120.96.96 datetime: 2024-07-13 14:45:06 keyword: START CNS
+msisdn: 880199876546905 text: Hey its my Secondmsg moid: 20240624002256573-3 telcoid: 3 shortcode: 9933 reqip: 45.120.96.96 datetime: 2024-07-13 14:49:22 keyword: START CNS
+msisdn: 880199876546905 text: Hey its my Secondmsg moid: 20240624002256573-3 telcoid: 3 shortcode: 9933 reqip: 45.120.96.96 datetime: 2024-07-13 15:00:32 keyword: START CNS
+msisdn: 8801930072898 text: START CNS moid: deAct427006153084271 telcoid: 3 shortcode: 16658 reqip: 103.228.39.36 datetime: 2024-07-13 15:01:55 keyword: START CNS
+msisdn: 880197690576 text: Hey its my Secondmsg moid: 20240624002256573-3 telcoid: 3 shortcode: 9933 reqip: 45.120.96.96 datetime: 2024-07-13 15:07:42 keyword: FNP
+msisdn: 880197690576 text: Hey its my Secondmsg moid: 20240624002256573-3 telcoid: 3 shortcode: 9933 reqip: 45.120.96.96 datetime: 2024-07-13 15:08:59 keyword: START CNS
+msisdn: 880197690576 text: Hey its my Secondmsg moid: 20240624002256573-3 telcoid: 3 shortcode: 9933 reqip: 45.120.96.96 datetime: 2024-07-13 15:11:39 keyword: START CNS
+msisdn: 880197690576 text: Hey its my Secondmsg moid: 20240624002256573-3 telcoid: 3 shortcode: 9933 reqip: 45.120.96.96 datetime: 2024-07-13 15:13:39 keyword: START CNS
+msisdn: 8801976906 text: Hey its my Secondmsg moid: 20240624002256573-3 telcoid: 3 shortcode: 9933 reqip: 45.120.96.96 datetime: 2024-07-13 15:15:10 keyword: START CNS
+msisdn: 8801930072898 text: START CNS moid: deAct427006153084271 telcoid: 3 shortcode: 16658 reqip: 103.228.39.36 datetime: 2024-07-13 15:23:08 keyword: CNS
+msisdn: 8801930072898 text: START CNS moid: deAct427006153084271 telcoid: 3 shortcode: 16658 reqip: 103.228.39.36 datetime: 2024-07-13 15:23:32 keyword: CNS
+msisdn: 8801976905786 text: Hey its my Secondmsg moid: 20240624002256573-3 telcoid: 3 shortcode: 9933 reqip: 45.120.96.96 datetime: 2024-07-13 15:23:37 keyword: START CNS
+msisdn: 8801930072898 text: START CNS moid: deAct427006153084271 telcoid: 3 shortcode: 16658 reqip: 103.228.39.36 datetime: 2024-07-13 15:24:11 keyword: CNS
+msisdn: 8801930072898 text: START CNS moid: deAct427006153084271 telcoid: 3 shortcode: 16658 reqip: 103.228.39.36 datetime: 2024-07-13 15:24:19 keyword: START CNS
+msisdn: 8801930072898 text: START CNS moid: deAct427006153084271 telcoid: 3 shortcode: 16658 reqip: 103.228.39.36 datetime: 2024-07-13 15:29:10 keyword: START CNS
+msisdn: 8801930072898 text: START CNS moid: deAct427006153084271 telcoid: 3 shortcode: 16658 reqip: 103.228.39.36 datetime: 2024-07-13 15:33:13 keyword: START CNS
+msisdn: 8801930072898 text: START CNS moid: deAct427006153084271 telcoid: 3 shortcode: 16658 reqip: 103.228.39.36 datetime: 2024-07-13 15:33:53 keyword: START CNS
+msisdn: 8801930072898 text: START CNS moid: deAct427006153084271 telcoid: 3 shortcode: 16658 reqip: 103.228.39.36 datetime: 2024-07-13 15:33:56 keyword: START CNS
+msisdn: 8801930072898 text: START CNS moid: deAct427006153084271 telcoid: 3 shortcode: 16658 reqip: 103.228.39.36 datetime: 2024-07-13 15:33:58 keyword: START CNS
+msisdn: 8801976905 text: Hey its my Secondmsg moid: 20240624002256573-3 telcoid: 3 shortcode: 9933 reqip: 45.120.96.96 datetime: 2024-07-13 15:34:23 keyword: START CNS
+msisdn: 8801976905 text: Hey its my Secondmsg moid: 20240624002256573-3 telcoid: 3 shortcode: 9933 reqip: 45.120.96.96 datetime: 2024-07-13 15:34:50 keyword: START CNS
+msisdn: 8801930072898 text: START CNS moid: deAct427006153084271 telcoid: 3 shortcode: 16658 reqip: 103.228.39.36 datetime: 2024-07-13 15:38:34 keyword: START CNS
+msisdn: 8801930072898 text: START CNS moid: deAct427006153084271 telcoid: 3 shortcode: 16658 reqip: 103.228.39.36 datetime: 2024-07-13 15:38:35 keyword: START CNS
+msisdn: 8801930072898 text: START CNS moid: deAct427006153084271 telcoid: 3 shortcode: 16658 reqip: 103.228.39.36 datetime: 2024-07-13 15:41:32 keyword: START CNS
+msisdn: 8801930072898 text: START CNS moid: deAct427006153084271 telcoid: 3 shortcode: 16658 reqip: 103.228.39.36 datetime: 2024-07-13 15:44:59 keyword: START CNS

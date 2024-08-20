@@ -1,0 +1,9 @@
+http://103.228.39.37:88/smsPanel/gp_sms.php??msisdn=&msgid=3040110077237175029635701&telcoid=1&skey=24297686d941483288c975a95b014c6c&keyword=TTTS&shortcode=16658&text=TTTS---2024-08-15 16:25:17
+http://103.228.39.37:88/smsPanel/gp_sms.php??msisdn=&msgid=3040110077237175959796116&telcoid=1&skey=9faac6d49aa04f6cb53efc729d27d181&keyword=TFNP&shortcode=16658&text=TFNP---2024-08-15 16:26:38
+http://103.228.39.37:88/smsPanel/gp_sms.php??msisdn=&msgid=3040110077237176091576180&telcoid=1&skey=9faac6d49aa04f6cb53efc729d27d181&keyword=TFNP&shortcode=16658&text=TFNP---2024-08-15 16:30:28
+http://103.228.39.37:88/smsPanel/gp_sms.php??msisdn=576832352335555346&msgid=3030110057237177974227613&telcoid=1&skey=9faac6d49aa04f6cb53efc729d27d181&keyword=TFNP&shortcode=16658&text=TFNP---2024-08-15 16:30:37
+http://103.228.39.37:88/smsPanel/gp_sms.php??msisdn=576832352335555346&msgid=3030110057237180828068979&telcoid=1&skey=9faac6d49aa04f6cb53efc729d27d181&keyword=TFNP&shortcode=16658&text=TFNP---2024-08-15 16:35:11
+http://103.228.39.37:88/smsPanel/gp_sms.php??msisdn=576832352335555346&msgid=3040110077237181456598779&telcoid=1&skey=9faac6d49aa04f6cb53efc729d27d181&keyword=TFNP&shortcode=16658&text=TFNP---2024-08-15 16:51:10
+http://103.228.39.37:88/smsPanel/gp_sms.php??msisdn=576832352335555346&msgid=3030110057237196247606275&telcoid=1&skey=38f261e7519243968b297077eaa77d13&keyword=TLSP&shortcode=16658&text=TLSP---2024-08-15 17:00:49
+http://103.228.39.37:88/smsPanel/gp_sms.php??msisdn=576832352335555346&msgid=3030110057237198322697127&telcoid=1&skey=38f261e7519243968b297077eaa77d13&keyword=TLSP&shortcode=16658&text=TLSP---2024-08-15 17:04:06
+http://103.228.39.37:88/smsPanel/gp_sms.php??msisdn=576832352335555346&msgid=3040110077237201330557852&telcoid=1&skey=9faac6d49aa04f6cb53efc729d27d181&keyword=TFNP&shortcode=16658&text=TFNP---2024-08-15 17:08:55

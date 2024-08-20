@@ -1,0 +1,7 @@
+msisdn: 8801930072898 text: TTS moid: a6083937916497724-3 telcoid: 3 shortcode: 16658 reqip: 103.228.39.36 datetime: 2024-07-09 14:54:12 keyword: TTS
+msisdn: 8801930072898 text: TTS moid: a6083937916497724-3 telcoid: 3 shortcode: 16658 reqip: 103.228.39.36 datetime: 2024-07-09 14:56:02 keyword: TTS
+msisdn: 8801930072898 text: TTS moid: a6083937916497724-3 telcoid: 3 shortcode: 16658 reqip: 103.228.39.36 datetime: 2024-07-09 14:56:40 keyword: TTS
+msisdn: 8801930072898 text: TTS moid: a6083937916497724-3 telcoid: 3 shortcode: 16658 reqip: 103.228.39.36 datetime: 2024-07-09 14:56:44 keyword: TTS
+msisdn: 8801930072898 text: TTS moid: a6083937916497724-3 telcoid: 3 shortcode: 16658 reqip: 103.228.39.36 datetime: 2024-07-09 14:57:04 keyword: TTS
+msisdn: 8801976905786 text: Hey its my Secondmsg moid: 20240624002256573-3 telcoid: 3 shortcode: 9933 reqip: 45.120.96.96 datetime: 2024-07-09 14:58:07 keyword: FNP
+msisdn: 8801930072898 text: DES moid: a6084768991769334-3 telcoid: 3 shortcode: 16658 reqip: 103.228.39.36 datetime: 2024-07-09 14:59:50 keyword: DES

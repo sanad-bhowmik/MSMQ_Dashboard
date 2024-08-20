@@ -311,7 +311,6 @@ $result = $conn->query($sql);
                 <tr>
                     <th>#</th>
                     <th>Keyword</th>
-                    <th>Charge</th>
                     <th>Shortcode</th>
                     <th>App URL</th>
                     <th>Remark</th>
@@ -326,7 +325,6 @@ $result = $conn->query($sql);
                         echo "<tr>";
                         echo "<td>" . $index . "</td>";
                         echo "<td>" . $row["keyword"] . "</td>";
-                        echo "<td>" . $row["keywordCharge"] . "</td>";
                         echo "<td>" . $row["shortcode"] . "</td>";
                         echo "<td>" . $row["urlResponse"] . "</td>";
                         echo "<td>" . $row["keywordRemark"] . "</td>";

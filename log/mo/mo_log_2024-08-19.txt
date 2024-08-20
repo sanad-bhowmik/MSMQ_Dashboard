@@ -1,0 +1,6 @@
+msisdn: 8801930072898 text: BGGMS1 moid: 20240819040451515959-3 telcoid: 3-2024-08-19 shortcode: 16658 reqip: 103.228.39.36 datetime: 2024-08-19 21:01:59 keyword: BGGMS1
+msisdn: 8801930072898 text: BGGMS1 moid: 20240819040451515959-3 telcoid: 3-2024-08-19 shortcode: 16658 reqip: 103.228.39.36 datetime: 2024-08-19 21:02:37 keyword: BGGMS1
+msisdn: 8801930072898 text: BGGMS1 moid: 20240819090912120000-3 telcoid: 3 shortcode: 16658 reqip: 103.228.39.36 datetime: 2024-08-19 21:12:00 keyword: BGGMS1
+msisdn: 8801930072898 text: TTS moid: 20240819090912120000-3 telcoid: 3 shortcode: 16658 reqip: 103.228.39.36 datetime: 2024-08-19 21:12:00 keyword: TTS
+msisdn: 8801930072898 text: PGAMES moid: 20240819090912120000-3 telcoid: 3 shortcode: 16658 reqip: 103.228.39.36 datetime: 2024-08-19 21:12:00 keyword: PGAMES
+msisdn: 8801930072898 text: TTS moid: 20240819101051510202-3 telcoid: 3 shortcode: 16658 reqip: 103.228.39.36 datetime: 2024-08-19 22:51:02 keyword: TTS

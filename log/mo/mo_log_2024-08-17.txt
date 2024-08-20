@@ -1,0 +1,2 @@
+msisdn: 8801930072898 text: STOP CNS moid: deAct450398861032666 telcoid: 3 shortcode: 16658 reqip: 103.228.39.36 datetime: 2024-08-17 07:09:19 keyword: STOP CNS
+msisdn: 8801930072898 text: TTS moid: 20240817070717173333-3 telcoid: 3 shortcode: 16658 reqip: 103.228.39.36 datetime: 2024-08-17 07:17:33 keyword: TTS

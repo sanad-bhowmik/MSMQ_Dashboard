@@ -1,0 +1,1 @@
+msisdn: 8801930072898 text: START CNS moid: a9361540436282368 telcoid: 3 shortcode: 16658 reqip: 103.228.39.36 datetime: 2024-08-16 13:07:33 keyword: START CNS

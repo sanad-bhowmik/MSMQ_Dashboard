@@ -1,0 +1,2 @@
+http://103.228.39.37:88/smsPanel/gp_sms.php??msisdn=576832352335555346&msgid=3030110057236370991966253&telcoid=1&skey=9faac6d49aa04f6cb53efc729d27d181&keyword=TFNP&shortcode=16658&text=TFNP---2024-08-17 10:04:26
+http://103.228.39.37:88/smsPanel/gp_sms.php??msisdn=576828938239404818&msgid=3030110057237544847369958&telcoid=1&skey=a8bd1e3f363243bb9b179c5e3ea76dac&keyword=TDES&shortcode=16658&text=Des---2024-08-17 18:31:15

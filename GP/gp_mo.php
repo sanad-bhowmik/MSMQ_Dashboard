@@ -132,11 +132,11 @@ try {
                     $stmt_outbox = $queueConn->prepare("INSERT INTO tbl_outbox (msgTo, msgText, msgMOid, msgMTid , msgTelcoID,msgDate) VALUES (?, ?, ?, ?, ?, ?)");
                     $stmt_outbox->bind_param("ssssss", $msisdn, $text, $moid, $msisdn, $telcoid, $datetime);
 
-                    if ($stmt_outbox->execute()) {
-                        echo "Outbox record inserted successfully";
-                    } else {
-                        echo "Error: " . $stmt_outbox->error;
-                    }
+                    //if ($stmt_outbox->execute()) {
+                      //  echo "Outbox record inserted successfully";
+                    //} else {
+                      //  echo "Error: " . $stmt_outbox->error;
+                    //}
                 }
             } catch (Exception $e) {
                 echo 500;

@@ -1,5 +1,6 @@
 <?php
 // db block
+date_default_timezone_set('Asia/Dhaka');
 $queueDbServername = "localhost";
 $queueDbUsername = "root";
 $queueDbPassword = "";
@@ -41,18 +42,34 @@ try {
     try {
         $msg = $msgQueue->PeekFirstByLookupId();
         if ($msg != NULL) {
+			
+		
             if ($msg) {
                 $xmlString = $msg->Body;
                 $xml = new SimpleXMLElement($xmlString);
 
                 $msisdnQ = $xml->msisdn;
                 $textQ = $xml->text;
-                $msgidQ = $xml->msgid;
+                $msgidQ = $xml->moid;
                 $telcoidQ = $xml->telcoid;
                 $keywordQ = $xml->keyword;
                 $shortcodeQ = $xml->shortcode;
                 $datetimeQ = $xml->datetime;
             }
+			
+				//log
+				//$logDir = 'C:\\mts\\htdocs\\msmq\\log\\mo_pull_queue\\';
+				//$logFileName = $logDir . 'mo_pull_queue' . date('Ymd') . '.txt';
+				
+				
+			$ftp2 = fopen("C:/mts/htdocs/msmq/log/bl_mo_pull_queue_" .date('Y-m-d').".txt", 'a+');
+            fwrite($ftp2, $msisdnQ . "-" . $textQ . "-".$msgidQ ."-".$keywordQ."-".$shortcodeQ."-".date('Y-m-d H:i:s')."\n");
+           
+            fclose($ftp2);
+		
+				//
+			
+			
             // queue forward block
             $keywordFromQueue = $keywordQ;
 
@@ -65,14 +82,8 @@ try {
                 while ($row = $result->fetch_assoc()) {
                     $urlFromDb = $row['urlResponse'];
                 }
-            } else {
-                $msg = $msgQueue->Receive();
-                echo 400;
-                $queueConn->close();
-                exit;
-            }
-
-            $urlparam =  "?msisdn=" . $msisdnQ . "&msgid=" . $msgidQ . "&telcoid=" . $telcoidQ . "&keyword=" . $keywordQ . "&shortcode=" . $shortcodeQ . "&text=" . urlencode($textQ);
+				
+			$urlparam =  "?msisdn=" . $msisdnQ . "&msgid=" . $msgidQ . "&telcoid=" . $telcoidQ . "&keyword=" . $keywordQ . "&shortcode=" . $shortcodeQ . "&text=" . urlencode($textQ);
 
             $urlToHit = $urlFromDb . "?" . $urlparam;
 
@@ -81,40 +92,44 @@ try {
                 if ($response == 408) {
                     echo 408;
                 } else {
-                    $msg = $msgQueue->Receive();
+                    
 
                     // Add database insert here
-                    $xml = $msg->Body;
-                    $xmlObj = simplexml_load_string($xml);
+                    // $xml = $msg->Body;
+                    // $xmlObj = simplexml_load_string($xml);
 
-                    $msisdn = (string) $xmlObj->msisdn;
-                    $text = (string) $xmlObj->text;
-                    $moid = (string) $xmlObj->moid;
-                    $telcoid = (string) $xmlObj->telcoid;
-                    $datetime = (string) $xmlObj->datetime;
+                    // $msisdn = (string) $xmlObj->msisdn;
+                    // $text = (string) $xmlObj->text;
+                    // $moid = (string) $xmlObj->moid;
+                    // $telcoid = (string) $xmlObj->telcoid;
+                    // $datetime = (string) $xmlObj->datetime;
 
                     $stmt = $queueConn->prepare("INSERT INTO tbl_inbox (recvPhone, recvMsg, recvOriginatingID, recvSubsID, recvTelcoID, recvDate) VALUES (?, ?, ?, ?, ?, ?)");
-                    $stmt->bind_param("ssssss", $msisdn, $text, $moid, $msisdn, $telcoid, $datetime);
+                    $stmt->bind_param("ssssss", $msisdnQ, $textQ, $moidQ, $msisdnQ, $telcoidQ, $datetimeQ);
 
                     if ($stmt->execute()) {
                         echo "Record inserted successfully";
                     } else {
                         echo "Error: " . $stmt->error;
                     }
-
-                    // Insert into tbl_outbox
-                    $stmt_outbox = $queueConn->prepare("INSERT INTO tbl_outbox (msgTo, msgText, msgMOid, msgMTid , msgTelcoID,msgDate) VALUES (?, ?, ?, ?, ?, ?)");
-                    $stmt_outbox->bind_param("ssssss", $msisdn, $text, $moid, $msisdn, $telcoid, $datetime);
-
-                    if ($stmt_outbox->execute()) {
-                        echo "Outbox record inserted successfully";
-                    } else {
-                        echo "Error: " . $stmt_outbox->error;
-                    }
+					$msg = $msgQueue->Receive();
+					
                 }
             } catch (Exception $e) {
                 echo 500;
+            }	
+				
+           } else {
+			
+	
+				$msg = $msgQueue->Receive();
+                echo 400;
+                $ftp2 = fopen("C:/mts/htdocs/msmq/log/bl_mo_pull_worng_key_queue_" . date('Y-m-d') . ".txt", 'a+');
+                fwrite($ftp2, $msisdnQ . "-" . $textQ . "-" . $msgidQ . "-" . $keywordQ . "-" . $shortcodeQ . "-" . $skeyQ . "-" . date('Y-m-d H:i:s') . "\n");
+                fclose($ftp2);
             }
+
+
         } else {
             echo 404;
         }

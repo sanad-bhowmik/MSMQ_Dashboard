@@ -1,0 +1,80 @@
+msisdn: 8801976905786 text: Hey its my Secondmsg moid: 20240624002256573-3 telcoid: 3 shortcode: 9933 reqip: 45.120.96.96 datetime: 2024-07-10 06:42:04 keyword: FNP
+msisdn: not found text: not found moid: not found telcoid: not found shortcode: not found reqip: 45.120.96.96 datetime: 2024-07-10 06:42:51 keyword: not found
+msisdn: not found text: not found moid: not found telcoid: not found shortcode: not found reqip: 45.120.96.96 datetime: 2024-07-10 06:47:07 keyword: not found
+msisdn: not found text: not found moid: not found telcoid: not found shortcode: not found reqip: 45.120.96.96 datetime: 2024-07-10 06:47:08 keyword: not found
+msisdn: 8801976905786 text: Hey its my Secondmsg moid: 20240624002256573-3 telcoid: 3 shortcode: 9933 reqip: 45.120.96.96 datetime: 2024-07-10 06:49:37 keyword: FNP
+msisdn: 8801976905786 text: Hey its my Secondmsg moid: 20240624002256573-3 telcoid: 3 shortcode: 9933 reqip: 45.120.96.96 datetime: 2024-07-10 06:54:15 keyword: FNP
+msisdn: 8801976905786 text: Hey its my Secondmsg moid: 20240624002256573-3 telcoid: 3 shortcode: 9933 reqip: 45.120.96.96 datetime: 2024-07-10 06:54:17 keyword: FNP
+msisdn: 8801976905786 text: Hey its my Secondmsg moid: 20240624002256573-3 telcoid: 3 shortcode: 9933 reqip: 45.120.96.96 datetime: 2024-07-10 06:54:17 keyword: FNP
+msisdn: 8801976905 text: Hey its my Secondmsg moid: 20240624002256573-3 telcoid: 3 shortcode: 9933 reqip: 45.120.96.96 datetime: 2024-07-10 06:54:21 keyword: FNP
+msisdn: 8801976905 text: Hey its my Secondmsg moid: 20240624002256573-3 telcoid: 3 shortcode: 9933 reqip: 45.120.96.96 datetime: 2024-07-10 06:54:25 keyword: FNP
+msisdn: 8801976905 text: Hey its my Secondmsg moid: 20240624002256573-3 telcoid: 3 shortcode: 9933 reqip: 45.120.96.96 datetime: 2024-07-10 06:54:26 keyword: FNP
+msisdn: 8801976905 text: Hey its my Secondmsg moid: 20240624002256573-3 telcoid: 3 shortcode: 9933 reqip: 45.120.96.96 datetime: 2024-07-10 06:55:11 keyword: FNP
+msisdn: 8801976905 text: Hey its my Secondmsg moid: 20240624002256573-3 telcoid: 3 shortcode: 9933 reqip: 45.120.96.96 datetime: 2024-07-10 06:55:11 keyword: FNP
+msisdn: 8801976905 text: Hey its my Secondmsg moid: 20240624002256573-3 telcoid: 3 shortcode: 9933 reqip: 45.120.96.96 datetime: 2024-07-10 06:55:11 keyword: FNP
+msisdn: 8801976905 text: Hey its my Secondmsg moid: 20240624002256573-3 telcoid: 3 shortcode: 9933 reqip: 45.120.96.96 datetime: 2024-07-10 06:55:12 keyword: FNP
+msisdn: 8801976905 text: Hey its my Secondmsg moid: 20240624002256573-3 telcoid: 3 shortcode: 9933 reqip: 45.120.96.96 datetime: 2024-07-10 06:55:12 keyword: FNP
+msisdn: 8801976905 text: Hey its my Secondmsg moid: 20240624002256573-3 telcoid: 3 shortcode: 9933 reqip: 45.120.96.96 datetime: 2024-07-10 06:55:12 keyword: FNP
+msisdn: 8801976905 text: Hey its my Secondmsg moid: 20240624002256573-3 telcoid: 3 shortcode: 9933 reqip: 45.120.96.96 datetime: 2024-07-10 06:57:06 keyword: FNP
+msisdn: 8801976905786 text: Hey its my Secondmsg moid: 20240624002256573-3 telcoid: 3 shortcode: 9933 reqip: 45.120.96.96 datetime: 2024-07-10 07:13:07 keyword: FNP
+msisdn: 8801940467197 text: Hey its my Secondmsg moid: 20240624002256573-3 telcoid: 3 shortcode: 9933 reqip: 45.120.96.96 datetime: 2024-07-10 07:14:25 keyword: FNP
+msisdn: 8801976905786 text: Hey its my Secondmsg moid: 20240624002256573-3 telcoid: 3 shortcode: 9933 reqip: 45.120.96.96 datetime: 2024-07-10 09:13:46 keyword: FNP
+msisdn:  text:  moid: deAct151998622244783 telcoid: 3 shortcode: 16658 reqip: 103.228.39.36 datetime: 2024-07-10 09:48:38 keyword: 
+msisdn: 8801930072898 text:  moid: deAct152507271850591 telcoid: 3 shortcode: 16658 reqip: 103.228.39.36 datetime: 2024-07-10 09:57:06 keyword: 
+msisdn: 8801930072898 text:  moid: deAct131040346221456 telcoid: 3 shortcode: 16658 reqip: 103.228.39.36 datetime: 2024-07-10 10:07:12 keyword: 
+msisdn:  text:  moid:  telcoid: 3 shortcode: 16658 reqip: 103.228.39.36 datetime: 2024-07-10 10:14:54 keyword: 
+msisdn:  text:  moid:  telcoid: 3 shortcode: 16658 reqip: 103.228.39.36 datetime: 2024-07-10 12:09:30 keyword: 
+msisdn: 8801930072898 text: START CNS moid: deAct151643905614255 telcoid: 3 shortcode: 16658 reqip: 103.228.39.36 datetime: 2024-07-10 12:13:45 keyword: CNS
+msisdn: 8801930072898 text: START CNS moid: deAct151643905614255 telcoid: 3 shortcode: 16658 reqip: 103.228.39.36 datetime: 2024-07-10 12:14:29 keyword: CNS
+msisdn: 8801976905786 text: Hey its my Secondmsg moid: 20240624002256573-3 telcoid: 3 shortcode: 9933 reqip: 45.120.96.96 datetime: 2024-07-10 12:18:27 keyword: FNP
+msisdn: 8801976905786 text: Messi, Alvarez on target as Argentina beat Canada 2-0 to reach Copa final moid: 20240624002256573-3 telcoid: 3 shortcode: 9933 reqip: 45.120.96.96 datetime: 2024-07-10 12:19:24 keyword: FNS
+msisdn: 8801976905786 text: Messi, Alvarez on target as Argentina beat Canada 2-0 to reach Copa final moid: 20240624002256573-3 telcoid: 3 shortcode: 9933 reqip: 45.120.96.96 datetime: 2024-07-10 12:21:11 keyword: TTS
+msisdn: 8801976905786 text: Messi, Alvarez on target as Argentina beat Canada 2-0 to reach Copa final moid: 20240624002256573-3 telcoid: 3 shortcode: 9933 reqip: 45.120.96.96 datetime: 2024-07-10 12:23:11 keyword: TTS
+msisdn: 8801976905786 text: England ready to grasp shot at 'history' against the Dutch moid: 20240624002256573-3 telcoid: 3 shortcode: 9933 reqip: 45.120.96.96 datetime: 2024-07-10 12:32:03 keyword: CNS
+msisdn: 8801930072898 text: START CNS moid: deAct151643905614255 telcoid: 3 shortcode: 16658 reqip: 103.228.39.36 datetime: 2024-07-10 13:22:16 keyword: CNS
+msisdn: 8801930072898 text: STOP FNS moid: deAct164864342350032 telcoid: 3 shortcode: 16658 reqip: 103.228.39.36 datetime: 2024-07-10 13:23:03 keyword: FNS
+msisdn: 8801940467197 text: DES moid: a6169587397391284-3 telcoid: 3 shortcode: 16658 reqip: 103.228.39.36 datetime: 2024-07-10 14:28:20 keyword: DES
+msisdn: 8801940467197 text: TTS moid: a6168781486616811-3 telcoid: 3 shortcode: 16658 reqip: 103.228.39.36 datetime: 2024-07-10 14:28:20 keyword: TTS
+msisdn: 8801940467197 text: SNSGAM moid: a6169587437036019-3 telcoid: 3 shortcode: 16658 reqip: 103.228.39.36 datetime: 2024-07-10 14:28:20 keyword: SNSGAM
+msisdn: 8801940467197 text: CNP moid: a6169279562830130-3 telcoid: 3 shortcode: 16658 reqip: 103.228.39.36 datetime: 2024-07-10 14:28:20 keyword: CNP
+msisdn: 8801940467197 text: FNP moid: a6169587766530512-3 telcoid: 3 shortcode: 16658 reqip: 103.228.39.36 datetime: 2024-07-10 14:28:20 keyword: FNP
+msisdn: 8801940467197 text: SNP moid: a6169279921776475-3 telcoid: 3 shortcode: 16658 reqip: 103.228.39.36 datetime: 2024-07-10 14:28:21 keyword: SNP
+msisdn: 8801940467197 text: BNP moid: a6168781866834430-3 telcoid: 3 shortcode: 16658 reqip: 103.228.39.36 datetime: 2024-07-10 14:28:21 keyword: BNP
+msisdn: 8801940467197 text: SNSGAM moid: a6170134149986769-3 telcoid: 3 shortcode: 16658 reqip: 103.228.39.36 datetime: 2024-07-10 14:37:27 keyword: SNSGAM
+msisdn: 8801940467197 text: SNSGAM moid: a1194238449794539-3 telcoid: 3 shortcode: 16658 reqip: 103.228.39.36 datetime: 2024-07-10 14:39:59 keyword: SNSGAM
+msisdn: 8801940467197 text: DES moid: a6169850058054588-3 telcoid: 3 shortcode: 16658 reqip: 103.228.39.36 datetime: 2024-07-10 14:46:09 keyword: DES
+msisdn: 8801940467197 text: TTS moid: a6170736732823691-3 telcoid: 3 shortcode: 16658 reqip: 103.228.39.36 datetime: 2024-07-10 14:47:29 keyword: TTS
+msisdn: 8801940467197 text: CNP moid: a6170877390540168-3 telcoid: 3 shortcode: 16658 reqip: 103.228.39.36 datetime: 2024-07-10 14:49:50 keyword: CNP
+msisdn: 8801940467197 text: FNP moid: a6170999046179331-3 telcoid: 3 shortcode: 16658 reqip: 103.228.39.36 datetime: 2024-07-10 14:51:52 keyword: FNP
+msisdn: 8801940467197 text: SNP moid: a1194979070675929-3 telcoid: 3 shortcode: 16658 reqip: 103.228.39.36 datetime: 2024-07-10 14:52:19 keyword: SNP
+msisdn: 8801940467197 text: BNP moid: a6170746717565105-3 telcoid: 3 shortcode: 16658 reqip: 103.228.39.36 datetime: 2024-07-10 14:52:47 keyword: BNP
+msisdn: 8801940467197 text: LSP moid: a2148202947314731-3 telcoid: 3 shortcode: 16658 reqip: 103.228.39.36 datetime: 2024-07-10 14:53:14 keyword: LSP
+msisdn: 8801940467197 text: DEP moid: a6170304582584852-3 telcoid: 3 shortcode: 16658 reqip: 103.228.39.36 datetime: 2024-07-10 14:53:43 keyword: DEP
+msisdn: 8801940467197 text: TTP moid: a1195099622339965-3 telcoid: 3 shortcode: 16658 reqip: 103.228.39.36 datetime: 2024-07-10 14:54:20 keyword: TTP
+msisdn: 8801940467197 text: BGGMS1 moid: a6170372218602899-3 telcoid: 3 shortcode: 16658 reqip: 103.228.39.36 datetime: 2024-07-10 14:54:51 keyword: BGGMS1
+msisdn: 8801940467197 text: PGAMES moid: a6171213657511233-3 telcoid: 3 shortcode: 16658 reqip: 103.228.39.36 datetime: 2024-07-10 14:55:26 keyword: PGAMES
+msisdn: 8801940467197 text: SGAMES moid: a6170932349690724-3 telcoid: 3 shortcode: 16658 reqip: 103.228.39.36 datetime: 2024-07-10 14:55:53 keyword: SGAMES
+msisdn: 8801940467197 text: BDRAMA moid: a6171307647283201-3 telcoid: 3 shortcode: 16658 reqip: 103.228.39.36 datetime: 2024-07-10 14:57:00 keyword: BDRAMA
+msisdn: 8801940467197 text: TDRAMA moid: a6171330831074341-3 telcoid: 3 shortcode: 16658 reqip: 103.228.39.36 datetime: 2024-07-10 14:57:24 keyword: TDRAMA
+msisdn: 8801940467197 text: PDRAMA moid: a6171357229451915-3 telcoid: 3 shortcode: 16658 reqip: 103.228.39.36 datetime: 2024-07-10 14:57:50 keyword: PDRAMA
+msisdn: 8801940467197 text: START MWP moid: deAct195378598460344 telcoid: 3 shortcode: 16658 reqip: 103.228.39.36 datetime: 2024-07-10 14:59:00 keyword: MWP
+msisdn: 8801940467197 text: STOP MWP moid: deAct171364268501447 telcoid: 3 shortcode: 16658 reqip: 103.228.39.36 datetime: 2024-07-10 14:59:45 keyword: MWP
+msisdn: 8801940467197 text: WPRS moid: a6171538502377477-3 telcoid: 3 shortcode: 16658 reqip: 103.228.39.36 datetime: 2024-07-10 15:00:51 keyword: WPRS
+msisdn: 8801940467197 text: VIDEOS moid: a1195522723514840-3 telcoid: 3 shortcode: 16658 reqip: 103.228.39.36 datetime: 2024-07-10 15:01:23 keyword: VIDEOS
+msisdn: 8801940467197 text: JOKE moid: a6171597773261226-3 telcoid: 3 shortcode: 16658 reqip: 103.228.39.36 datetime: 2024-07-10 15:01:50 keyword: JOKE
+msisdn: 8801940467197 text: COMIC moid: a6170821126565030-3 telcoid: 3 shortcode: 16658 reqip: 103.228.39.36 datetime: 2024-07-10 15:02:20 keyword: COMIC
+msisdn: 8801940467197 text: START LSU moid: deAct195673682352849 telcoid: 3 shortcode: 16658 reqip: 103.228.39.36 datetime: 2024-07-10 15:03:55 keyword: LSU
+msisdn: 8801940467197 text: STOP LSU moid: deAct170944186379738 telcoid: 3 shortcode: 16658 reqip: 103.228.39.36 datetime: 2024-07-10 15:04:23 keyword: LSU
+msisdn: 8801940467197 text: START FNS moid: deAct171033789871682 telcoid: 3 shortcode: 16658 reqip: 103.228.39.36 datetime: 2024-07-10 15:05:53 keyword: FNS
+msisdn: 8801940467197 text: STOP FNS moid: deAct171755829961489 telcoid: 3 shortcode: 16658 reqip: 103.228.39.36 datetime: 2024-07-10 15:06:17 keyword: FNS
+msisdn: 8801976905786 text: Hey its my Secondmsg moid: 20240624002256573-3 telcoid: 3 shortcode: 9933 reqip: 45.120.96.96 datetime: 2024-07-10 15:08:07 keyword: FNP
+msisdn: 8801940467197 text: START CNS moid: deAct171566494972618 telcoid: 3 shortcode: 16658 reqip: 103.228.39.36 datetime: 2024-07-10 15:14:45 keyword: CNS
+msisdn: 8801940467197 text: STOP CNS moid: deAct171637144898509 telcoid: 3 shortcode: 16658 reqip: 103.228.39.36 datetime: 2024-07-10 15:15:56 keyword: CNS
+msisdn: 8801940467197 text: START BNS moid: deAct149619218381370 telcoid: 3 shortcode: 16658 reqip: 103.228.39.36 datetime: 2024-07-10 15:16:51 keyword: BNS
+msisdn: 8801940467197 text: STOP BNS moid: deAct171752660359619 telcoid: 3 shortcode: 16658 reqip: 103.228.39.36 datetime: 2024-07-10 15:17:51 keyword: BNS
+msisdn: 8801940467197 text: START BNS moid: deAct150084654138735 telcoid: 3 shortcode: 16658 reqip: 103.228.39.36 datetime: 2024-07-10 15:24:37 keyword: BNS
+msisdn: 8801940467197 text: STOP BNS moid: deAct172910711431553 telcoid: 3 shortcode: 16658 reqip: 103.228.39.36 datetime: 2024-07-10 15:25:31 keyword: BNS
+msisdn: 8801940467197 text: START LSU moid: deAct172252860217951 telcoid: 3 shortcode: 16658 reqip: 103.228.39.36 datetime: 2024-07-10 15:26:12 keyword: LSU
+msisdn: 8801940467197 text: WPRS moid: a6173227011433508-3 telcoid: 3 shortcode: 16658 reqip: 103.228.39.36 datetime: 2024-07-10 15:29:00 keyword: WPRS
+msisdn: 8801940467197 text: STOP LSU moid: deAct173190367669694 telcoid: 3 shortcode: 16658 reqip: 103.228.39.36 datetime: 2024-07-10 15:30:11 keyword: LSU
+msisdn: 8801940467197 text: PDRAMA moid: a6173633681488802-3 telcoid: 3 shortcode: 16658 reqip: 103.228.39.36 datetime: 2024-07-10 15:49:12 keyword: PDRAMA

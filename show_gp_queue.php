@@ -13,16 +13,27 @@ try {
     exit;
 }
 
-function getMessagesFromQueue($queueName) {
-    $queue = new COM("MSMQ.MSMQQueueInfo");
-    $queue->Name = $queueName;
-    $queue = $queue->Create();
-
+function getMessagesFromQueue($queuePath) {
     $messages = [];
-    while (true) {
-        $message = $queue->GetMessage();
-        if (!$message) break;
-        $messages[] = $message->Body;
+    try {
+        // Create a COM object for MSMQQueueInfo
+        $queueInfo = new COM("MSMQ.MSMQQueueInfo");
+        $queueInfo->PathName = $queuePath; // Use PathName to specify the queue
+
+        // Open the queue for receiving messages
+        $queue = $queueInfo->Open(1, 0); // 1 = MQ_RECEIVE, 0 = MQ_DENY_NONE
+
+        // Receive messages from the queue
+        while (true) {
+            $message = $queue->Receive(1000); // Timeout of 1000 ms
+            if ($message === null) break; // No more messages to read
+            $messages[] = $message->Body;
+        }
+
+        // Close the queue
+        $queue->Close();
+    } catch (Exception $e) {
+        echo "Error: " . $e->getMessage();
     }
     return $messages;
 }
@@ -45,11 +56,14 @@ function processMessage($xmlContent) {
         } else {
             echo "Request failed";
         }
+    } else {
+        echo "Keyword not found in database";
     }
 }
 
-$queueName = 'gp_messages';
-$messages = getMessagesFromQueue($queueName);
+// Use the predefined path to the queue
+$queuePath = ".\\private$\\gp_messages"; // Adjust path according to your queue configuration
+$messages = getMessagesFromQueue($queuePath);
 
 foreach ($messages as $message) {
     processMessage($message);

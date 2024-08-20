@@ -71,8 +71,10 @@ $row_count = $result_count->fetch_assoc();
 $total_records = $row_count['total_records'];
 $total_pages = ceil($total_records / $records_per_page);
 
+// Modify the SQL query to include the keywordRemark using a LEFT JOIN
 $sql = "SELECT i.recvPhone, i.recvMsg, i.recvDate, i.recvKeyword, i.recvTelcoID
         FROM tbl_inbox i
+        
         $where_clause 
         ORDER BY i.recvID DESC LIMIT $start_from, $records_per_page";
 
@@ -250,7 +252,7 @@ $result_sms = $conn->query($sql_sms);
     </div>
 
     <script>
-        function clearForm() {
+       function clearForm() {
             window.location.href = '<?php echo basename($_SERVER['PHP_SELF']); ?>';
         }
     </script>
