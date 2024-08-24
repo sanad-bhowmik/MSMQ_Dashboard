@@ -17,7 +17,7 @@ function peekMessage($queuePath)
     return $msg;
 }
 
-$queuePath = ".\\private$\\messages";
+$queuePath = ".\\private$\\bl_queues";
 
 $valid_keywords = ["START CNS", "START FNS", "START BNS", "START LSU", "START MWP", "STOP CNS", "STOP FNS", "STOP BNS", "STOP LSU", "STOP MWP"];
 

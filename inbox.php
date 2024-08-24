@@ -132,7 +132,7 @@ $result_sms = $conn->query($sql_sms);
         <table class="fl-table">
             <thead>
                 <tr>
-                    <th>#</th>
+                    <th>#Si</th>
                     <th>Phone</th>
                     <th>MO</th>
                     <th>Telco ID</th>
