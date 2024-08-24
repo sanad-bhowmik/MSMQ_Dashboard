@@ -17,4 +17,4 @@
 ### 1️⃣ **Clone the Repository:**
 
 ```bash
-git clone https://github.com/yourusername/MSMQ_Dashboard.git
+git clone https://github.com/sanad-bhowmik/MSMQ_Dashboard.git
