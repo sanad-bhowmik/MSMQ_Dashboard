@@ -1,5 +1,6 @@
 <?php
 header('Content-Type: application/xml');
+
 // Read the raw POST data from the request body
 $xmlData = file_get_contents('php://input');
 
@@ -17,7 +18,6 @@ if ($queueConn->connect_error) {
 }
 // db block
 
-
 $msisdnQ = "";
 $textQ = "";
 $msgidQ = "";
@@ -28,102 +28,96 @@ $skeyQ = "";
 $datetimeQ = "";
 $urlFromDb = "";
 
+if ($xmlData != NULL) {
+    try {
+        $xml = new SimpleXMLElement($xmlData);
 
+        $msisdnQ = (string)$xml->msisdn;
+        $textQ = (string)$xml->text;
+        $msgidQ = (string)$xml->moid;
+        $telcoidQ = (string)$xml->telcoid;
+        $keywordQ = (string)$xml->keyword;
+        $shortcodeQ = (string)$xml->shortcode;
+        $skeyQ = (string)$xml->skey;
+        $datetimeQ = (string)$xml->datetime;
 
-        
- if ($xmlData != NULL) {
+        // Replace '+' with space in the keyword
+        $keywordQ = str_replace('+', ' ', $keywordQ);
 
+        // Log received data
+        $logFilePath = "C:/mts/htdocs/msmq/log/gp/gp_mo_pull_queue_" . date('Y-m-d') . ".txt";
+        $ftp2 = fopen($logFilePath, 'a+');
+        fwrite($ftp2, "$msisdnQ - $textQ - $msgidQ - $keywordQ - $shortcodeQ - $skeyQ - " . date('Y-m-d H:i:s') . "\n");
+        fclose($ftp2);
 
-            
-                $xmlString = $msg->Body;
-                $xml = new SimpleXMLElement($xmlData);
+        // Queue forward block
+        $keywordFromQueue = $keywordQ;
+		if (strpos($keywordFromQueue, 'START ') === 0) {
+		$keywordFromQueue = substr($keywordFromQueue, 6); 
+		} elseif (strpos($keywordFromQueue, 'STOP ') === 0) {
+		$keywordFromQueue = substr($keywordFromQueue, 5); 
+		}
+        $sql = $queueConn->prepare("SELECT urlResponse FROM tbl_keyword WHERE keyword = ?");
+        $sql->bind_param("s", $keywordFromQueue);
+        $sql->execute();
+        $result = $sql->get_result();
 
-                $msisdnQ = $xml->msisdn;
-                $textQ = $xml->text;
-                $msgidQ = $xml->moid;
-                $telcoidQ = $xml->telcoid;
-                $keywordQ = $xml->keyword;
-                $shortcodeQ = $xml->shortcode;
-                $skeyQ = $xml->skey;
-                $datetimeQ = $xml->datetime;
-           
+        if ($result->num_rows > 0) {
+            $row = $result->fetch_assoc();
+            $urlFromDb = $row['urlResponse'];
 
-          
+            $urlparam = "?msisdn=" . urlencode($msisdnQ) . "&msgid=" . urlencode($msgidQ) . "&telcoid=" . urlencode($telcoidQ) . "&skey=" . urlencode($skeyQ) . "&keyword=" . urlencode($keywordQ) . "&shortcode=" . urlencode($shortcodeQ) . "&text=" . urlencode($textQ);
 
-            $ftp2 = fopen("C:/mts/htdocs/msmq/log/gp/gp_mo_pull_queue_" . date('Y-m-d') . ".txt", 'a+');
-            fwrite($ftp2, $msisdnQ . "-" . $textQ . "-" . $msgidQ . "-" . $keywordQ . "-" . $shortcodeQ . "-" . $skeyQ . "-" . date('Y-m-d H:i:s') . "\n");
-            fclose($ftp2);
-			//die();
-            //
-            // queue forward block
-            $keywordFromQueue = $keywordQ;
-            $sql = $queueConn->prepare("SELECT urlResponse FROM tbl_keyword WHERE keyword = ?");
-            $sql->bind_param("s", $keywordFromQueue);
-            $sql->execute();
-            $result = $sql->get_result();
+            $urlToHit = $urlFromDb . $urlparam;
 
-            if ($result->num_rows > 0) {
-               
-			    $row = $result->fetch_assoc();
-				$urlFromDb = $row['urlResponse'];
-				
-		    $urlparam =  "?msisdn=" . $msisdnQ . "&msgid=" . $msgidQ . "&telcoid=" . $telcoidQ . "&skey=" . $skeyQ . "&keyword=" . $keywordQ . "&shortcode=" . $shortcodeQ . "&text=" . urlencode($textQ);
-
-            $urlToHit = $urlFromDb . "?" . $urlparam;
+            // Log URL to hit
+            $urlLogFilePath = "C:/mts/htdocs/msmq/log/gp/url_hiting_log_" . date('Y-m-d') . ".txt";
+            $ftp3 = fopen($urlLogFilePath, 'a+');
+            fwrite($ftp3, "$urlToHit " . date('Y-m-d H:i:s') . "\n");
+            fclose($ftp3);
 
             try {
-                $ftp2 = fopen("C:/mts/htdocs/msmq/log/gp/gp_Push_log_" . date('Y-m-d') . ".txt", 'a+');
-                fwrite($ftp2, $urlFromDb . "?" . $urlparam . "---" . date('Y-m-d H:i:s') . "\n");
-
-                fclose($ftp2);
-               $response = HttpRequest($urlFromDb, $urlparam);
+                $response = HttpRequest($urlFromDb, $urlparam);
 
                 if ($response == 408) {
-                   
-				 echo 408;
-                $ftp2 = fopen("C:/mts/htdocs/msmq/log/gp/gp_Push_failed_log_" . date('Y-m-d') . ".txt", 'a+');
-                fwrite($ftp2, $urlFromDb . "?" . $urlparam . "---" . date('Y-m-d H:i:s') . "\n");
-
-                fclose($ftp2);
-				 
-				 } else {
-                   
-
-                    $stmt = $queueConn->prepare("INSERT INTO tbl_inbox (recvPhone, recvMsg, recvOriginatingID, recvSubsID, recvTelcoID, recvDate) VALUES (?, ?, ?, ?, ?, ?)");
-                    $stmt->bind_param("ssssss", $msisdnQ, $textQ, $moidQ, $msisdnQ, $telcoidQ, $datetimeQ);
-
-                    if ($stmt->execute()) {
-                        echo "Record inserted successfully";
-						$queueConn->close();
+                    // Log failed attempt
+                    $failLogFilePath = "C:/mts/htdocs/msmq/log/gp/gp_Push_failed_log_" . date('Y-m-d') . ".txt";
+                    $ftp2 = fopen($failLogFilePath, 'a+');
+                    fwrite($ftp2, "$urlFromDb $urlparam --- " . date('Y-m-d H:i:s') . "\n");
+                    fclose($ftp2);
+                    echo 408;
+                } else {
                     
-					} else {
-                        echo "Error: " . $stmt->error;
-                    }
-					
-				}// try url hit
-                
+                        // Insert new record
+                        $stmt = $queueConn->prepare("INSERT INTO tbl_inbox (recvPhone, recvMsg, recvOriginatingID, recvSubsID, recvTelcoID, recvDate) VALUES (?, ?, ?, ?, ?, ?)");
+                        $stmt->bind_param("ssssss", $msisdnQ, $textQ, $msgidQ, $msisdnQ, $telcoidQ, $datetimeQ);
+
+                        if ($stmt->execute()) {
+                            echo "Record inserted successfully";
+                        } else {
+                            echo "Error: " . $stmt->error;
+                        }
+                    $stmtCheck->close();
+                }
             } catch (Exception $e) {
                 echo 500;
             }
-				
-				
-            }// if num rows
-			else {
-              
-				$ftp2 = fopen("C:/mts/htdocs/msmq/log/gp/gp_mo_pull_worng_key_queue_" . date('Y-m-d') . ".txt", 'a+');
-                fwrite($ftp2, $msisdnQ . "-" . $textQ . "-" . $msgidQ . "-" . $keywordQ . "-" . $shortcodeQ . "-" . $skeyQ . "-" . date('Y-m-d H:i:s') . "\n");
-                fclose($ftp2);
-                echo 400;
-             
-              //  exit;
-            }
-
-        } // no xml 
-		else {
-            echo 404;
+        } else {
+            // Log invalid keyword
+            $wrongKeyLogFilePath = "C:/mts/htdocs/msmq/log/gp/gp_mo_pull_worng_key_queue_" . date('Y-m-d') . ".txt";
+            $ftp2 = fopen($wrongKeyLogFilePath, 'a+');
+            fwrite($ftp2, "$msisdnQ - $textQ - $msgidQ - $keywordQ - $shortcodeQ - $skeyQ - " . date('Y-m-d H:i:s') . "\n");
+            fclose($ftp2);
+            echo 400;
         }
-     
-//$queueConn->close();
+    } catch (Exception $e) {
+        echo 404;
+    }
+} else {
+    echo 404;
+}
+
+$queueConn->close();
 
 function HttpRequest($url, $param)
 {
@@ -137,3 +131,4 @@ function HttpRequest($url, $param)
     curl_close($ch);
     return $response;
 }
+?>
