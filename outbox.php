@@ -23,19 +23,13 @@ if (isset($_GET['telco_id']) && $_GET['telco_id'] != '') {
     $where_conditions[] = "msgTelcoID = '$telco_id'";
 }
 
-// Handle keyword filter
-if (isset($_GET['field2']) && $_GET['field2'] != '') {
-    $keywordID = $conn->real_escape_string($_GET['field2']);
-    $where_conditions[] = "msgText LIKE '%$keywordID%'";
-}
-
-// Handle MO (Message Origin) filter
+// Handle keyword filter (MT filter)
 if (isset($_GET['field3']) && $_GET['field3'] != '') {
     $messageOrigin = $conn->real_escape_string($_GET['field3']);
     $where_conditions[] = "msgText LIKE '%$messageOrigin%'";
 }
 
-// Handle MSISDN filter
+// Handle MSISDN filter (Phone number filter)
 if (isset($_GET['field4']) && $_GET['field4'] != '') {
     $msisdn = $conn->real_escape_string($_GET['field4']);
     $where_conditions[] = "msgTo = '$msisdn'";
@@ -73,7 +67,7 @@ $total_pages = ceil($total_records / $records_per_page);
 
 // Get the filtered records
 $sql = "SELECT msgTo, msgText, msgTelcoID, msgDate 
-        FROM tbl_outbox" .
+        FROM tbl_outbox" . 
     $where_clause . " 
         ORDER BY msgDate DESC 
         LIMIT $start_from, $records_per_page";
@@ -99,10 +93,10 @@ $result = $conn->query($sql);
                     <option value="" selected disabled>Select TELCO</option>
                     <option value="1" <?php echo (isset($_GET['telco_id']) && $_GET['telco_id'] == '1') ? 'selected' : ''; ?>>Grameen Phone</option>
                     <option value="3" <?php echo (isset($_GET['telco_id']) && $_GET['telco_id'] == '3') ? 'selected' : ''; ?>>Banglalink</option>
-                    <option value="4" <?php echo (isset($_GET['telco_id']) && $_GET['telco_id'] == '4') ? 'selected' : ''; ?>>Robi</option>
+                    <!-- <option value="4" <?php echo (isset($_GET['telco_id']) && $_GET['telco_id'] == '4') ? 'selected' : ''; ?>>Robi</option> -->
                 </select>
-                <!-- <input type="text" name="field2" class="field-style" placeholder="Keyword" value="<?php echo isset($_GET['field2']) ? $_GET['field2'] : ''; ?>" /> -->
                 <input type="text" name="field3" class="field-style" placeholder="MT" value="<?php echo isset($_GET['field3']) ? $_GET['field3'] : ''; ?>" />
+                <input type="text" name="field4" class="field-style" placeholder="Phone Number" value="<?php echo isset($_GET['field4']) ? $_GET['field4'] : ''; ?>" />
             </li>
 
             <li>
@@ -118,7 +112,7 @@ $result = $conn->query($sql);
         <table class="fl-table">
             <thead>
                 <tr>
-                    <th>#</th>
+                    <th>#Si</th>
                     <th>Phone</th>
                     <th>MT</th>
                     <th>Telco ID</th>
@@ -139,7 +133,7 @@ $result = $conn->query($sql);
                             case '3':
                                 $telco_name = 'Banglalink';
                                 break;
-                            case '4': // Assuming the '$' you mentioned was a typo for '4'
+                            case '4':
                                 $telco_name = 'Robi';
                                 break;
                             default:
@@ -162,6 +156,7 @@ $result = $conn->query($sql);
             </tbody>
         </table>
     </div>
+
     <!-- Pagination Links -->
     <div class="pagination">
         <?php
@@ -240,7 +235,7 @@ $result = $conn->query($sql);
 
     <script>
         function clearForm() {
-            window.location.href = '<?php echo basename($_SERVER['PHP_SELF']); ?>';
+            window.location.href = "<?php echo $_SERVER['PHP_SELF']; ?>";
         }
     </script>
 </body>
@@ -250,6 +245,7 @@ $result = $conn->query($sql);
 <?php
 $conn->close();
 ?>
+
 
 
 

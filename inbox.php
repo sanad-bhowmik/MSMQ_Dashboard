@@ -41,6 +41,12 @@ if (isset($_GET['field4']) && $_GET['field4'] != '') {
     $where_conditions[] = "recvPhone = '$msisdn'";
 }
 
+// Handle phone-wise filter
+if (isset($_GET['phone_filter']) && $_GET['phone_filter'] != '') {
+    $phone_filter = $conn->real_escape_string($_GET['phone_filter']);
+    $where_conditions[] = "recvPhone = '$phone_filter'";
+}
+
 // Handle date filters
 if (isset($_GET['from_date']) && $_GET['from_date'] != '' && isset($_GET['to_date']) && $_GET['to_date'] != '') {
     $from_date = $conn->real_escape_string($_GET['from_date']);
@@ -100,26 +106,28 @@ $result_sms = $conn->query($sql_sms);
         <h3 style="margin-top: 0;text-align: center;font-family: serif;">Inbound Traffic Log</h3>
         <ul>
             <li>
-                <select name="telco_id" id="telco_id" class="field-style" style="max-width: 397px;">
-                    <option value="" selected disabled>Select TELCO</option>
-                    <option value="1" <?php echo (isset($_GET['telco_id']) && $_GET['telco_id'] == '1') ? 'selected' : ''; ?>>Grameen Phone</option>
-                    <option value="3" <?php echo (isset($_GET['telco_id']) && $_GET['telco_id'] == '3') ? 'selected' : ''; ?>>Banglalink</option>
-                    <option value="4" <?php echo (isset($_GET['telco_id']) && $_GET['telco_id'] == '4') ? 'selected' : ''; ?>>Robi</option>
-                </select>
+                <input type="text" name="phone_filter" class="field-style" placeholder="Enter Phone Number" value="<?php echo isset($_GET['phone_filter']) ? $_GET['phone_filter'] : ''; ?>" />
+
                 <select name="sms_filter" class="field-style">
-                    <option value="" selected disabled>Select MO</option>
+                    <option value="" selected disabled>Select Keyword</option>
                     <?php
                     if ($result_sms->num_rows > 0) {
                         while ($row = $result_sms->fetch_assoc()) {
-                            echo '<option value="' . htmlspecialchars($row['recvMsg']) . '">' . htmlspecialchars($row['recvMsg']) . '</option>';
+                            echo '<option value="' . htmlspecialchars(strtoupper($row['recvMsg'])) . '">' . htmlspecialchars(strtoupper($row['recvMsg'])) . '</option>';
                         }
                     }
                     ?>
                 </select>
+
             </li>
 
-
             <li>
+                <select name="telco_id" id="telco_id" class="field-style" style="max-width: 397px;">
+                    <option value="" selected disabled>Select TELCO</option>
+                    <option value="1" <?php echo (isset($_GET['telco_id']) && $_GET['telco_id'] == '1') ? 'selected' : ''; ?>>Grameen Phone</option>
+                    <option value="3" <?php echo (isset($_GET['telco_id']) && $_GET['telco_id'] == '3') ? 'selected' : ''; ?>>Banglalink</option>
+                    <!-- <option value="4" <?php echo (isset($_GET['telco_id']) && $_GET['telco_id'] == '4') ? 'selected' : ''; ?>>Robi</option> -->
+                </select>
                 <input type="date" name="from_date" class="field-style" placeholder="From Date" value="<?php echo isset($_GET['from_date']) ? $_GET['from_date'] : ''; ?>" />
                 <input type="date" name="to_date" class="field-style" placeholder="To Date" value="<?php echo isset($_GET['to_date']) ? $_GET['to_date'] : ''; ?>" />
                 <input type="submit" name="search" value="Search" style="margin-right: 3px;">
@@ -208,26 +216,27 @@ $result_sms = $conn->query($sql_sms);
                     }
                 }
                 echo "'>1</a>";
-                if ($start > 2) echo "...";
+                if ($start > 2) echo "<span>...</span>";
             }
 
-            // Page numbers
             for ($i = $start; $i <= $end; $i++) {
-                echo "<a href='?page=$i";
-                if (!empty($where_clause)) {
-                    foreach ($_GET as $key => $value) {
-                        if ($key != 'page') {
-                            echo "&$key=$value";
+                if ($i == $page) {
+                    echo "<span class='current'>$i</span>";
+                } else {
+                    echo "<a href='?page=$i";
+                    if (!empty($where_clause)) {
+                        foreach ($_GET as $key => $value) {
+                            if ($key != 'page') {
+                                echo "&$key=$value";
+                            }
                         }
                     }
+                    echo "'>$i</a>";
                 }
-                echo "'";
-                if ($i == $page) echo " class='active'";
-                echo ">$i</a>";
             }
 
             if ($end < $total_pages) {
-                if ($end < $total_pages - 1) echo "...";
+                if ($end < $total_pages - 1) echo "<span>...</span>";
                 echo "<a href='?page=$total_pages";
                 if (!empty($where_clause)) {
                     foreach ($_GET as $key => $value) {
@@ -238,6 +247,8 @@ $result_sms = $conn->query($sql_sms);
                 }
                 echo "'>$total_pages</a>";
             }
+
+            // Last page link
             echo "<a href='?page=$total_pages";
             if (!empty($where_clause)) {
                 foreach ($_GET as $key => $value) {
@@ -246,23 +257,20 @@ $result_sms = $conn->query($sql_sms);
                     }
                 }
             }
-            echo "'>&gt;&gt;</a>";
+            echo "'>&gt;&gt;</a>"; // >> for last page
         }
         ?>
     </div>
 
     <script>
-       function clearForm() {
-            window.location.href = '<?php echo basename($_SERVER['PHP_SELF']); ?>';
+        function clearForm() {
+            window.location.href = window.location.pathname;
         }
     </script>
 </body>
 
 </html>
-
-<?php
-$conn->close();
-?>
+<?php $conn->close(); ?>
 
 
 

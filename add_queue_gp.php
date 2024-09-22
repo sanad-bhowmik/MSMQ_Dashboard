@@ -2,16 +2,21 @@
 date_default_timezone_set("Asia/Dhaka");
 $datetime = date('Y-m-d H:i:s');
 $date = date('Y-m-d');
+
+// Include the necessary initialization file
 include_once("include/initialize.php");
+
+// Initialize variables
 $msisdn = "not found";
 $text = "not found";
 $moid = "not found";
 $telcoid = "not found";
 $keyword = "not found";
 $shortcode = "not found";
-$sKey= "not found";
+$sKey = "not found";
 $ip = "";
 
+// Get the IP address
 if (!empty($_SERVER['HTTP_CLIENT_IP'])) {
     $ip = $_SERVER['HTTP_CLIENT_IP'];
 } elseif (!empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {
@@ -20,6 +25,7 @@ if (!empty($_SERVER['HTTP_CLIENT_IP'])) {
     $ip = $_SERVER['REMOTE_ADDR'];
 }
 
+// Get request parameters
 if (isset($_REQUEST['msisdn'])) {
     $msisdn = $_REQUEST['msisdn'];
 }
@@ -41,6 +47,8 @@ if (isset($_REQUEST['keyword'])) {
 if (isset($_REQUEST['skey'])) {
     $sKey = $_REQUEST['skey'];
 }
+
+// Prepare log data
 $logdata = "msisdn: " . $msisdn;
 $logdata .= " text: " . $text;
 $logdata .= " moid: " . $moid;
@@ -52,17 +60,8 @@ $logdata .= " keyword: " . $keyword;
 $logdata .= " Skeyword: " . $sKey;
 $logdata .= "\n";
 
-// $errorLogPath = "C:/htdocs/msmq/log/error/error_log_" . $date . ".txt";
 
-// $filewrite = fopen("C:/htdocs/msmq/log/mo/mo_log_" . $date . ".txt", "a+");
-// if ($filewrite) {
-//     fwrite($filewrite, $logdata);
-//     fclose($filewrite);
-// } else {
-//     $errorLogData = "Failed to open mo log file. Data: " . $logdata;
-//     file_put_contents($errorLogPath, $errorLogData, FILE_APPEND | LOCK_EX);
-// }
-
+// Prepare XML data
 $xml = new SimpleXMLElement('<Message/>');
 $xml->addChild('msisdn', $msisdn);
 $xml->addChild('text', $text);
@@ -98,8 +97,9 @@ try {
 
     echo "<div style='text-align: center; margin-top: 10px;'>Response Status Code: 200</div>";
 } catch (Exception $e) {
+    // Log the error
     $errorLogData = "Error occurred: " . $e->getMessage() . " Data: " . $xmlString;
-    file_put_contents($errorLogPath, $errorLogData, FILE_APPEND | LOCK_EX);
+    file_put_contents($logFilePath, $errorLogData, FILE_APPEND | LOCK_EX);
 
     echo "<div style='color: red; font-weight: bold; font-size: 24px; text-align: center; margin-top: 20%;'>An error occurred: " . $e->getMessage() . "</div>";
 }
