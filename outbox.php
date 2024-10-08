@@ -15,12 +15,21 @@ if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
 
+// Define where conditions
 $where_conditions = array();
 
 // Handle telco_id filter
 if (isset($_GET['telco_id']) && $_GET['telco_id'] != '') {
     $telco_id = $conn->real_escape_string($_GET['telco_id']);
-    $where_conditions[] = "msgTelcoID = '$telco_id'";
+    if ($telco_id !== 'all') { // Only add condition if not "All Telco"
+        $where_conditions[] = "msgTelcoID = '$telco_id'";
+    }
+}
+
+// Handle keyword ID filter
+if (isset($_GET['keyword_id']) && $_GET['keyword_id'] != '') {
+    $keyword_id = $conn->real_escape_string($_GET['keyword_id']);
+    $where_conditions[] = "tbl_keyword.keywordID = '$keyword_id'";
 }
 
 // Handle keyword filter (MT filter)
@@ -59,19 +68,36 @@ $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
 $start_from = ($page - 1) * $records_per_page;
 
 // Get count of total records
-$sql_count = "SELECT COUNT(*) AS total_records FROM tbl_outbox" . $where_clause;
+$sql_count = "SELECT COUNT(*) AS total_records FROM tbl_outbox
+              LEFT JOIN tbl_keyword ON tbl_outbox.msgKeyID = tbl_keyword.keywordID" . $where_clause;
 $result_count = $conn->query($sql_count);
+
+if (!$result_count) {
+    die("Error in query: " . $conn->error);
+}
+
 $row_count = $result_count->fetch_assoc();
 $total_records = $row_count['total_records'];
 $total_pages = ceil($total_records / $records_per_page);
 
 // Get the filtered records
-$sql = "SELECT msgTo, msgText, msgTelcoID, msgDate 
-        FROM tbl_outbox" . 
-    $where_clause . " 
-        ORDER BY msgDate DESC 
+$sql = "SELECT 
+            tbl_outbox.msgTo, 
+            tbl_outbox.msgText, 
+            tbl_outbox.msgTelcoID, 
+            tbl_outbox.msgDate,
+            tbl_keyword.keyword AS Keyword
+        FROM tbl_outbox
+        LEFT JOIN tbl_keyword ON tbl_outbox.msgKeyID = tbl_keyword.keywordID
+        " . $where_clause . " 
+        ORDER BY tbl_outbox.msgDate DESC 
         LIMIT $start_from, $records_per_page";
+
 $result = $conn->query($sql);
+
+if (!$result) {
+    die("Error in query: " . $conn->error);
+}
 ?>
 
 <!DOCTYPE html>
@@ -82,39 +108,93 @@ $result = $conn->query($sql);
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Outbound Traffic Log</title>
     <link rel="stylesheet" href="../style/style.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.16.9/xlsx.full.min.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.1.0-beta.1/css/select2.min.css" rel="stylesheet" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.1.0-beta.1/js/select2.min.js"></script>
 </head>
 
 <body>
     <form class="form-style-9" method="GET" action="">
-        <h3 style="margin-top: 0;text-align: center;font-family: serif;">Outbound Traffic Log</h3>
+        <h3 style="margin-top: 0;text-align: center;font-family: serif;margin-bottom: 17px;">Outbound Traffic Log</h3>
         <ul>
-            <li>
-                <select name="telco_id" id="telco_id" class="field-style" style="max-width: 427px;">
+            <li style="gap: 10px;">
+                <!-- TELCO Dropdown (Searchable) -->
+                <select name="telco_id" id="telco_id" class="field-style select2" style="max-width: 427px;">
                     <option value="" selected disabled>Select TELCO</option>
+                    <option value="all" <?php echo (isset($_GET['telco_id']) && $_GET['telco_id'] == 'all') ? 'selected' : ''; ?>>All TELCO</option>
                     <option value="1" <?php echo (isset($_GET['telco_id']) && $_GET['telco_id'] == '1') ? 'selected' : ''; ?>>Grameen Phone</option>
                     <option value="3" <?php echo (isset($_GET['telco_id']) && $_GET['telco_id'] == '3') ? 'selected' : ''; ?>>Banglalink</option>
                     <!-- <option value="4" <?php echo (isset($_GET['telco_id']) && $_GET['telco_id'] == '4') ? 'selected' : ''; ?>>Robi</option> -->
                 </select>
-                <input type="text" name="field3" class="field-style" placeholder="MT" value="<?php echo isset($_GET['field3']) ? $_GET['field3'] : ''; ?>" />
-                <input type="text" name="field4" class="field-style" placeholder="Phone Number" value="<?php echo isset($_GET['field4']) ? $_GET['field4'] : ''; ?>" />
+
+                <!-- Keyword Dropdown (Searchable) -->
+                <select name="keyword_id" class="field-style select2" style="max-width: 300px;">
+                    <option value="" selected>Select Keyword</option>
+                    <?php
+                    // Fetch and display keyword options
+                    $keyword_query = "SELECT keywordID, keyword FROM tbl_keyword";
+                    $keyword_result = $conn->query($keyword_query);
+
+                    if (!$keyword_result) {
+                        die("Error in query: " . $conn->error);
+                    }
+
+                    while ($keyword_row = $keyword_result->fetch_assoc()) {
+                        $selected = (isset($_GET['keyword_id']) && $_GET['keyword_id'] == $keyword_row['keywordID']) ? 'selected' : '';
+                        echo "<option value='{$keyword_row['keywordID']}' $selected>{$keyword_row['keyword']}</option>";
+                    }
+                    ?>
+                </select>
+
+                <input type="text" style="width: 300px;box-sizing: border-box;border-radius: 3px;border: 1px solid #afa5a5;height: 28px;margin-right: 0;" name="field3" class="field-style" placeholder="MT" value="<?php echo isset($_GET['field3']) ? $_GET['field3'] : ''; ?>" />
             </li>
 
             <li>
+                <input type="text" name="field4" class="field-style" placeholder="Phone Number" value="<?php echo isset($_GET['field4']) ? $_GET['field4'] : ''; ?>" />
                 <input type="date" name="from_date" class="field-style" placeholder="From Date" value="<?php echo isset($_GET['from_date']) ? $_GET['from_date'] : ''; ?>" />
                 <input type="date" name="to_date" class="field-style" placeholder="To Date" value="<?php echo isset($_GET['to_date']) ? $_GET['to_date'] : ''; ?>" />
                 <input type="submit" name="search" value="Search" style="margin-right: 3px;">
-                <input type="button" class="clear-button" value="Clear" onclick="clearForm()">
+                <input type="button" class="clear-button" value="Clear" onclick="clearForm()" style="margin-right: 6px;">
+                <button class="container-btn-file" id="download-excel" type="button">
+                    <svg
+                        fill="#fff"
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="16"
+                        height="16"
+                        viewBox="0 0 50 50">
+                        <path
+                            d="M28.8125 .03125L.8125 5.34375C.339844 
+                              5.433594 0 5.863281 0 6.34375L0 43.65625C0 
+                              44.136719 .339844 44.566406 .8125 44.65625L28.8125 
+                              49.96875C28.875 49.980469 28.9375 50 29 50C29.230469 
+                              50 29.445313 49.929688 29.625 49.78125C29.855469 49.589844 
+                              30 49.296875 30 49L30 1C30 .703125 29.855469 .410156 29.625 
+                              .21875C29.394531 .0273438 29.105469 -.0234375 28.8125 .03125ZM32 
+                              6L32 13L34 13L34 15L32 15L32 20L34 20L34 22L32 22L32 27L34 27L34 
+                              29L32 29L32 35L34 35L34 37L32 37L32 44L47 44C48.101563 44 49 
+                              43.101563 49 42L49 8C49 6.898438 48.101563 6 47 6ZM36 13L44 
+                              13L44 15L36 15ZM6.6875 15.6875L11.8125 15.6875L14.5 21.28125C14.710938 
+                              21.722656 14.898438 22.265625 15.0625 22.875L15.09375 22.875C15.199219 
+                              22.511719 15.402344 21.941406 15.6875 21.21875L18.65625 15.6875L23.34375 
+                              15.6875L17.75 24.9375L23.5 34.375L18.53125 34.375L15.28125 
+                              28.28125C15.160156 28.054688 15.035156 27.636719 14.90625 
+                              27.03125L14.875 27.03125C14.8125 27.316406 14.664063 27.761719 
+                              14.4375 28.34375L11.1875 34.375L6.1875 34.375L12.15625 25.03125ZM36 
+                              20L44 20L44 22L36 22ZM36 27L44 27L44 29L36 29ZM36 35L44 35L44 37L36 37Z"></path>
+                    </svg>
+                </button>
             </li>
         </ul>
     </form>
-
     <div class="table-wrapper">
         <table class="fl-table">
             <thead>
                 <tr>
-                    <th>#Si</th>
+                    <th>#</th>
                     <th>Phone</th>
                     <th>MT</th>
+                    <th>Keyword</th>
                     <th>Telco ID</th>
                     <th>Date</th>
                 </tr>
@@ -144,99 +224,61 @@ $result = $conn->query($sql);
                             <td><?php echo $index++; ?></td>
                             <td><?php echo htmlspecialchars($row['msgTo']); ?></td>
                             <td><?php echo htmlspecialchars($row['msgText']); ?></td>
+                            <td><?php echo htmlspecialchars($row['Keyword']); ?></td>
                             <td><?php echo htmlspecialchars($telco_name); ?></td>
-                            <td><?php echo htmlspecialchars($row['msgDate']); ?></td>
+                            <td><?php echo date('d-m-Y H:i:s', strtotime($row['msgDate'])); ?></td>
                         </tr>
                     <?php endwhile; ?>
                 <?php else: ?>
                     <tr>
-                        <td colspan="5" style="font-size: large;color: red;font-weight: 700;font-family: monospace;">No records found</td>
+                        <td colspan="6" style="font-size: large;color: red;font-weight: 700;font-family: monospace;">No records found</td>
                     </tr>
                 <?php endif; ?>
             </tbody>
         </table>
     </div>
 
-    <!-- Pagination Links -->
     <div class="pagination">
         <?php
+        // Display pagination links
         if ($total_pages > 1) {
-            // First page link
-            echo "<a href='?page=1";
-            if (!empty($where_clause)) {
-                foreach ($_GET as $key => $value) {
-                    if ($key != 'page') {
-                        echo "&$key=" . htmlspecialchars($value);
-                    }
-                }
+            for ($i = 1; $i <= $total_pages; $i++) {
+                echo "<a href='?page=$i'>" . $i . "</a> ";
             }
-            echo "'>&lt;&lt;</a>"; // << for first page
-
-            $range = 2; // Number of page links to show on either side of the current page
-
-            // Calculate start and end range for pagination numbers
-            $start = max(1, $page - $range);
-            $end = min($total_pages, $page + $range);
-
-            if ($start > 1) {
-                echo "<a href='?page=1";
-                if (!empty($where_clause)) {
-                    foreach ($_GET as $key => $value) {
-                        if ($key != 'page') {
-                            echo "&$key=" . htmlspecialchars($value);
-                        }
-                    }
-                }
-                echo "'>1</a>";
-                if ($start > 2) echo "...";
-            }
-
-            // Page numbers
-            for ($i = $start; $i <= $end; $i++) {
-                echo "<a href='?page=$i";
-                if (!empty($where_clause)) {
-                    foreach ($_GET as $key => $value) {
-                        if ($key != 'page') {
-                            echo "&$key=" . htmlspecialchars($value);
-                        }
-                    }
-                }
-                echo "'";
-                if ($i == $page) echo " class='active'";
-                echo ">$i</a>";
-            }
-
-            if ($end < $total_pages) {
-                if ($end < $total_pages - 1) echo "...";
-                echo "<a href='?page=$total_pages";
-                if (!empty($where_clause)) {
-                    foreach ($_GET as $key => $value) {
-                        if ($key != 'page') {
-                            echo "&$key=" . htmlspecialchars($value);
-                        }
-                    }
-                }
-                echo "'>$total_pages</a>";
-            }
-
-            // Last page link
-            echo "<a href='?page=$total_pages";
-            if (!empty($where_clause)) {
-                foreach ($_GET as $key => $value) {
-                    if ($key != 'page') {
-                        echo "&$key=" . htmlspecialchars($value);
-                    }
-                }
-            }
-            echo "'>&gt;&gt;</a>"; // >> for last page
         }
         ?>
     </div>
 
     <script>
         function clearForm() {
-            window.location.href = "<?php echo $_SERVER['PHP_SELF']; ?>";
+            window.location.href = window.location.pathname;
         }
+        $(document).ready(function() {
+            $('#download-excel').on('click', function() {
+                var wb = XLSX.utils.book_new();
+
+                var table = $('.fl-table')[0];
+                var ws = XLSX.utils.table_to_sheet(table);
+
+                XLSX.utils.book_append_sheet(wb, ws, "Inbound Traffic Log");
+
+                XLSX.writeFile(wb, 'Outbound_Traffic_Log.xlsx');
+            });
+        });
+        $(document).ready(function() {
+            $('#telco_id').select2({
+                placeholder: "Select TELCO",
+                allowClear: true
+            });
+
+            $('select[name="keyword_id"]').select2({
+                placeholder: "Select Keyword",
+                allowClear: true
+            });
+
+            $('#telco_id').next('.select2-container').css('width', '300px');
+            $('select[name="keyword_id"]').next('.select2-container').css('width', '300px');
+        });
     </script>
 </body>
 
@@ -250,6 +292,46 @@ $conn->close();
 
 
 <style>
+    .container-btn-file {
+        cursor: pointer;
+        display: flex;
+        position: relative;
+        justify-content: center;
+        align-items: center;
+        background-color: #307750;
+        color: #fff;
+        border-style: none;
+        padding: 1em 2em;
+        border-radius: 0.5em;
+        overflow: hidden;
+        z-index: 1;
+        box-shadow: 4px 8px 10px -3px rgba(0, 0, 0, 0.356);
+        transition: all 250ms;
+    }
+
+    .container-btn-file input[type="file"] {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        opacity: 0;
+        cursor: pointer;
+    }
+
+    .container-btn-file::before {
+        content: "";
+        position: absolute;
+        height: 100%;
+        width: 0;
+        border-radius: 0.5em;
+        background-color: #469b61;
+        z-index: -1;
+        transition: all 350ms;
+    }
+
+    .container-btn-file:hover::before {
+        width: 100%;
+    }
+
     .form-style-9 {
         max-width: 98%;
         padding: 20px;

@@ -23,10 +23,11 @@ if (isset($_GET['telco_id']) && $_GET['telco_id'] != '') {
     $where_conditions[] = "recvTelcoID = '$telco_id'";
 }
 
-// Handle SMS filter (this replaces the previous keyword filter)
+// Handle SMS (Keyword) filter with case-insensitivity and partial match
 if (isset($_GET['sms_filter']) && $_GET['sms_filter'] != '') {
     $sms_filter = $conn->real_escape_string($_GET['sms_filter']);
-    $where_conditions[] = "recvMsg = '$sms_filter'";
+    // Use LOWER() for case-insensitive partial matching
+    $where_conditions[] = "LOWER(recvMsg) LIKE LOWER('%$sms_filter%')";
 }
 
 // Handle Keyword Remark filter
@@ -80,16 +81,24 @@ $total_pages = ceil($total_records / $records_per_page);
 // Modify the SQL query to include the keywordRemark using a LEFT JOIN
 $sql = "SELECT i.recvPhone, i.recvMsg, i.recvDate, i.recvKeyword, i.recvTelcoID
         FROM tbl_inbox i
-        
         $where_clause 
         ORDER BY i.recvID DESC LIMIT $start_from, $records_per_page";
 
 $result = $conn->query($sql);
 
 // Fetch distinct SMS values for the dropdown
-$sql_sms = "SELECT DISTINCT recvMsg FROM tbl_inbox";
+$sql_sms = "SELECT DISTINCT keyword FROM tbl_keyword";
 $result_sms = $conn->query($sql_sms);
+
+// Fetch all keywords for the dropdown
+$keywords = array();
+if ($result_sms->num_rows > 0) {
+    while ($row = $result_sms->fetch_assoc()) {
+        $keywords[] = htmlspecialchars($row['keyword']);
+    }
+}
 ?>
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -99,39 +108,80 @@ $result_sms = $conn->query($sql_sms);
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Inbox</title>
     <link rel="stylesheet" href="../style/style.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.16.9/xlsx.full.min.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.1.0-beta.1/css/select2.min.css" rel="stylesheet" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.1.0-beta.1/js/select2.min.js"></script>
+
 </head>
 
 <body>
     <form class="form-style-9" method="GET" action="">
-        <h3 style="margin-top: 0;text-align: center;font-family: serif;">Inbound Traffic Log</h3>
+        <h3 style="margin-top: 0;text-align: center;font-family: serif;margin-bottom: 17px;">Inbound Traffic Log</h3>
         <ul>
-            <li>
-                <input type="text" name="phone_filter" class="field-style" placeholder="Enter Phone Number" value="<?php echo isset($_GET['phone_filter']) ? $_GET['phone_filter'] : ''; ?>" />
+            <li style="gap: 10px;">
+                <!-- Phone Number Input Field -->
+                <input type="text" name="phone_filter" class="field-style " placeholder="Enter Phone Number" value="<?php echo isset($_GET['phone_filter']) ? htmlspecialchars($_GET['phone_filter']) : ''; ?>"
+                    style="width: 300px;box-sizing: border-box;border-radius: 3px;border: 1px solid #afa5a5;height: 28px;margin-right: 0;" />
 
-                <select name="sms_filter" class="field-style">
-                    <option value="" selected disabled>Select Keyword</option>
+                <!-- Searchable Dropdown for Doctor's Name -->
+                <select name="sms_filter" class="field-style select2" style="width: 300px; box-sizing: border-box;">
+                    <option value="" <?php echo !isset($_GET['sms_filter']) ? 'selected' : ''; ?>>Select Keyword</option>
                     <?php
-                    if ($result_sms->num_rows > 0) {
-                        while ($row = $result_sms->fetch_assoc()) {
-                            echo '<option value="' . htmlspecialchars(strtoupper($row['recvMsg'])) . '">' . htmlspecialchars(strtoupper($row['recvMsg'])) . '</option>';
-                        }
+                    foreach ($keywords as $keyword) {
+                        $selected = (isset($_GET['sms_filter']) && $_GET['sms_filter'] == strtoupper($keyword)) ? 'selected' : '';
+                        echo '<option value="' . htmlspecialchars(strtoupper($keyword)) . '" ' . $selected . '>' . htmlspecialchars(strtoupper($keyword)) . '</option>';
                     }
                     ?>
                 </select>
 
-            </li>
-
-            <li>
-                <select name="telco_id" id="telco_id" class="field-style" style="max-width: 397px;">
-                    <option value="" selected disabled>Select TELCO</option>
+                <!-- Telco Dropdown -->
+                <!-- Searchable TELCO Dropdown -->
+                <select name="telco_id" id="telco_id" class="field-style select2" style="width: 300px; box-sizing: border-box; margin-left: 10px;">
+                    <option value="" <?php echo !isset($_GET['telco_id']) ? 'selected' : ''; ?>>Select TELCO</option>
                     <option value="1" <?php echo (isset($_GET['telco_id']) && $_GET['telco_id'] == '1') ? 'selected' : ''; ?>>Grameen Phone</option>
                     <option value="3" <?php echo (isset($_GET['telco_id']) && $_GET['telco_id'] == '3') ? 'selected' : ''; ?>>Banglalink</option>
                     <!-- <option value="4" <?php echo (isset($_GET['telco_id']) && $_GET['telco_id'] == '4') ? 'selected' : ''; ?>>Robi</option> -->
                 </select>
-                <input type="date" name="from_date" class="field-style" placeholder="From Date" value="<?php echo isset($_GET['from_date']) ? $_GET['from_date'] : ''; ?>" />
-                <input type="date" name="to_date" class="field-style" placeholder="To Date" value="<?php echo isset($_GET['to_date']) ? $_GET['to_date'] : ''; ?>" />
-                <input type="submit" name="search" value="Search" style="margin-right: 3px;">
+            </li>
+
+            <li style="gap: 10px;" >
+
+                <input type="date" name="from_date"style="width: 300px;box-sizing: border-box;border-radius: 3px;border: 1px solid #afa5a5;margin-right: 0;" class="field-style" placeholder="From Date" value="<?php echo isset($_GET['from_date']) ? htmlspecialchars($_GET['from_date']) : ''; ?>" />
+
+                <input type="date" name="to_date"style="width: 300px;box-sizing: border-box;border-radius: 3px;border: 1px solid #afa5a5;margin-right: 0;" class="field-style" placeholder="To Date" value="<?php echo isset($_GET['to_date']) ? htmlspecialchars($_GET['to_date']) : ''; ?>" />
+
+                <input type="submit" name="search" value="Search">
                 <input type="button" class="clear-button" value="Clear" onclick="clearForm()">
+                <button class="container-btn-file" id="download-excel" type="button">
+                    <svg
+                        fill="#fff"
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="16"
+                        height="16"
+                        viewBox="0 0 50 50">
+                        <path
+                            d="M28.8125 .03125L.8125 5.34375C.339844 
+                              5.433594 0 5.863281 0 6.34375L0 43.65625C0 
+                              44.136719 .339844 44.566406 .8125 44.65625L28.8125 
+                              49.96875C28.875 49.980469 28.9375 50 29 50C29.230469 
+                              50 29.445313 49.929688 29.625 49.78125C29.855469 49.589844 
+                              30 49.296875 30 49L30 1C30 .703125 29.855469 .410156 29.625 
+                              .21875C29.394531 .0273438 29.105469 -.0234375 28.8125 .03125ZM32 
+                              6L32 13L34 13L34 15L32 15L32 20L34 20L34 22L32 22L32 27L34 27L34 
+                              29L32 29L32 35L34 35L34 37L32 37L32 44L47 44C48.101563 44 49 
+                              43.101563 49 42L49 8C49 6.898438 48.101563 6 47 6ZM36 13L44 
+                              13L44 15L36 15ZM6.6875 15.6875L11.8125 15.6875L14.5 21.28125C14.710938 
+                              21.722656 14.898438 22.265625 15.0625 22.875L15.09375 22.875C15.199219 
+                              22.511719 15.402344 21.941406 15.6875 21.21875L18.65625 15.6875L23.34375 
+                              15.6875L17.75 24.9375L23.5 34.375L18.53125 34.375L15.28125 
+                              28.28125C15.160156 28.054688 15.035156 27.636719 14.90625 
+                              27.03125L14.875 27.03125C14.8125 27.316406 14.664063 27.761719 
+                              14.4375 28.34375L11.1875 34.375L6.1875 34.375L12.15625 25.03125ZM36 
+                              20L44 20L44 22L36 22ZM36 27L44 27L44 29L36 29ZM36 35L44 35L44 37L36 37Z"></path>
+                    </svg>
+                </button>
+
             </li>
         </ul>
     </form>
@@ -140,7 +190,7 @@ $result_sms = $conn->query($sql_sms);
         <table class="fl-table">
             <thead>
                 <tr>
-                    <th>#Si</th>
+                    <th>#</th>
                     <th>Phone</th>
                     <th>MO</th>
                     <th>Telco ID</th>
@@ -197,17 +247,11 @@ $result_sms = $conn->query($sql_sms);
                     }
                 }
             }
-            echo "'>&lt;&lt;</a>"; // << for first page
+            echo "'>First</a>";
 
-            $range = 2; // Number of page links to show on either side of the current page
-            $showItems = 5; // Total number of pagination items to show
-
-            // Calculate start and end range for pagination numbers
-            $start = max(1, $page - $range);
-            $end = min($total_pages, $page + $range);
-
-            if ($start > 1) {
-                echo "<a href='?page=1";
+            // Previous page link
+            if ($page > 1) {
+                echo "<a href='?page=" . ($page - 1);
                 if (!empty($where_clause)) {
                     foreach ($_GET as $key => $value) {
                         if ($key != 'page') {
@@ -215,29 +259,12 @@ $result_sms = $conn->query($sql_sms);
                         }
                     }
                 }
-                echo "'>1</a>";
-                if ($start > 2) echo "<span>...</span>";
+                echo "'>Previous</a>";
             }
 
-            for ($i = $start; $i <= $end; $i++) {
-                if ($i == $page) {
-                    echo "<span class='current'>$i</span>";
-                } else {
-                    echo "<a href='?page=$i";
-                    if (!empty($where_clause)) {
-                        foreach ($_GET as $key => $value) {
-                            if ($key != 'page') {
-                                echo "&$key=$value";
-                            }
-                        }
-                    }
-                    echo "'>$i</a>";
-                }
-            }
-
-            if ($end < $total_pages) {
-                if ($end < $total_pages - 1) echo "<span>...</span>";
-                echo "<a href='?page=$total_pages";
+            // Page number links
+            for ($i = 1; $i <= $total_pages; $i++) {
+                echo "<a href='?page=$i";
                 if (!empty($where_clause)) {
                     foreach ($_GET as $key => $value) {
                         if ($key != 'page') {
@@ -245,11 +272,24 @@ $result_sms = $conn->query($sql_sms);
                         }
                     }
                 }
-                echo "'>$total_pages</a>";
+                echo "'>$i</a>";
+            }
+
+            // Next page link
+            if ($page < $total_pages) {
+                echo "<a href='?page=" . ($page + 1);
+                if (!empty($where_clause)) {
+                    foreach ($_GET as $key => $value) {
+                        if ($key != 'page') {
+                            echo "&$key=$value";
+                        }
+                    }
+                }
+                echo "'>Next</a>";
             }
 
             // Last page link
-            echo "<a href='?page=$total_pages";
+            echo "<a href='?page=" . $total_pages;
             if (!empty($where_clause)) {
                 foreach ($_GET as $key => $value) {
                     if ($key != 'page') {
@@ -257,16 +297,41 @@ $result_sms = $conn->query($sql_sms);
                     }
                 }
             }
-            echo "'>&gt;&gt;</a>"; // >> for last page
+            echo "'>Last</a>";
         }
         ?>
     </div>
+</body>
 
-    <script>
-        function clearForm() {
-            window.location.href = window.location.pathname;
-        }
-    </script>
+</html>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<!-- Include Select2 JS -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.1.0-beta.1/js/select2.min.js"></script>
+<script>
+    function clearForm() {
+        window.location.href = window.location.pathname;
+    }
+    $(document).ready(function() {
+        $('#download-excel').on('click', function() {
+            var wb = XLSX.utils.book_new();
+
+            var table = $('.fl-table')[0];
+            var ws = XLSX.utils.table_to_sheet(table);
+
+            XLSX.utils.book_append_sheet(wb, ws, "Inbound Traffic Log");
+
+            XLSX.writeFile(wb, 'Inbound_Traffic_Log.xlsx');
+        });
+    });
+    $(document).ready(function() {
+        $('.select2').select2({
+            placeholder: "Select",
+            allowClear: true
+        });
+        $('.select2').next('.select2-container').css('width', '300px');
+    });
+</script>
+
 </body>
 
 </html>
@@ -275,6 +340,47 @@ $result_sms = $conn->query($sql_sms);
 
 
 <style>
+    /* From Uiverse.io by omar49511 */
+    .container-btn-file {
+        cursor: pointer;
+        display: flex;
+        position: relative;
+        justify-content: center;
+        align-items: center;
+        background-color: #307750;
+        color: #fff;
+        border-style: none;
+        padding: 1em 2em;
+        border-radius: 0.5em;
+        overflow: hidden;
+        z-index: 1;
+        box-shadow: 4px 8px 10px -3px rgba(0, 0, 0, 0.356);
+        transition: all 250ms;
+    }
+
+    .container-btn-file input[type="file"] {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        opacity: 0;
+        cursor: pointer;
+    }
+
+    .container-btn-file::before {
+        content: "";
+        position: absolute;
+        height: 100%;
+        width: 0;
+        border-radius: 0.5em;
+        background-color: #469b61;
+        z-index: -1;
+        transition: all 350ms;
+    }
+
+    .container-btn-file:hover::before {
+        width: 100%;
+    }
+
     .form-style-9 {
         max-width: 94%;
         padding: 20px;
